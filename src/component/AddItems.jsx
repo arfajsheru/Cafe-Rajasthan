@@ -5,14 +5,13 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   ScrollView,
-  Platform,
 } from 'react-native';
 import React, {useContext, useState} from 'react';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Text, TextInput} from 'react-native-gesture-handler';
 import {AdminContext} from '../context/AdminContext';
 import {Picker} from '@react-native-picker/picker';
-
+import {BACKEND_URL} from '@env';
 const AddItems = () => {
   const [imageUri, setImageUri] = useState(null);
   const {category, setCategory} = useContext(AdminContext);
@@ -20,12 +19,25 @@ const AddItems = () => {
   const [checkbox, setCheckBox] = useState(false);
 
   const categories = [
-    'Veg', 'Non-Veg', 'Beverages', 'Snacks', 'Bakery', 'Dairy', 'Frozen Food',
-    'Fruits', 'Vegetables', 'Grains', 'Meat', 'Seafood', 'Spices', 'Sweets', 'Others'
+    'Veg',
+    'Non-Veg',
+    'Beverages',
+    'Snacks',
+    'Bakery',
+    'Dairy',
+    'Frozen Food',
+    'Fruits',
+    'Vegetables',
+    'Grains',
+    'Meat',
+    'Seafood',
+    'Spices',
+    'Sweets',
+    'Others',
   ];
 
   const pickImage = () => {
-    let options = { mediaType: 'photo', quality: 1 };
+    let options = {mediaType: 'photo', quality: 1};
     launchImageLibrary(options, response => {
       if (response.assets && response.assets.length > 0) {
         setImageUri(response.assets[0].uri);
@@ -34,15 +46,22 @@ const AddItems = () => {
   };
 
   return (
-    <KeyboardAvoidingView behavior='padding' style={{flex:1}}>
-      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+    <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          
           {/* Image Upload */}
           <View style={styles.inputContainer}>
             <Text style={styles.textTitle}>Upload Image</Text>
             <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
-              <Image source={imageUri ? { uri: imageUri } : require('../assets/download.png')} style={styles.image} />
+              <Image
+                source={
+                  imageUri ? {uri: imageUri} : require('../assets/download.png')
+                }
+                style={styles.image}
+              />
             </TouchableOpacity>
           </View>
 
@@ -55,20 +74,35 @@ const AddItems = () => {
           {/* Product Description */}
           <View style={styles.inputContainer}>
             <Text style={styles.textTitle}>Product Description</Text>
-            <TextInput style={[styles.input, styles.textArea]} multiline numberOfLines={4} placeholder="Type here" />
+            <TextInput
+              style={[styles.input, styles.textArea]}
+              multiline
+              numberOfLines={4}
+              placeholder="Type here"
+            />
           </View>
 
           {/* Product Category */}
           <View style={styles.inputContainer}>
             <Text style={styles.textTitle}>Product Category</Text>
             <View style={styles.radioContainer}>
-              <TouchableOpacity style={styles.radioButton} onPress={() => setCategory('Veg')}>
-                <View style={styles.radioOuterVeg}>{category === 'Veg' && <View style={styles.radioInnerVeg} />}</View>
+              <TouchableOpacity
+                style={styles.radioButton}
+                onPress={() => setCategory('Veg')}>
+                <View style={styles.radioOuterVeg}>
+                  {category === 'Veg' && <View style={styles.radioInnerVeg} />}
+                </View>
                 <Text style={styles.radioText}>Veg</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.radioButton} onPress={() => setCategory('Non-Veg')}>
-                <View style={styles.radioOuterNonVeg}>{category === 'Non-Veg' && <View style={styles.radioInnerNonVeg} />}</View>
+              <TouchableOpacity
+                style={styles.radioButton}
+                onPress={() => setCategory('Non-Veg')}>
+                <View style={styles.radioOuterNonVeg}>
+                  {category === 'Non-Veg' && (
+                    <View style={styles.radioInnerNonVeg} />
+                  )}
+                </View>
                 <Text style={styles.radioText}>Non-Veg</Text>
               </TouchableOpacity>
             </View>
@@ -78,9 +112,14 @@ const AddItems = () => {
           <View style={styles.inputContainer}>
             <Text style={styles.textTitle}>Product Sub Category</Text>
             <View style={styles.pickerContainer}>
-              <Picker selectedValue={selectedCategory} onValueChange={setSelectedCategory} style={styles.picker}>
+              <Picker
+                selectedValue={selectedCategory}
+                onValueChange={setSelectedCategory}
+                style={styles.picker}>
                 <Picker.Item label="Select Category" value={null} />
-                {categories.map((cat, index) => <Picker.Item key={index} label={cat} value={cat} />)}
+                {categories.map((cat, index) => (
+                  <Picker.Item key={index} label={cat} value={cat} />
+                ))}
               </Picker>
             </View>
           </View>
@@ -89,17 +128,29 @@ const AddItems = () => {
           <View style={styles.row}>
             <View style={styles.inputContainer}>
               <Text style={styles.textTitle}>Ratings</Text>
-              <TextInput style={styles.input} keyboardType="numeric" placeholder="Type here" />
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                placeholder="Type here"
+              />
             </View>
 
             <View style={styles.inputContainer}>
               <Text style={styles.textTitle}>Views</Text>
-              <TextInput style={styles.input} keyboardType="numeric" placeholder="Type here" />
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                placeholder="Type here"
+              />
             </View>
 
             <View style={styles.inputContainer}>
               <Text style={styles.textTitle}>Offer</Text>
-              <TextInput style={styles.input} keyboardType="numeric" placeholder="Type here" />
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                placeholder="Type here"
+              />
             </View>
           </View>
 
@@ -107,19 +158,37 @@ const AddItems = () => {
           <View style={styles.row}>
             <View style={styles.inputContainer}>
               <Text style={styles.textTitle}>Original Price</Text>
-              <TextInput style={styles.input} keyboardType="numeric" placeholder="Type here" />
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                placeholder="Type here"
+              />
             </View>
 
             <View style={styles.inputContainer}>
               <Text style={styles.textTitle}>Discounted Price</Text>
-              <TextInput style={styles.input} keyboardType="numeric" placeholder="Type here" />
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                placeholder="Type here"
+              />
             </View>
           </View>
 
           {/* Bestseller  */}
           <View style={styles.bestsellercontainer}>
-            <TouchableOpacity style={[styles.checkbox, checkbox ? {backgroundColor:'#ad954d'}: {}]} onPress={() => setCheckBox(!checkbox)}>
-              {checkbox && <Image source={require("../assets/check.png")}  style={{width:22, height:22, tintColor:'#fff'}}/>}
+            <TouchableOpacity
+              style={[
+                styles.checkbox,
+                checkbox ? {backgroundColor: '#ad954d'} : {},
+              ]}
+              onPress={() => setCheckBox(!checkbox)}>
+              {checkbox && (
+                <Image
+                  source={require('../assets/check.png')}
+                  style={{width: 22, height: 22, tintColor: '#fff'}}
+                />
+              )}
             </TouchableOpacity>
             <Text style={styles.textTitle}>Add to bestseller</Text>
           </View>
@@ -129,20 +198,18 @@ const AddItems = () => {
   );
 };
 
-
-
 export default AddItems;
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    flexGrow:1,
-    minWidth:'78%',
+    flexGrow: 1,
+    minWidth: '78%',
   },
   container: {
-    flex:1,
+    flex: 1,
     paddingHorizontal: 25,
     paddingVertical: 20,
-    backgroundColor:'#f7e6b9'
+    backgroundColor: '#f7e6b9',
   },
   textTitle: {
     fontSize: 15,
@@ -162,7 +229,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 3,
     backgroundColor: '#fff',
-    width:'100%',
+    width: '100%',
   },
   textArea: {
     height: 100,
@@ -227,17 +294,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   bestsellercontainer: {
-    flexDirection:'row',
-    gap:5,
-    alignItems:'center',
-    marginTop:15,
+    flexDirection: 'row',
+    gap: 5,
+    alignItems: 'center',
+    marginTop: 15,
   },
   checkbox: {
-    height:25,
-    width:25,
-    justifyContent:'center',
-    alignItems:'center',
-    borderWidth:1.5,
-    borderColor:'#ad954d'
-  }
+    height: 25,
+    width: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: '#ad954d',
+  },
 });

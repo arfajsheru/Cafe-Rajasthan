@@ -18,8 +18,6 @@ const addFood = async (req, res) => {
                     return res.status(500).json({ success: false, message: "Cloudinary upload failed" });
                 }
 
-                console.log("Cloudinary Image URL:", result.secure_url);
-
                 // ✅ New food item create karna
                 const food = new foodModel({
                     name,

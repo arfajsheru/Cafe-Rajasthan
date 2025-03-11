@@ -1,34 +1,36 @@
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import React, {useContext} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Image } from 'react-native';
+import React, { useContext} from 'react';
+import { useNavigation } from '@react-navigation/native';
 import OrderList from '../component/OrderList';
 import AdminSidebar from '../component/AdminSidebar';
 import AddItems from '../component/AddItems';
-import {AdminContext} from '../context/AdminContext';
+import { AdminContext } from '../context/AdminContext';
 import ListItem from '../component/ListItem';
 
 const Admin = () => {
-  const {selectedScreen} = useContext(AdminContext);
+  const { selectedScreen } = useContext(AdminContext);
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
+
+      {/* Header */}
       <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Image style={styles.backImage} source={require("../assets/next.png")} />
+        </TouchableOpacity>
+        
+        {/* Title ko Center me lane ka Fix */}
         <View style={styles.logoContainer}>
-          <Image
-            style={styles.image}
-            source={require('../assets/AppLogo.png')}
-          />
           <Text style={styles.headerText}>
-            <Text style={{color: '#ad954d'}}>Admin</Text>
-            <Text style={{color: 'black', marginLeft: 10}}> Panel</Text>
+            <Text style={{ color: '#fff' }}>Admin</Text>
+            <Text style={{ color: 'black' }}> Panel</Text>
           </Text>
         </View>
-
-        <TouchableOpacity style={styles.logoutBtn}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
       </View>
 
       <View style={styles.row}></View>
-      <View style={{flexDirection: 'row', flex: 1}}>
+      <View style={{ flexDirection: 'row', flex: 1 }}>
         <AdminSidebar />
         {selectedScreen === 'AddItem' && <AddItems />}
         {selectedScreen === 'OrderList' && <OrderList />}
@@ -45,44 +47,36 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
-  image: {
-    width: 150,
-    height: 50,
-    resizeMode: 'contain',
-  },
   headerContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: '#ad954d',
     paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingVertical: 25,
+    position: 'relative',
+  },
+  backButton: {
+    borderWidth:2,
+    borderColor:'black',
+    borderRadius:25,justifyContent:'center', alignItems:'center',
+  },
+  backImage: {
+    width: 25, height: 25, resizeMode: 'contain',
+    tintColor: '#fff',
+    transform: [{ rotate: '180deg' }]
   },
   logoContainer: {
-    alignItems: 'flex-start',
+    position: 'absolute',
+    left: '50%',
+    transform: [{ translateX: "-50%"}], // Exact Center Fix
   },
   headerText: {
-    fontSize: 15,
-    fontFamily: 'NotoSerifKhojki-Medium',
-    marginLeft: 5,
-    marginTop: -9,
-    paddingVertical: 5,
-  },
-  logoutText: {
-    fontSize: 15,
+    fontSize: 22,
     fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#fff',
-  },
-  logoutBtn: {
-    borderWidth: 1,
-    width: 100,
-    paddingVertical: 10,
-    borderRadius: 2,
-    backgroundColor: '#ad954d',
   },
   row: {
     height: 1,
     width: '100%',
-    backgroundColor: '#b5caf2',
+    backgroundColor: '#fff',
   },
 });

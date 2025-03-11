@@ -13,7 +13,7 @@ const foodSchema  = new mongoose.Schema({
         stars:{type:String, require:true},
         views:{type:String, require:true}
     },
-    bestSeller:{type:Boolean, require:false}
+    bestSeller:{type:Boolean, require:false, default:false}
 });
 
 

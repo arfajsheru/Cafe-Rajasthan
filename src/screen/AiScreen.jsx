@@ -1,14 +1,19 @@
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import axios from 'axios';
-import {OPENAI_API} from "@env"
+import { OPENAI_API } from "@env";
 
 const AiChatScreen = () => {
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hello! hii how can I help you" }
+    { role: "assistant", content: "Hello! Hii, how can I help you?" }
   ]);
 
+  // Function to clean API response (Keep newlines intact)
+  const cleanResponse = (text) => {
+    return text
+      .replace(/[*#-]/g, '')  // Remove *, #, -
+  };
 
   const sendMessage = async () => {
     if (!query) return;
@@ -33,7 +38,9 @@ const AiChatScreen = () => {
       );
 
       const botReply = response.data.choices[0].message.content;
-      setMessages([...newMessages, { role: "assistant", content: botReply }]);
+      const cleanBotReply = cleanResponse(botReply);  // Clean AI response
+
+      setMessages([...newMessages, { role: "assistant", content: cleanBotReply }]);
     } catch (error) {
       console.error("Error fetching AI response:", error);
     }
@@ -48,18 +55,17 @@ const AiChatScreen = () => {
           </View>
         ))}
       </ScrollView>
-      
-      <View style={styles.inputAndBtn}>
 
-      <TextInput
-        style={styles.input}
-        placeholder="write your message here"
-        value={query}
-        onChangeText={setQuery}
-      />
-      <TouchableOpacity style={styles.sendBtn} onPress={sendMessage}>
-        <Text style={{fontSize:18, fontWeight:500, color:"#fff"}}>Send</Text>
-      </TouchableOpacity>
+      <View style={styles.inputAndBtn}>
+        <TextInput
+          style={styles.input}
+          placeholder="Write your message here"
+          value={query}
+          onChangeText={setQuery}
+        />
+        <TouchableOpacity style={styles.sendBtn} onPress={sendMessage}>
+          <Text style={{ fontSize: 18, fontWeight: "500", color: "#fff" }}>Send</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -71,9 +77,9 @@ const styles = StyleSheet.create({
   userMsg: { backgroundColor: "#ad954d", padding: 10, borderRadius: 3, marginVertical: 5, alignSelf: "flex-end" },
   botMsg: { backgroundColor: "#c7d1ea", padding: 10, borderRadius: 3, marginVertical: 5, alignSelf: "flex-start" },
   text: { fontSize: 16, color: "black" },
-  input: {flex:1, borderWidth: 1.5, padding: 10, borderRadius: 3, borderColor:'#ad954d' },
-  inputAndBtn: {flexDirection:'row', justifyContent:'space-between', gap:10,},
-  sendBtn: { paddingHorizontal:20,backgroundColor:'#ad954d', justifyContent:'center', alignContent:'center', borderRadius:3}
+  input: { flex: 1, borderWidth: 1.5, padding: 10, borderRadius: 3, borderColor: '#ad954d' },
+  inputAndBtn: { flexDirection: 'row', justifyContent: 'space-between', gap: 10 },
+  sendBtn: { paddingHorizontal: 20, backgroundColor: '#ad954d', justifyContent: 'center', alignContent: 'center', borderRadius: 3 }
 });
 
 export default AiChatScreen;
