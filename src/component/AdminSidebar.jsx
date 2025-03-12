@@ -12,7 +12,7 @@ const AdminSidebar = () => {
         <View
           style={[
             styles.btncontainer,
-            selectedScreen === 'AddItem' ? {backgroundColor: '#f7e6b9'} : {},
+            selectedScreen === 'AddItem' ? {backgroundColor: '#fff'} : {},
           ]}>
           <Image
             style={styles.imageicon}
@@ -22,33 +22,33 @@ const AdminSidebar = () => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => setSelectedScreen('OrderList')}
-        activeOpacity={1}>
-        <View
-          style={[
-            styles.btncontainer,
-            selectedScreen === 'OrderList' ? {backgroundColor: '#f7e6b9'} : {},
-          ]}>
-          <Image
-            style={styles.imageicon}
-            source={require('../assets/orderlist.png')}
-          />
-          <Text style={styles.btnText}>Order List</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
         onPress={() => setSelectedScreen('ItemList')}
         activeOpacity={1}>
         <View
           style={[
             styles.btncontainer,
-            selectedScreen === 'ItemList' ? {backgroundColor: '#f7e6b9'} : {},
+            selectedScreen === 'ItemList' ? {backgroundColor: '#fff'} : {},
           ]}>
           <Image
             style={styles.imageicon}
             source={require('../assets/itemlist.png')}
           />
           <Text style={styles.btnText}>Item List</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => setSelectedScreen('OrderList')}
+        activeOpacity={1}>
+        <View
+          style={[
+            styles.btncontainer,
+            selectedScreen === 'OrderList' ? {backgroundColor: '#fff'} : {},
+          ]}>
+          <Image
+            style={styles.imageicon}
+            source={require('../assets/orderlist.png')}
+          />
+          <Text style={styles.btnText}>Order List</Text>
         </View>
       </TouchableOpacity>
     </View>

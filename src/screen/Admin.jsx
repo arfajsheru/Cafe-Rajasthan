@@ -33,8 +33,8 @@ const Admin = () => {
       <View style={{ flexDirection: 'row', flex: 1 }}>
         <AdminSidebar />
         {selectedScreen === 'AddItem' && <AddItems />}
-        {selectedScreen === 'OrderList' && <OrderList />}
         {selectedScreen === 'ItemList' && <ListItem />}
+        {selectedScreen === 'OrderList' && <OrderList />}
       </View>
     </View>
   );

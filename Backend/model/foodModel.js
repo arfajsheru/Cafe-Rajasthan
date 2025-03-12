@@ -1,19 +1,20 @@
 import mongoose from "mongoose";
 
 const foodSchema  = new mongoose.Schema({
-    name:{type:String, require:true},
-    des:{type:String, require:true},
-    current_price:{type:Number, require:true},
-    original_price:{type:Number, require:true},
-    offer:{type:Number, require:true},
-    category:{type:String, require:true},
-    subcategory:{type:String, require:true},
-    image:{type:String, require:true},
+    name:{type:String, required:true},
+    des:{type:String, required:true},
+    current_price:{type:Number, required:true},
+    original_price:{type:Number, required:true},
+    offer:{type:Number, required:true},
+    category:{type:String, required:true},
+    subcategory:{type:String, required:true},
+    image:{type:String, required:true},
     rating: {
-        stars:{type:String, require:true},
-        views:{type:String, require:true}
+        stars:{type:Number, required:true},
+        views:{type:Number, required:true}
     },
-    bestSeller:{type:Boolean, require:false, default:false}
+    bestSeller:{type:Boolean, required:false},
+    date:{type:Number, default:Date.now}
 });
 
 

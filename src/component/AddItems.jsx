@@ -9,13 +9,25 @@ import {
 import React, {useContext, useState} from 'react';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Text, TextInput} from 'react-native-gesture-handler';
-import {AdminContext} from '../context/AdminContext';
 import {Picker} from '@react-native-picker/picker';
-import {BACKEND_URL} from '@env';
+import axios from 'axios';
+import { AdminContext } from '../context/AdminContext';
+import {LAPTOP_IP_ADDRESS} from "@env"
+
 const AddItems = () => {
+  const {BACKEND_URL} = useContext(AdminContext);  
   const [imageUri, setImageUri] = useState(null);
-  const {category, setCategory} = useContext(AdminContext);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [itemName, setItemName] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('Veg');
+  const [selectedCategory, setSelectedCategory] = useState('Chicken Rise');
+  const [rating, setRating] = useState({
+    stars: '',
+    views: '',
+  });
+  const [original_price, setOriginal_Price] = useState(0);
+  const [current_Price, setCurrent_Price] = useState(0);
+  const [offer, setOffer] = useState(0);
   const [checkbox, setCheckBox] = useState(false);
 
   const categories = [
@@ -36,6 +48,7 @@ const AddItems = () => {
     'Others',
   ];
 
+  // Image Picker function
   const pickImage = () => {
     let options = {mediaType: 'photo', quality: 1};
     launchImageLibrary(options, response => {
@@ -45,6 +58,38 @@ const AddItems = () => {
     });
   };
 
+  // Add Item handler
+  const onSubmitHandler = async () => {
+    try {
+      const formdata = new FormData();
+      formdata.append("name",itemName),
+      formdata.append("des",description),
+      formdata.append("category", category),
+      formdata.append('subcategory', selectedCategory),
+      formdata.append('offer', offer),
+      formdata.append("original_price", original_price),
+      formdata.append("current_price", current_Price),
+      formdata.append("bestSeller", checkbox),
+      formdata.append("rating", JSON.stringify({stars:rating.stars, views: rating.views}))
+      if (imageUri) {
+        formdata.append("image", {
+          uri: imageUri,
+          type: "image/jpeg",
+          name: "upload.jpg",
+        });
+      }
+      
+      const response = await axios.post(`http://192.168.0.121:4000/api/food/add`, formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
+      console.log(response.data)
+    } catch (error) {
+      console.error("Error:", error.response?.data || error.message);
+
+    }
+  };
   return (
     <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
       <ScrollView
@@ -68,13 +113,18 @@ const AddItems = () => {
           {/* Product Name */}
           <View style={styles.inputContainer}>
             <Text style={styles.textTitle}>Product Name</Text>
-            <TextInput style={styles.input} placeholder="Type here" />
+            <TextInput
+              onChangeText={text => setItemName(text)}
+              style={styles.input}
+              placeholder="Type here"
+            />
           </View>
 
           {/* Product Description */}
           <View style={styles.inputContainer}>
             <Text style={styles.textTitle}>Product Description</Text>
             <TextInput
+              onChangeText={text => setDescription(text)}
               style={[styles.input, styles.textArea]}
               multiline
               numberOfLines={4}
@@ -129,6 +179,7 @@ const AddItems = () => {
             <View style={styles.inputContainer}>
               <Text style={styles.textTitle}>Ratings</Text>
               <TextInput
+                onChangeText={text => setRating({...rating, stars: text})}
                 style={styles.input}
                 keyboardType="numeric"
                 placeholder="Type here"
@@ -138,6 +189,7 @@ const AddItems = () => {
             <View style={styles.inputContainer}>
               <Text style={styles.textTitle}>Views</Text>
               <TextInput
+                onChangeText={text => setRating({...rating, views: text})}
                 style={styles.input}
                 keyboardType="numeric"
                 placeholder="Type here"
@@ -147,6 +199,7 @@ const AddItems = () => {
             <View style={styles.inputContainer}>
               <Text style={styles.textTitle}>Offer</Text>
               <TextInput
+                onChangeText={text => setOffer(text)}
                 style={styles.input}
                 keyboardType="numeric"
                 placeholder="Type here"
@@ -159,6 +212,7 @@ const AddItems = () => {
             <View style={styles.inputContainer}>
               <Text style={styles.textTitle}>Original Price</Text>
               <TextInput
+                onChangeText={text => setOriginal_Price(text)}
                 style={styles.input}
                 keyboardType="numeric"
                 placeholder="Type here"
@@ -168,6 +222,7 @@ const AddItems = () => {
             <View style={styles.inputContainer}>
               <Text style={styles.textTitle}>Discounted Price</Text>
               <TextInput
+                onChangeText={text => setCurrent_Price(text)}
                 style={styles.input}
                 keyboardType="numeric"
                 placeholder="Type here"
@@ -192,6 +247,10 @@ const AddItems = () => {
             </TouchableOpacity>
             <Text style={styles.textTitle}>Add to bestseller</Text>
           </View>
+
+          <TouchableOpacity style={styles.addbtn} onPress={onSubmitHandler}>
+            <Text style={styles.textTitle}>AddItem</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -221,7 +280,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   inputContainer: {
-    marginBottom: 12,
+    marginBottom: 10,
   },
   input: {
     borderWidth: 1.5,
@@ -306,5 +365,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1.5,
     borderColor: '#ad954d',
+  },
+  addbtn: {
+    marginTop: 25,
+    borderWidth: 1.5,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderColor: '#fff',
+    backgroundColor: '#ad954d',
+    borderRadius: 3,
   },
 });

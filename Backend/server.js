@@ -1,16 +1,20 @@
 import express from 'express';
-import cors from 'cors';
+import cors from "cors";
 import connectDB from './config/db.js';
 import 'dotenv/config';
 import foodRouter from './routes/foodRoute.js';
 
 // app config
 const app = express();
-const port = 3000;
+const port = 4000;
 
 // middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ["http://192.168.0.121"],  // Laptop ka IP
+  credentials: true
+}));
+
 
 // MonogDB connect
 connectDB();
@@ -20,9 +24,10 @@ app.use("/api/food", foodRouter);
 app.use("/images", express.static('uploads'))
 
 app.get('/', (req, res) => {
-  res.send('Welcom to new Cafe Rajathan');
+  res.send('Welcom to new Cafe Rajathan?');
 });
 
-app.listen(port, () => {
-  console.log(`Server Started http://localhost:${port}`);
+app.listen(4000, "0.0.0.0", () => {
+  console.log("Server running on port 4000");
 });
+
