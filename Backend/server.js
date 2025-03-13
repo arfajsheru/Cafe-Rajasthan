@@ -11,7 +11,7 @@ const port = 4000;
 // middleware
 app.use(express.json());
 app.use(cors({
-  origin: ["http://192.168.0.121"],  // Laptop ka IP
+  origin: ["http://192.168.0.122"],  // Laptop ka IP
   credentials: true
 }));
 
