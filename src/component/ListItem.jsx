@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'black',
-    opacity: 0.3,  // Black effect with opacity
+    opacity: 0.2,  // Black effect with opacity
     borderRadius: 2,
   },
   priceContainer: {
@@ -335,8 +335,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   categoryInner: {
-    width: 15,
-    height: 15,
+    width: 12,
+    height: 12,
     borderRadius: 25,
   },
 });
