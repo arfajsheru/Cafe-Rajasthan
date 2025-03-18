@@ -11,11 +11,11 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {Text, TextInput} from 'react-native-gesture-handler';
 import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
-import { AdminContext } from '../context/AdminContext';
-import {LAPTOP_IP_ADDRESS} from "@env"
+import {AdminContext} from '../context/AdminContext';
+import {LAPTOP_IP_ADDRESS} from '@env';
 
 const AddItems = () => {
-  const {BACKEND_URL} = useContext(AdminContext);  
+  const {BACKEND_URL} = useContext(AdminContext);
   const [imageUri, setImageUri] = useState(null);
   const [itemName, setItemName] = useState('');
   const [description, setDescription] = useState('');
@@ -30,23 +30,7 @@ const AddItems = () => {
   const [offer, setOffer] = useState(0);
   const [checkbox, setCheckBox] = useState(false);
 
-  const categories = [
-    'Veg',
-    'Non-Veg',
-    'Beverages',
-    'Snacks',
-    'Bakery',
-    'Dairy',
-    'Frozen Food',
-    'Fruits',
-    'Vegetables',
-    'Grains',
-    'Meat',
-    'Seafood',
-    'Spices',
-    'Sweets',
-    'Others',
-  ];
+  const categories = ['Dahi & Salad', 'Chinese Starter', 'Soup', 'Others'];
 
   // Image Picker function
   const pickImage = () => {
@@ -62,32 +46,38 @@ const AddItems = () => {
   const onSubmitHandler = async () => {
     try {
       const formdata = new FormData();
-      formdata.append("name",itemName),
-      formdata.append("des",description),
-      formdata.append("category", category),
-      formdata.append('subcategory', selectedCategory),
-      formdata.append('offer', offer),
-      formdata.append("original_price", original_price),
-      formdata.append("current_price", current_Price),
-      formdata.append("bestSeller", checkbox),
-      formdata.append("rating", JSON.stringify({stars:rating.stars, views: rating.views}))
+      formdata.append('name', itemName),
+        formdata.append('des', description),
+        formdata.append('category', category),
+        formdata.append('subcategory', selectedCategory),
+        formdata.append('offer', offer),
+        formdata.append('original_price', original_price),
+        formdata.append('current_price', current_Price),
+        formdata.append('bestSeller', checkbox),
+        formdata.append(
+          'rating',
+          JSON.stringify({stars: rating.stars, views: rating.views}),
+        );
       if (imageUri) {
-        formdata.append("image", {
+        formdata.append('image', {
           uri: imageUri,
-          type: "image/jpeg",
-          name: "upload.jpg",
+          type: 'image/jpeg',
+          name: 'upload.jpg',
         });
       }
-      
-      const response = await axios.post(`http://192.168.0.121:4000/api/food/add`, formdata, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      });
-      console.log(response.data)
-    } catch (error) {
-      console.error("Error:", error.response?.data || error.message);
 
+      const response = await axios.post(
+        `${LAPTOP_IP_ADDRESS}:4000/api/food/add`,
+        formdata,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error.response?.data || error.message);
     }
   };
   return (

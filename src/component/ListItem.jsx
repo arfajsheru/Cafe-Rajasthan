@@ -1,202 +1,55 @@
-import {View, Text, StyleSheet, Image} from 'react-native';
-import React from 'react';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
+import axios from 'axios';
+import {LAPTOP_IP_ADDRESS } from "@env"
 const ListItem = () => {
-  const itemlist = [
-    {
-      name: 'Veggie Burger',
-      des: 'A delicious vegetarian burger with fresh lettuce and cheese.',
-      current_price: 199,
-      original_price: 249,
-      offer: 20,
-      category: 'Veg',
-      subcategory: 'Burgers',
-      image: require('../assets/category1.jpg'),
-      rating: {stars: '4.5', views: '1020'},
-      bestSeller: true,
-    },
-    {
-      name: 'Margherita Pizza',
-      des: 'Classic Margherita pizza with fresh basil and mozzarella cheese.',
-      current_price: 299,
-      original_price: 349,
-      offer: 15,
-      category: 'Veg',
-      subcategory: 'Pizza',
-      image: require('../assets/category2.jpg'),
-      rating: {stars: '4.7', views: '2100'},
-      bestSeller: true,
-    },
-    {
-      name: 'Chicken Biryani',
-      des: 'Aromatic and flavorful chicken biryani with basmati rice.',
-      current_price: 399,
-      original_price: 499,
-      offer: 20,
-      category: 'Non-Veg',
-      subcategory: 'Biryani',
-      image: require('../assets/category3.jpg'),
-      rating: {stars: '4.8', views: '3200'},
-      bestSeller: false,
-    },
-    {
-      name: 'Paneer Butter Masala',
-      des: 'Creamy and rich paneer butter masala with Indian spices.',
-      current_price: 299,
-      original_price: 350,
-      offer: 10,
-      category: 'Veg',
-      subcategory: 'Curry',
-      image: require('../assets/category4.jpg'),
-      rating: {stars: '4.6', views: '1500'},
-      bestSeller: true,
-    },
-    {
-      name: 'Chiken Loipop',
-      des: 'Tender chicken in a creamy, spiced sauce. Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-      current_price: 249,
-      original_price: 299,
-      offer: 15,
-      category: 'Non-Veg',
-      subcategory: 'Cakes',
-      image: require('../assets/category5.jpg'),
-      rating: {stars: '4.9', views: '5000'},
-      bestSeller: true,
-    }, 
-    {
-      name: 'Veggie Burger',
-      des: 'A delicious vegetarian burger with fresh lettuce and cheese.',
-      current_price: 199,
-      original_price: 249,
-      offer: 20,
-      category: 'Veg',
-      subcategory: 'Burgers',
-      image: require('../assets/category1.jpg'),
-      rating: {stars: '4.5', views: '1020'},
-      bestSeller: true,
-    },
-    {
-      name: 'Margherita Pizza',
-      des: 'Classic Margherita pizza with fresh basil and mozzarella cheese.',
-      current_price: 299,
-      original_price: 349,
-      offer: 15,
-      category: 'Veg',
-      subcategory: 'Pizza',
-      image: require('../assets/category2.jpg'),
-      rating: {stars: '4.7', views: '2100'},
-      bestSeller: true,
-    },
-    {
-      name: 'Chicken Biryani',
-      des: 'Aromatic and flavorful chicken biryani with basmati rice.',
-      current_price: 399,
-      original_price: 499,
-      offer: 20,
-      category: 'Non-Veg',
-      subcategory: 'Biryani',
-      image: require('../assets/category3.jpg'),
-      rating: {stars: '4.8', views: '3200'},
-      bestSeller: false,
-    },
-    {
-      name: 'Paneer Butter Masala',
-      des: 'Creamy and rich paneer butter masala with Indian spices.',
-      current_price: 299,
-      original_price: 350,
-      offer: 10,
-      category: 'Veg',
-      subcategory: 'Curry',
-      image: require('../assets/category4.jpg'),
-      rating: {stars: '4.6', views: '1500'},
-      bestSeller: true,
-    },
-    {
-      name: 'Chiken Loipop',
-      des: 'Tender chicken in a creamy, spiced sauce. Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-      current_price: 249,
-      original_price: 299,
-      offer: 15,
-      category: 'Non-Veg',
-      subcategory: 'Cakes',
-      image: require('../assets/category5.jpg'),
-      rating: {stars: '4.9', views: '5000'},
-      bestSeller: true,
-    },
-    {
-      name: 'Veggie Burger',
-      des: 'A delicious vegetarian burger with fresh lettuce and cheese.',
-      current_price: 199,
-      original_price: 249,
-      offer: 20,
-      category: 'Veg',
-      subcategory: 'Burgers',
-      image: require('../assets/category1.jpg'),
-      rating: {stars: '4.5', views: '1020'},
-      bestSeller: true,
-    },
-    {
-      name: 'Margherita Pizza',
-      des: 'Classic Margherita pizza with fresh basil and mozzarella cheese.',
-      current_price: 299,
-      original_price: 349,
-      offer: 15,
-      category: 'Veg',
-      subcategory: 'Pizza',
-      image: require('../assets/category2.jpg'),
-      rating: {stars: '4.7', views: '2100'},
-      bestSeller: true,
-    },
-    {
-      name: 'Chicken Biryani',
-      des: 'Aromatic and flavorful chicken biryani with basmati rice.',
-      current_price: 399,
-      original_price: 499,
-      offer: 20,
-      category: 'Non-Veg',
-      subcategory: 'Biryani',
-      image: require('../assets/category3.jpg'),
-      rating: {stars: '4.8', views: '3200'},
-      bestSeller: false,
-    },
-    {
-      name: 'Paneer Butter Masala',
-      des: 'Creamy and rich paneer butter masala with Indian spices.',
-      current_price: 299,
-      original_price: 350,
-      offer: 10,
-      category: 'Veg',
-      subcategory: 'Curry',
-      image: require('../assets/category4.jpg'),
-      rating: {stars: '4.6', views: '1500'},
-      bestSeller: true,
-    },
-    {
-      name: 'Chiken Loipop',
-      des: 'Tender chicken in a creamy, spiced sauce. Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-      current_price: 249,
-      original_price: 299,
-      offer: 15,
-      category: 'Non-Veg',
-      subcategory: 'Cakes',
-      image: require('../assets/category5.jpg'),
-      rating: {stars: '4.9', views: '5000'},
-      bestSeller: true,
-    },
-  ];
+  const [listFood, setListFood] = useState([]);
+  
+  const fetchdata = async () => {
+    try {
+      const response = await axios.get(
+        `${LAPTOP_IP_ADDRESS}:4000/api/food/list`,
+      );
+      setListFood(response.data.prodcuts);
+    } catch (error) {
+      console.log('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchdata();
+  }, []);
+
+  const removeFood = async id => {
+    try {
+      const response = await axios.post(
+        `${LAPTOP_IP_ADDRESS}:4000/api/food/remove`,
+        {id},
+      );
+      if (response.data.success) {
+        console.warn(response.data.message);
+        await fetchdata();
+      } else {
+        console.warn(response.data.message);
+      }
+    } catch (error) {
+      console.log('Error deleting food: ', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={itemlist}
+        data={listFood}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
         renderItem={({item}) => (
           <View style={styles.itemcontainer}>
             <View style={styles.imageContainer}>
-  <Image style={styles.image} source={item.image} />
-  <View style={styles.overlay} />
-</View>
+              <Image style={styles.image} source={{uri: item.image}} />
+              <View style={styles.overlay} />
+            </View>
             <View style={styles.priceContainer}>
               <Text style={styles.itemTitle}>{item.name}</Text>
               <Text style={styles.itemDesc}>{item.des}</Text>
@@ -210,19 +63,26 @@ const ListItem = () => {
                 <Text style={styles.offerText}>{item.offer}% OFF</Text>
               </View>
 
-              <View style={styles.closebtn}>
+              <TouchableOpacity
+                style={styles.closebtn}
+                onPress={() => removeFood(item._id)}>
                 <Image
                   style={styles.closeIcon}
                   source={require('../assets/close.png')}
                 />
-              </View>
+              </TouchableOpacity>
             </View>
 
             <View
-              style={[styles.categoryContainer, { borderColor: item.category === "Veg" ? "green" : "red" }]}
-            >
+              style={[
+                styles.categoryContainer,
+                {borderColor: item.category === 'Veg' ? 'green' : 'red'},
+              ]}>
               <View
-                style={[styles.categoryInner, { backgroundColor: item.category === "Veg" ? "green" : "red" }]}
+                style={[
+                  styles.categoryInner,
+                  {backgroundColor: item.category === 'Veg' ? 'green' : 'red'},
+                ]}
               />
             </View>
           </View>
@@ -240,6 +100,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 5,
   },
+  foodCountContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#F0F0F0',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  foodCountText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   itemcontainer: {
     position: 'relative',
     width: '100%',
@@ -255,13 +127,13 @@ const styles = StyleSheet.create({
     width: 80,
     height: 90,
   },
-  
+
   image: {
     width: '100%',
     height: '100%',
     borderRadius: 2,
   },
-  
+
   overlay: {
     position: 'absolute',
     top: 0,
@@ -269,7 +141,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'black',
-    opacity: 0.2,  // Black effect with opacity
+    opacity: 0.2, // Black effect with opacity
     borderRadius: 2,
   },
   priceContainer: {

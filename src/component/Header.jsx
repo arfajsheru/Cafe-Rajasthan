@@ -3,13 +3,11 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  StatusBar,
   SafeAreaView,
 } from 'react-native';
 import React from 'react';
 import * as Animatable from 'react-native-animatable';
 import { Text } from 'react-native-gesture-handler';
-import SearchInput from './SearchInput';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -23,25 +21,16 @@ const Header = () => {
       style={styles.animatedContainer}
     >
       <SafeAreaView style={styles.container}>
-        {/* Status Bar */}
-        
-
         {/* Header */}
         <View style={styles.header}>
-          {/* Left Side - Logo, Delivery & Location */}
           <View style={styles.logoTextLocContainer}>
             <View  style={styles.leftContainer}>
-              {/* Logo */}
               <Image style={styles.logo} source={require('../assets/logo.png')} />
-
-              {/* Delivery Text */}
               <View style={styles.deliveryContainer}>
                 <Text style={styles.deliveryText}>Delivery in</Text>
                 <Text style={styles.minText}>15 Minutes</Text>
               </View>
             </View>
-
-            {/* Location */}
             <View style={styles.locationContainer}>
               <Text style={styles.locText}>Malad East, Mumbai, Maharashtra</Text>
               <TouchableOpacity>
@@ -52,8 +41,6 @@ const Header = () => {
               </TouchableOpacity>
             </View>
           </View>
-
-          {/* Right Side - Profile Icon */}
           <TouchableOpacity style={styles.profileContainer}
           onPress={() => navigation.navigate('Profile')}
           >
@@ -63,9 +50,6 @@ const Header = () => {
             />
           </TouchableOpacity>
         </View>
-
-        {/* Search input */}
-        <SearchInput />
       </SafeAreaView>
     </Animatable.View>
   );
@@ -85,8 +69,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ad954f',
     paddingHorizontal: 15,
     paddingVertical: 12,
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
   },
   header: {
     flexDirection: 'row',

@@ -15,6 +15,7 @@ const SearchInput = () => {
   const navigation = useNavigation();
 
   return (
+    <View style={styles.container}>
     <View style={styles.searchContainer}>
       <Image
         source={require('../assets/search.png')}
@@ -33,6 +34,7 @@ const SearchInput = () => {
         </RollingBar>
       </TouchableOpacity>
     </View>
+    </View>
   );
 };
 
@@ -42,12 +44,19 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 5,
+    backgroundColor:"#fff",
+    borderWidth:1.2,
+    borderRadius: 3,
     paddingLeft: 10,
     paddingRight: 8,
     height: 45,
-    marginVertical: 15,
+  },
+  container: {
+    paddingHorizontal:10,
+    paddingBottom:20,
+    backgroundColor: '#ad954d',
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
   },
   searchIcon: {
     width: 25,

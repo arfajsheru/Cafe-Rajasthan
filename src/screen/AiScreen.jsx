@@ -3,16 +3,17 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { OPENAI_API } from "@env";
 
-const AiChatScreen = () => {
+const AiScreen = () => {
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState([
     { role: "assistant", content: "Hello! Hii, how can I help you?" }
   ]);
 
-  // Function to clean API response (Keep newlines intact)
-  const cleanResponse = (text) => {
+  // Function to clean API response & format text
+  const formatResponse = (text) => {
     return text
-      .replace(/[*#-]/g, '')  // Remove *, #, -
+      .replace(/\*\*(.*?)\*\*/g, '🔥 $1 🔥') // Replace **bold** with better UI
+      .replace(/[*#-]/g, '') // Remove *, #, -
   };
 
   const sendMessage = async () => {
@@ -27,7 +28,7 @@ const AiChatScreen = () => {
         "https://api.openai.com/v1/chat/completions",
         {
           model: "gpt-4o-mini",
-          messages: [...newMessages, { role: "user", content: query }],
+          messages: newMessages,
         },
         {
           headers: {
@@ -38,11 +39,24 @@ const AiChatScreen = () => {
       );
 
       const botReply = response.data.choices[0].message.content;
-      const cleanBotReply = cleanResponse(botReply);  // Clean AI response
+      const formattedReply = formatResponse(botReply);
 
-      setMessages([...newMessages, { role: "assistant", content: cleanBotReply }]);
+      setMessages([...newMessages, { role: "assistant", content: formattedReply }]);
     } catch (error) {
       console.error("Error fetching AI response:", error);
+    }
+  };
+
+  // Function to render AI response in a formatted way
+  const renderMessageContent = (content) => {
+    if (Array.isArray(content)) {
+      return content.map((line, index) => (
+        <Text key={index} style={line.startsWith("🔥") ? styles.boldText : styles.text}>
+          {line.replace(/🔥/g, '')} 
+        </Text>
+      ));
+    } else {
+      return <Text style={styles.text}>{content}</Text>;
     }
   };
 
@@ -51,7 +65,7 @@ const AiChatScreen = () => {
       <ScrollView style={styles.chatContainer}>
         {messages.map((msg, index) => (
           <View key={index} style={msg.role === "user" ? styles.userMsg : styles.botMsg}>
-            <Text style={styles.text}>{msg.content}</Text>
+            {renderMessageContent(msg.content)}
           </View>
         ))}
       </ScrollView>
@@ -77,9 +91,10 @@ const styles = StyleSheet.create({
   userMsg: { backgroundColor: "#ad954d", padding: 10, borderRadius: 3, marginVertical: 5, alignSelf: "flex-end" },
   botMsg: { backgroundColor: "#c7d1ea", padding: 10, borderRadius: 3, marginVertical: 5, alignSelf: "flex-start" },
   text: { fontSize: 16, color: "black" },
+  boldText: { fontSize: 18, fontWeight: "bold", color: "#000" }, // Bold aur bada text
   input: { flex: 1, borderWidth: 1.5, padding: 10, borderRadius: 3, borderColor: '#ad954d' },
   inputAndBtn: { flexDirection: 'row', justifyContent: 'space-between', gap: 10 },
   sendBtn: { paddingHorizontal: 20, backgroundColor: '#ad954d', justifyContent: 'center', alignContent: 'center', borderRadius: 3 }
 });
 
-export default AiChatScreen;
+export default AiScreen;

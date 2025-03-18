@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,9 +8,14 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-
+import SearchInput from '../component/SearchInput';
+import Filter from '../component/Filter';
+import {data} from '../data';
+import {FlatList} from 'react-native-gesture-handler';
+import ProductItem from '../component/ProductItem';
 const Menu = () => {
   const navigation = useNavigation();
+  const [isfilterOpen, setisFilterOpen] = useState(false);
 
   return (
     <View style={{flex: 1}}>
@@ -19,13 +24,6 @@ const Menu = () => {
       <View style={styles.header}>
         <Text style={styles.title}>Menu</Text>
         <View style={styles.searchAndCart}>
-          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
-            <Image
-              source={require('../assets/search.png')}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-
           <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
             <Image source={require('../assets/cart.png')} style={styles.icon} />
           </TouchableOpacity>
@@ -38,10 +36,48 @@ const Menu = () => {
           </TouchableOpacity>
         </View>
       </View>
+      <SearchInput />
 
       {/* 🔥 Rest of the Screen */}
       <View style={styles.container}>
-        <Text>Menu Content Here</Text>
+        {/* Filter btn and price sort */}
+        <View style={styles.filterContainer}>
+          {/* Filter button */}
+          <TouchableOpacity
+            style={styles.filterBtn}
+            onPress={() => setisFilterOpen(!isfilterOpen)}>
+            <Image
+              style={{width: 20, height: 20}}
+              source={require('../assets/filter.png')}
+            />
+            <Text style={styles.text}>Filter </Text>
+          </TouchableOpacity>
+
+          <View style={styles.priceSort}>
+            <Text style={styles.text}>Sort by: Relavent</Text>
+            <TouchableOpacity>
+              <Image
+                style={{width: 20, height: 20, transform: [{rotate: '90deg'}]}}
+                source={require('../assets/rightarrow.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Item list */}
+        <FlatList
+          data={data}
+          renderItem={({item}) => <ProductItem item={item} />}
+          keyExtractor={item => item.id.toString()} // Unique key dena important hai
+          numColumns={2}
+        />
+
+        {isfilterOpen && (
+          <Filter
+            isfilterOpen={isfilterOpen}
+            setisFilterOpen={setisFilterOpen}
+          />
+        )}
       </View>
     </View>
   );
@@ -73,12 +109,40 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   searchAndCart: {
     flexDirection: 'row',
     gap: 15,
+  },
+  filterContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+  },
+  filterBtn: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 5,
+    backgroundColor: '#E5E7EB',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+  },
+  text: {
+    fontSize: 12,
+    fontWeight: 'medium',
+    textTransform: 'uppercase',
+  },
+  priceSort: {
+    borderWidth: 1,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 5,
   },
 });
 

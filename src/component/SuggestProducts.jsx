@@ -10,8 +10,8 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  TouchableWithoutFeedback,
   Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { FoodItemContext } from '../context/FoodItemContext';
 
@@ -21,42 +21,36 @@ const SuggestProducts = () => {
 
   return (
     <Modal transparent={true} animationType="slide" visible={modalVisible}>
-      {/* Background Overlay */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.modalOverlay}>
-          {/* Keyboard Avoiding View */}
-          <KeyboardAvoidingView 
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.keyboardView}
           >
-            <ScrollView 
-              contentContainerStyle={styles.scrollView} 
+            <ScrollView
+              contentContainerStyle={styles.scrollView}
               keyboardShouldPersistTaps="handled"
             >
               <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>Suggest Product</Text>
+                <Text style={styles.modalTitle}>Suggest a Product</Text>
                 <Text style={styles.modalSubtext}>
-                  Didn't find what you are looking for? Please suggest the products.
+                  Didn't find what you were looking for? Suggest the product below.
                 </Text>
 
-                {/* Input Box */}
                 <TextInput
                   style={styles.input}
                   placeholder="Enter product name..."
-                  placeholderTextColor="#aaa"
+                  placeholderTextColor="#777"
                   multiline={true}
                   numberOfLines={5}
                   value={productName}
                   onChangeText={setProductName}
-                  autoFocus={true}
                 />
 
-                {/* Submit Button */}
-                <TouchableOpacity style={styles.submit}>
+                <TouchableOpacity style={styles.submit} onPress={() => console.log('Product Submitted:', productName)}>
                   <Text style={styles.submitText}>Submit</Text>
                 </TouchableOpacity>
 
-                {/* Close Button */}
                 <TouchableOpacity style={styles.closeBtn} onPress={() => setModalVisible(false)}>
                   <Image style={styles.closeIcon} source={require('../assets/close.png')} />
                 </TouchableOpacity>
@@ -76,12 +70,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
-    alignItems: 'center',
   },
   keyboardView: {
-    flex: 1,
     width: '100%',
-    justifyContent: 'flex-end',
   },
   scrollView: {
     flexGrow: 1,
@@ -90,66 +81,60 @@ const styles = StyleSheet.create({
   modalContent: {
     position: 'relative',
     width: '100%',
-    height: '50%',
     backgroundColor: '#fff',
-    borderRadius: 20,
-    paddingHorizontal: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     padding: 20,
     elevation: 5,
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 22,
     textAlign: 'center',
     fontWeight: 'bold',
-    marginBottom: 15,
-    textTransform: 'capitalize',
     color: '#ad954d',
-    marginTop: 20,
+    marginBottom: 10,
   },
   modalSubtext: {
     fontSize: 15,
     textAlign: 'center',
-    fontWeight: '500',
-    marginBottom: 15,
+    color: '#555',
+    marginBottom: 20,
   },
   input: {
     width: '100%',
-    height: 180,
-    borderWidth: 1,
+    height: 120,
+    borderWidth: 1.5,
     borderColor: '#ad954d',
-    borderRadius: 3,
+    borderRadius: 8,
     paddingHorizontal: 15,
     fontSize: 16,
     textAlignVertical: 'top',
     backgroundColor: '#f9f9f9',
-    marginTop: 20,
   },
   submit: {
-    backgroundColor: '#ad954f',
-    borderRadius: 3,
-    paddingVertical: 10,
+    backgroundColor: '#ad954d',
+    borderRadius: 8,
+    paddingVertical: 12,
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 15,
   },
   submitText: {
     fontSize: 18,
     color: '#fff',
-    textAlign: 'center',
     fontWeight: '600',
     textTransform: 'uppercase',
   },
   closeBtn: {
     position: 'absolute',
     right: 15,
-    top: 9,
+    top: 15,
     backgroundColor: '#e0e0e0',
-    padding: 5,
-    borderRadius: 25,
+    padding: 8,
+    borderRadius: 20,
   },
   closeIcon: {
-    width: 15,
-    height: 15,
+    width: 18,
+    height: 18,
     resizeMode: 'contain',
     tintColor: '#ad954d',
   },

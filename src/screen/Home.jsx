@@ -1,41 +1,40 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, StatusBar } from 'react-native';
+import { StyleSheet, View, FlatList, StatusBar, SafeAreaView } from 'react-native';
 import Header from '../component/Header';
 import ChatBoat from '../component/ChatBoat';
 import Category from '../component/Category';
 import BestSeller from '../component/BestSeller';
+import SearchInput from '../component/SearchInput';
 
 const Home = () => {
-  // ✅ List Header
-  const renderHeader = () => (
-    <>
-      <Header />
-      <Category />
-    </>
-  );
-
-  // ✅ Render BestSeller Component
-  const renderBestSeller = () => <BestSeller />;
-
   return (
-    <View style={styles.homeContainer}>
+    <SafeAreaView style={styles.homeContainer}>
       {/* ✅ Status Bar Customization */}
       <StatusBar backgroundColor="#ad954f" barStyle="light-content" />
-      <Header />
-      <Category />
-      {/* ✅ FlatList for Scrollable Content */}
-      <FlatList
-        data={[{ key: 'bestseller' }]} // Dummy data
-        renderItem={renderBestSeller}
-        keyExtractor={(item) => item.key}
-        
-      />
 
+      {/* Header */}
+      <Header />
+
+      {/* Search Input */}
+      <SearchInput />
+
+      {/* Category */}
+      <Category />
+
+       {/* ✅ Scrollable Content */}
+       <FlatList
+        data={[{ key: 'bestseller' }]} // Dummy data
+        renderItem={() => <BestSeller />}
+        keyExtractor={(item) => item.key}
+        contentContainerStyle={{ paddingBottom: 80 }} // Extra Space for ChatBot
+        showsVerticalScrollIndicator={false}
+      />
+      
       {/* ✅ Floating ChatBot Icon */}
       <View style={styles.chatBoatWrapper}>
         <ChatBoat />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
