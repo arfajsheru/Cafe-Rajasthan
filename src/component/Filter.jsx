@@ -9,15 +9,17 @@ import {
   Image,
 } from 'react-native';
 import {subCategories} from '../data';
-import { FlatList } from 'react-native-gesture-handler';
+import {FlatList, ScrollView} from 'react-native-gesture-handler';
 const Filter = ({isfilterOpen, setisFilterOpen}) => {
   const [category, setCategory] = useState('Veg');
   const [checkbox, setCheckBox] = useState(false);
-  const [selectedSubCategory, setSelectedSubCategory] = useState([])
+  const [selectedSubCategory, setSelectedSubCategory] = useState([]);
 
-  const handleSelected = () => {
-    setSelectedSubCategory((prev) => prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]);
-  }
+  const handleSelected = item => {
+    setSelectedSubCategory(prev =>
+      prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item],
+    );
+  };
 
   const slideAnim = useRef(new Animated.Value(2000)).current; // 🔥 Bottom se slide animation ke liye
   useEffect(() => {
@@ -47,6 +49,7 @@ const Filter = ({isfilterOpen, setisFilterOpen}) => {
 
       <Animated.View
         style={[styles.modalBox, {transform: [{translateY: slideAnim}]}]}>
+        {/* Filter Title */}
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Food Product Filter </Text>
           <TouchableOpacity
@@ -63,62 +66,76 @@ const Filter = ({isfilterOpen, setisFilterOpen}) => {
             />
           </TouchableOpacity>
         </View>
-
         {/* Category Box */}
-        <View style={styles.categoryContainer}>
-          <Text style={styles.textTitle}>Category</Text>
-          <View style={styles.radioContainer}>
-            <TouchableOpacity
-              style={styles.radioButton}
-              onPress={() => setCategory('Veg')}>
-              <View style={styles.radioOuterVeg}>
-                {category === 'Veg' && <View style={styles.radioInnerVeg} />}
-              </View>
-              <Text style={styles.radioText}>Veg</Text>
+        <ScrollView
+          style={{flex: 1}}
+          contentContainerStyle={{paddingBottom: 50}}
+          keyboardShouldPersistTaps="handled">
+          <View style={styles.categoryContainer}>
+            <Text style={styles.textTitle}>Category</Text>
+            <View style={styles.radioContainer}>
+              <TouchableOpacity
+                style={styles.radioButton}
+                onPress={() => setCategory('Veg')}>
+                <View style={styles.radioOuterVeg}>
+                  {category === 'Veg' && <View style={styles.radioInnerVeg} />}
+                </View>
+                <Text style={styles.radioText}>Veg</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.radioButton}
+                onPress={() => setCategory('Non-Veg')}>
+                <View style={styles.radioOuterNonVeg}>
+                  {category === 'Non-Veg' && (
+                    <View style={styles.radioInnerNonVeg} />
+                  )}
+                </View>
+                <Text style={styles.radioText}>Non-Veg</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* SubCategory Box */}
+          <View style={styles.categoryContainer}>
+            <Text style={styles.textTitle}>Subcategory</Text>
+            <FlatList
+              data={subCategories}
+              scrollEnabled={false}
+              renderItem={({item}) => {
+                const isChecked = selectedSubCategory.includes(item);
+                return (
+                  <View style={styles.bestsellercontainer}>
+                    <TouchableOpacity
+                      style={[
+                        styles.checkbox,
+                        isChecked ? {backgroundColor: '#ad954d'} : {},
+                      ]}
+                      onPress={() => handleSelected(item)}>
+                      {isChecked && (
+                        <Image
+                          source={require('../assets/check.png')}
+                          style={{width: 20, height: 20, tintColor: '#fff'}}
+                        />
+                      )}
+                    </TouchableOpacity>
+                    <Text style={styles.textTitle}>{item}</Text>
+                  </View>
+                );
+              }}
+            />
+          </View>
+
+          <View style={styles.btnContainer}>
+            <TouchableOpacity style={styles.button} activeOpacity={0.7}>
+              <Text>Apply</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.radioButton}
-              onPress={() => setCategory('Non-Veg')}>
-              <View style={styles.radioOuterNonVeg}>
-                {category === 'Non-Veg' && (
-                  <View style={styles.radioInnerNonVeg} />
-                )}
-              </View>
-              <Text style={styles.radioText}>Non-Veg</Text>
+            <TouchableOpacity style={styles.button} activeOpacity={0.7}>
+              <Text>Clear All</Text>
             </TouchableOpacity>
           </View>
-        </View>
-
-        {/* SubCategory Box */}
-
-        <View style={styles.categoryContainer}>
-          <Text style={styles.textTitle}>Subcategory</Text>
-
-
-        
-        <FlatList data={subCategories}
-        renderItem={({item}) => (
-            <View style={styles.bestsellercontainer}>
-            <TouchableOpacity
-              style={[
-                styles.checkbox,
-                checkbox ? {backgroundColor: '#ad954d'} : {},
-              ]}
-              onPress={() => setCheckBox(!checkbox)}>
-              {checkbox && (
-                <Image
-                  source={require('../assets/check.png')}
-                  style={{width: 20, height: 20, tintColor: '#fff'}}
-                />
-              )}
-            </TouchableOpacity>
-            <Text style={styles.textTitle}>{item}</Text>
-          </View>
-        )}
-        />
-
-        </View>
+        </ScrollView>
       </Animated.View>
     </Modal>
   );
@@ -240,6 +257,20 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: '#ad954d',
   },
+  btnContainer: {
+    flex:1,
+    justifyContent:'space-between',
+    flexDirection:'row',
+    paddingHorizontal:20
+  },
+  button: {
+    height:35,
+    width:100,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:'#ad954d',
+    borderRadius:2,
+  }
 });
 
 export default Filter;
