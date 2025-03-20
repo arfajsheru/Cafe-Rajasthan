@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 8,
     height: 45,
+    elevation: 20
   },
   container: {
     paddingHorizontal:10,
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ad954d',
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
+    elevation:20
   },
   searchIcon: {
     width: 25,

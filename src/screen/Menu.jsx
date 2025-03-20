@@ -17,6 +17,7 @@ const Menu = () => {
   const navigation = useNavigation();
   const [isfilterOpen, setisFilterOpen] = useState(false);
 
+
   return (
     <View style={{flex: 1}}>
       <StatusBar barStyle={'dark-content'} />
@@ -143,6 +144,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 5,
+  },
+  container2: {
+    margin: 10,
+    borderWidth: 2,
+    borderColor: 'gray',
+    borderRadius: 5,
+  },
+  picker: {
+    height: 40,
+    color: 'black',
   },
 });
 

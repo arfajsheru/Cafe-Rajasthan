@@ -18,10 +18,11 @@ const AiScreen = () => {
 
   const sendMessage = async () => {
     if (!query) return;
-
     const newMessages = [...messages, { role: "user", content: query }];
     setMessages(newMessages);
     setQuery("");
+    console.log(OPENAI_API)
+
 
     try {
       const response = await axios.post(
