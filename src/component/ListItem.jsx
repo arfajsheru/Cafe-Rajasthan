@@ -1,11 +1,10 @@
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {FlatList} from 'react-native-gesture-handler';
 import axios from 'axios';
-import {LAPTOP_IP_ADDRESS } from "@env"
+import {LAPTOP_IP_ADDRESS} from '@env';
 const ListItem = () => {
   const [listFood, setListFood] = useState([]);
-  
+
   const fetchdata = async () => {
     try {
       const response = await axios.get(
