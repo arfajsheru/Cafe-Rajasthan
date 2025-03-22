@@ -13,18 +13,20 @@ import {useNavigation} from '@react-navigation/native';
 
 const Signup = () => {
   const navigation = useNavigation();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [currState, setCurrState] = ('Login')
+  const [data, setData ] = useState({
+    name: '',
+    email: '',
+    password: ''
+  })
 
-  const handleSignup = () => {
-    if (name && email && password.length >= 6) {
-      Alert.alert('Signup Successful', 'Now login with your details.');
-      navigation.navigate('Login');
-    } else {
-      Alert.alert('Invalid Details', 'Please enter all details correctly.');
-    }
-  };
+  const onChangeHnadler = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    setData(data => ({...data, [name]: value}))
+  }
+
 
   return (
     <View style={styles.container}>
@@ -41,8 +43,6 @@ const Signup = () => {
         <TextInput
           style={styles.input}
           placeholder="Enter your name"
-          value={name}
-          onChangeText={setName}
         />
 
         {/* Email Input */}
@@ -50,8 +50,6 @@ const Signup = () => {
         <TextInput
           style={styles.input}
           placeholder="Enter your email"
-          value={email}
-          onChangeText={setEmail}
           keyboardType="email-address"
         />
 
@@ -60,13 +58,11 @@ const Signup = () => {
         <TextInput
           style={styles.input}
           placeholder="Enter your password"
-          value={password}
-          onChangeText={setPassword}
           secureTextEntry
         />
 
         {/* Register Button */}
-        <TouchableOpacity style={styles.loginbtn} onPress={handleSignup}>
+        <TouchableOpacity style={styles.loginbtn}>
           <Text style={styles.logintext}>Register</Text>
         </TouchableOpacity>
 

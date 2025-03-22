@@ -3,12 +3,11 @@ import {
   View,
   Text,
   TextInput,
-  Button,
-  Alert,
   StyleSheet,
   Image,
   TouchableOpacity,
   StatusBar,
+  Alert
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -17,11 +16,24 @@ import {
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import {runOnJS} from 'react-native-reanimated';
-
+import axios from 'axios';
+import {LAPTOP_IP_ADDRESS} from "@env"
 const Login = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [currState, setCurrState] = useState('Login');
+  const [data, setData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
+  const handleChange = (key, value) => {
+    setData(prevData => ({...prevData, [key]: value}));
+  };
+
+  const toggleAuth = () => {
+    setCurrState(prev => (prev === 'Login' ? 'Signup' : 'Login'));
+  };
 
   const gestureSequence = useRef([]);
   const correctPattern = ['UP', 'UP', 'DOWN', 'LEFT', 'RIGHT'];
@@ -30,14 +42,6 @@ const Login = () => {
   const resetGesture = () => {
     gestureSequence.current = [];
     console.log('Gesture sequence reset!');
-  };
-
-  const handleLogin = () => {
-    if (email === 'test@gmail.com' && password === '123456') {
-      navigation.replace('Main');
-    } else {
-      Alert.alert('Invalid Credentials', 'Please enter correct details.');
-    }
   };
 
   const handleGestureEnd = event => {
@@ -55,7 +59,7 @@ const Login = () => {
     }
 
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(resetGesture, 3000); // 2 sec timeout
+    timeoutRef.current = setTimeout(resetGesture, 3000);
 
     if (
       gestureSequence.current.length === correctPattern.length &&
@@ -70,57 +74,113 @@ const Login = () => {
     }
   };
 
+  const handleAuth = async () => {
+    try {
+      const url = currState === "Login" ? `${LAPTOP_IP_ADDRESS}:4000/api/user/login` : `${LAPTOP_IP_ADDRESS}:4000/api/user/register` ;
+      console.log(url)
+      const response = await axios.post(url, data);
+      
+      if (response.data.success) {
+        Alert.alert("Success", response.data.message);
+        if (currState === "Login") {
+          // Navigate to Main Screen
+          navigation.replace("Main");
+        } else {
+          // Signup successful, switch to login
+          toggleAuth();
+        }
+      } else {
+        Alert.alert("Error", response.data.message);
+      }
+    } catch (error) {
+      console.error("API Error:", error);
+      Alert.alert("Error", "Something went wrong. Try again!");
+    }
+  };
+
+
   const panGesture = Gesture.Pan().onEnd(event => {
     runOnJS(handleGestureEnd)(event);
   });
 
+
+
+
+  
+
   return (
-    <GestureHandlerRootView >
+    <GestureHandlerRootView>
       <GestureDetector gesture={panGesture}>
         <View style={styles.container}>
-        <View style={styles.loginBox}>
-          <StatusBar backgroundColor={'#ad954f'} barStyle={'dark-content'} />
-          {/* Logo Image */}
-          <Image
-            source={require('../assets/AppLogo.png')}
-            style={styles.logo}
-          />
+          <View style={styles.authBox}>
+            <StatusBar backgroundColor={'#ad954f'} barStyle={'dark-content'} />
 
-          {/* Login Title */}
-          <Text style={styles.title}>"Greate to have you back!"</Text>
+            {/* Logo */}
+            <Image
+              source={require('../assets/AppLogo.png')}
+              style={styles.logo}
+            />
 
-          {/* Email Input */}
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-          />
+            <Text style={styles.title}>
+              {currState === 'Login'
+                ? 'Greate to have you back!'
+                : 'Welcome to new cafe rajasthan!'}
+            </Text>
 
-          {/* Password Input */}
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
+            {/* Name Field (Only for Signup) */}
+            {currState === 'Signup' && (
+              <>
+                <Text style={styles.label}>Name</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your name"
+                  value={data.name}
+                  onChangeText={text => handleChange('name', text)}
+                />
+              </>
+            )}
 
-          {/* Login Button */}
-          <TouchableOpacity style={styles.loginbtn}>
-            <Text style={styles.logintext}>Login</Text>
-          </TouchableOpacity>
+            {/* Email Field */}
+            <Text style={styles.label}>Email</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your email"
+              keyboardType="email-address"
+              value={data.email}
+              onChangeText={text => handleChange('email', text)}
+            />
 
-          <View style={styles.registrcontianer}>
-            <Text style={styles.registertext}>Don't have an account? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-              <Text style={[{color:'#ad954f'}, ]}>Register</Text>
+            {/* Password Field */}
+            <Text style={styles.label}>Password</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your password"
+              secureTextEntry
+              value={data.password}
+              onChangeText={text => handleChange('password', text)}
+            />
+
+            {/* Login/Signup Button */}
+            <TouchableOpacity style={styles.authBtn} onPress={handleAuth}>
+              <Text style={styles.authText}>
+                {currState === 'Login' ? 'Login' : 'Signup'}
+              </Text>
             </TouchableOpacity>
+
+            {/* Toggle Login/Signup */}
+            <View style={styles.toggleContainer}>
+              <Text style={styles.toggleText}>
+                {currState === 'Login'
+                  ? "Don't have an account?"
+                  : 'Already have an account?'}
+              </Text>
+              <TouchableOpacity onPress={toggleAuth}>
+                <Text style={styles.toggleLink}>
+                  {currState === 'Login' ? ' Register' : ' Login'}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
         </View>
       </GestureDetector>
     </GestureHandlerRootView>
@@ -136,19 +196,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
   },
-  loginBox: {
+  authBox: {
     width: '90%',
     padding: 20,
     alignItems: 'center',
     borderWidth: 1.5,
     borderColor: '#ad954f',
     backgroundColor: '#fff',
-    borderRadius: 3, // 🔹 Corners round kar diye
-    shadowColor: '#000', // 🔹 Black shadow
-    shadowOffset: {width: 0, height: 5}, // 🔹 Niche shadow
-    shadowOpacity: 0.5, // 🔹 Shadow ki transparency
-    shadowRadius: 6, // 🔹 Shadow blur effect
-    elevation: 5, // 🔹 Android ke liye
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 5},
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    elevation: 5,
   },
   logo: {
     width: 200,
@@ -156,7 +216,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   title: {
-    fontFamily: 'NotoSerifKhojki-Bold',
     fontSize: 23,
     color: '#ad954f',
     marginBottom: 20,
@@ -165,7 +224,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     alignSelf: 'flex-start',
     marginBottom: 5,
-    fontFamily: 'NotoSerifKhojki-Regular',
   },
   input: {
     width: '100%',
@@ -176,23 +234,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 20,
   },
-  loginbtn: {
+  authBtn: {
     backgroundColor: '#ad954f',
     borderRadius: 3,
-    paddingVertical: 8,
+    paddingVertical: 10,
     paddingHorizontal: 20,
-    alignItems: 'center', // ✅ Horizontally center
-    justifyContent: 'center', // ✅ Vertically center
-    marginBottom:20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
   },
-  logintext: {
-    fontSize: 20,
+  authText: {
+    fontSize: 18,
     color: '#fff',
     textAlign: 'center',
-    fontWeight: 'medium',
+    fontWeight: 'bold',
     textTransform: 'uppercase',
   },
-  registrcontianer: {
+  toggleContainer: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -202,8 +260,14 @@ const styles = StyleSheet.create({
     borderColor: '#d1d5db',
     paddingVertical: 8,
   },
-  registertext: {
-    fontSize:15,
-    color:'gray',
-  }
+  toggleText: {
+    fontSize: 15,
+    color: 'gray',
+  },
+  toggleLink: {
+    fontSize: 15,
+    color: '#ad954f',
+    fontWeight: 'bold',
+    marginLeft: 5,
+  },
 });

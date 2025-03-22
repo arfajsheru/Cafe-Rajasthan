@@ -44,7 +44,7 @@ const StackNavigator = () => {
         options={{headerShown: false}}
       />
       */}
-      {/* <stack.Screen name="Login" component={Login} 
+      <stack.Screen name="Login" component={Login} 
       options={{
         headerTitleStyle: {
           fontSize: 26,
@@ -56,7 +56,7 @@ const StackNavigator = () => {
         },
       }}
       /> 
-      <stack.Screen name="Signup" component={Signup} 
+      {/* <stack.Screen name="Signup" component={Signup} 
        options={{
         headerTitleStyle: {
           fontSize: 26,
