@@ -97,7 +97,8 @@ const Cart = () => {
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}>
+        contentContainerStyle={styles.scrollContent}
+        nestedScrollEnabled={true}>
         <View style={styles.cartContainer}>
           {/* Applu coupon */}
           <View style={styles.couponContainer}>
@@ -128,31 +129,35 @@ const Cart = () => {
                 Dlievery in {'\n'}
                 <Text style={styles.timeText}>17 mins</Text>
               </Text>
-              <Text style={styles.headerText}>18 items</Text>
+              <Text style={styles.headerText}>{data.length} items</Text>
             </View>
 
             <View style={{marginTop: 10}}>
-              <FlatList
-                data={data}
-                keyExtractor={item => item.id.toString()} // ✅ Unique key extractor
-                renderItem={({item}) => <CartItem item={item} />}
-                ListEmptyComponent={() => <View style={styles.emptyContainer}>
-
-                  <Image style={{width:200, height:200, tintColor:"#D1D5DB"}} source={require("../assets/emptycart.png")} />
+              {data.length === 0 ? (
+                <View style={styles.emptyContainer}>
+                  <Image
+                    style={{width: 200, height: 200, tintColor: '#D1D5DB'}}
+                    source={require('../assets/emptycart.png')}
+                  />
                   <Text style={styles.emptyText}>Empty Cart</Text>
-
-                </View>} // ✅ Empty state handle karna
-              />
+                </View>
+              ) : (
+                <View>
+                  {data.map((item, index) => (
+                    <CartItem key={index} item={item} />
+                  ))}
+                </View>
+              )}
             </View>
+            {/* */}
           </View>
-          
-          <View style={styles.itemMissed}>
-            <Text style={styles.textmissed}>Missed Somthing? 
-              
-              </Text>
-            <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Menu')}>
-              <Text style={styles.textNavigation}>Add more items</Text>
 
+          <View style={styles.itemMissed}>
+            <Text style={styles.textmissed}>Missed Somthing?</Text>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate('Menu')}>
+              <Text style={styles.textNavigation}>Add more items</Text>
             </TouchableOpacity>
           </View>
 
@@ -343,41 +348,41 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     alignSelf: 'flex-end',
-    borderRadius:3,
+    borderRadius: 3,
   },
   btntext: {
-    fontSize:18,
-    fontWeight:700,
-    color: "#fff"
+    fontSize: 18,
+    fontWeight: 700,
+    color: '#fff',
   },
   emptyContainer: {
-    flexDirection:'column',
-    justifyContent:'center',
-    alignItems:'center',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   emptyText: {
-    fontSize:50,
-    fontWeight:900,
-    color: "#D1D5DB",
-  }, 
+    fontSize: 50,
+    fontWeight: 900,
+    color: '#D1D5DB',
+  },
   itemMissed: {
-    backgroundColor:"#e5e7eb",
-    padding:5,
-    paddingVertical:15,
-    marginTop:10,
-    borderRadius:15,
-    flexDirection:'row',
-    justifyContent:'center',gap:4,
-    alignItems:'center'
+    backgroundColor: '#e5e7eb',
+    padding: 5,
+    paddingVertical: 15,
+    marginTop: 10,
+    borderRadius: 15,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 4,
+    alignItems: 'center',
   },
   textmissed: {
-    fontSize:15, 
-    fontWeight:600,
+    fontSize: 15,
+    fontWeight: 600,
   },
   textNavigation: {
-    fontSize:15, 
-    fontWeight:600,
-    color:"#ad954d"
+    fontSize: 15,
+    fontWeight: 600,
+    color: '#ad954d',
   },
-
 });

@@ -1,10 +1,17 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, StatusBar, SafeAreaView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  StatusBar,
+  SafeAreaView,
+} from 'react-native';
 import Header from '../component/Header';
 import ChatBoat from '../component/ChatBoat';
 import Category from '../component/Category';
 import BestSeller from '../component/BestSeller';
 import SearchInput from '../component/SearchInput';
+import AddCarousel from '../component/AddCarousel';
 
 const Home = () => {
   return (
@@ -18,18 +25,22 @@ const Home = () => {
       {/* Search Input */}
       <SearchInput />
 
-      {/* Category */}
-      <Category />
-
-       {/* ✅ Scrollable Content */}
-       <FlatList
+      {/* ✅ Using FlatList with ListHeaderComponent */}
+      <FlatList
         data={[{ key: 'bestseller' }]} // Dummy data
         renderItem={() => <BestSeller />}
-        keyExtractor={(item) => item.key}
+        keyExtractor={item => item.key}
         contentContainerStyle={{ paddingBottom: 80 }} // Extra Space for ChatBot
         showsVerticalScrollIndicator={false}
+        nestedScrollEnabled={true}
+        ListHeaderComponent={() => (
+          <>
+            <AddCarousel />
+            <Category />
+          </>
+        )}
       />
-      
+
       {/* ✅ Floating ChatBot Icon */}
       <View style={styles.chatBoatWrapper}>
         <ChatBoat />

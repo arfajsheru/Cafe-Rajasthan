@@ -79,10 +79,6 @@ const styles = StyleSheet.create({
     width: '45%',
     marginBottom: 10,
     overflow: 'hidden',
-    borderWidth:1.5,
-    padding:5,
-    borderColor:'#ad954d',
-    borderRadius:5,
   },
   imageContainer: {
     width: '100%', // Pura cover karega
