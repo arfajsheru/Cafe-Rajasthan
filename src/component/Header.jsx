@@ -5,15 +5,17 @@ import {
   StyleSheet,
   SafeAreaView,
 } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import * as Animatable from 'react-native-animatable';
 import { Text } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../context/AuthContext';
 
 
 const Header = () => {
 
   const navigation = useNavigation();
+  const {token} = useContext(AuthContext)
   return (
     <Animatable.View 
       animation="slideInDown" 
@@ -41,6 +43,7 @@ const Header = () => {
               </TouchableOpacity>
             </View>
           </View>
+          {token ? 
           <TouchableOpacity style={styles.profileContainer}
           onPress={() => navigation.navigate('Profile')}
           >
@@ -48,7 +51,11 @@ const Header = () => {
               style={styles.profileIcon}
               source={require('../assets/login.png')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity>: (
+            <TouchableOpacity style={styles.signIn} activeOpacity={0.5} onPress={() => navigation.navigate("Login")}>
+                <Text style={{fontSize:20, fontWeight:500,color:"#fff"}}>Sign in</Text>
+            </TouchableOpacity>
+            )}
         </View>
       </SafeAreaView>
     </Animatable.View>
@@ -126,4 +133,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     tintColor: '#fff',
   },
+  signIn: {
+    borderWidth:1.5,
+    borderColor:"#fff",
+    paddingHorizontal:20,
+    paddingVertical:6,
+    borderRadius:5,
+  }
 });

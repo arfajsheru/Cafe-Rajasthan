@@ -13,7 +13,7 @@ dotenv.config()
 // middleware
 app.use(express.json());
 app.use(cors({
-  origin: ["http://192.168.0.120"],  // Laptop ka IP
+  origin: ["http://192.168.13.88"],  // Laptop ka IP
   credentials: true
 }));
 

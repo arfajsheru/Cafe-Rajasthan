@@ -13,7 +13,7 @@
 
 
 import { Image, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Menu from '../screen/Menu';
 import Search from '../screen/Search';
@@ -23,12 +23,14 @@ import Wishlist from '../screen/Wishlist';
 import Home from '../screen/Home';
 import Admin from '../screen/Admin';
 import { useRoute } from '@react-navigation/native';
-
+import { AuthContext } from '../context/AuthContext';
 const Bottom = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
     const route = useRoute();
-    const [email, setemail] = useState('arfajsheru74@gmail.com')
+    const {data} = useContext(AuthContext);
+    const adminAllowed = ["arfatsheru74@gmail.com", "harisbhoraniya@gmail.com"]
+    
   return (
     <Bottom.Navigator 
     screenOptions={({route}) => ({
@@ -63,7 +65,7 @@ const BottomTabNavigator = () => {
                 )
             },
             headerShown: false}}/>
-                {email === 'arfajsheru74@gmail.com' ? <Bottom.Screen name='Admin' component={Admin}  options={{
+                {adminAllowed.includes(data.email)  ? <Bottom.Screen name='Admin' component={Admin}  options={{
                     tabBarIcon: ({size,color}) => {
                         return (
                             <Image style={{width:size, height:size, tintColor:'black'}} source={require("../assets/admin.png")} />

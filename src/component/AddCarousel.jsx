@@ -22,7 +22,7 @@ const AddCarousel = () => {
         width={width}
         pagingEnabled={true}
         snapEnabled={true}
-        mode='parallax'
+        mode='stack'
         height={220}
         scrollAnimationDuration={1000}
         renderItem={({ item }) => (
@@ -39,8 +39,12 @@ const AddCarousel = () => {
 
 const styles = StyleSheet.create({
   container: {
+    height:'auto',
+    marginTop:20,
+    marginBottom:-22,
     alignItems: 'center',
     justifyContent: 'center',
+    alignContent:'center',
   },
   imageContainer: {
     alignItems: 'center',
@@ -49,7 +53,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '94%',
-    height: 220,
+    height: 200,
     borderRadius: 10,
     resizeMode: 'cover',
   },
@@ -57,7 +61,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: '94%',
-    height: 220,
+    height: 200,
     backgroundColor: 'rgba(0, 0, 0, 0.1)', // ✅ 40% Black Opacity
     borderRadius: 10,
   },

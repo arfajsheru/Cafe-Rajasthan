@@ -44,18 +44,7 @@ const StackNavigator = () => {
         options={{headerShown: false}}
       />
       */}
-      <stack.Screen name="Login" component={Login} 
-      options={{
-        headerTitleStyle: {
-          fontSize: 26,
-          fontFamily: 'NotoSerifKhojki-Bold', // ✅ Custom Font
-          color: 'black', // ✅ Title Color (Yellow)
-        },
-        headerStyle: {
-          backgroundColor: '#ad954f', // ✅ Background Color
-        },
-      }}
-      /> 
+      <stack.Screen name="Login" component={Login}  options={{headerShown:false}}/> 
       {/* <stack.Screen name="Signup" component={Signup} 
        options={{
         headerTitleStyle: {

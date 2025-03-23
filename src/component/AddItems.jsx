@@ -30,7 +30,7 @@ const AddItems = () => {
   const [offer, setOffer] = useState(0);
   const [checkbox, setCheckBox] = useState(false);
 
-  const categories = ['Dahi & Salad', 'Chinese Starter', 'Soup', 'Others'];
+  const categories = ['Dahi & Salad', 'Chinese Starter', 'Soup','Chiken Sauce', 'Others'];
 
   // Image Picker function
   const pickImage = () => {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,15 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import ProfileNavigation from '../component/ProfileNavigation';
+import { AuthContext } from '../context/AuthContext';
 const SidebarNav = () => {
   const navigation = useNavigation();
+  const {setToken,} = useContext(AuthContext);
 
+  const handleLogout = () => {
+    setToken("");
+    navigation.navigate('Login')
+  }
   return (
     <ScrollView style={styles.maincontainer}>
       <View style={styles.sidebar}>
@@ -94,7 +100,7 @@ const SidebarNav = () => {
 
       {/* Logout button */}
       <View style={styles.logoutcontainer}>
-        <TouchableOpacity style={styles.logoutbutton} onPress={() => navigation.replace('Login')}>
+        <TouchableOpacity style={styles.logoutbutton} onPress={handleLogout}>
           <Text style={styles.logoutText}>Log Out</Text>
         </TouchableOpacity>
 

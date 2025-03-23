@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useContext} from 'react';
 import {
   View,
   Text,
@@ -18,14 +18,11 @@ import {
 import {runOnJS} from 'react-native-reanimated';
 import axios from 'axios';
 import {LAPTOP_IP_ADDRESS} from "@env"
+import { AuthContext } from '../context/AuthContext';
 const Login = () => {
   const navigation = useNavigation();
+  const {token, setToken, data, setData} = useContext(AuthContext)
   const [currState, setCurrState] = useState('Login');
-  const [data, setData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
 
   const handleChange = (key, value) => {
     setData(prevData => ({...prevData, [key]: value}));
@@ -79,11 +76,12 @@ const Login = () => {
       const url = currState === "Login" ? `${LAPTOP_IP_ADDRESS}:4000/api/user/login` : `${LAPTOP_IP_ADDRESS}:4000/api/user/register` ;
       console.log(url)
       const response = await axios.post(url, data);
-      
+      setToken(response.data.token)
       if (response.data.success) {
         Alert.alert("Success", response.data.message);
         if (currState === "Login") {
           // Navigate to Main Screen
+         
           navigation.replace("Main");
         } else {
           // Signup successful, switch to login
@@ -102,12 +100,7 @@ const Login = () => {
   const panGesture = Gesture.Pan().onEnd(event => {
     runOnJS(handleGestureEnd)(event);
   });
-
-
-
-
   
-
   return (
     <GestureHandlerRootView>
       <GestureDetector gesture={panGesture}>
