@@ -12,10 +12,7 @@ dotenv.config()
 
 // middleware
 app.use(express.json());
-app.use(cors({
-  origin: "https://cafe-rajasthan.vercel.app",
-  credentials: true
-}));
+app.use(cors());
 
 
 
