@@ -6,16 +6,13 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, { useState} from 'react';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Text, TextInput} from 'react-native-gesture-handler';
 import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
-import {AdminContext} from '../context/AdminContext';
-import {LAPTOP_IP_ADDRESS} from '@env';
 
 const AddItems = () => {
-  const {BACKEND_URL} = useContext(AdminContext);
   const [imageUri, setImageUri] = useState(null);
   const [itemName, setItemName] = useState('');
   const [description, setDescription] = useState('');
@@ -67,7 +64,7 @@ const AddItems = () => {
       }
 
       const response = await axios.post(
-        `${LAPTOP_IP_ADDRESS}:4000/api/food/add`,
+        `${process.env.LAPTOP_IP_ADDRESS}:4000/api/food/add`,
         formdata,
         {
           headers: {

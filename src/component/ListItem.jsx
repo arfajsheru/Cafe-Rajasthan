@@ -1,14 +1,13 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {LAPTOP_IP_ADDRESS} from '@env';
 const ListItem = () => {
   const [listFood, setListFood] = useState([]);
 
   const fetchdata = async () => {
     try {
       const response = await axios.get(
-        `${LAPTOP_IP_ADDRESS}:4000/api/food/list`,
+        `${process.env.LAPTOP_IP_ADDRESS}:4000/api/food/list`,
       );
       setListFood(response.data.prodcuts);
     } catch (error) {

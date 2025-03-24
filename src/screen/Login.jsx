@@ -19,27 +19,12 @@ import {runOnJS} from 'react-native-reanimated';
 import axios from 'axios';
 import {LAPTOP_IP_ADDRESS} from "@env"
 import { AuthContext } from '../context/AuthContext';
+
 const Login = () => {
   const navigation = useNavigation();
-  const {token, setToken, data, setData} = useContext(AuthContext)
-  const [currState, setCurrState] = useState('Login');
+  const {setToken, data, gestureSequence, correctPattern, timeoutRef, resetGesture, currState, toggleAuth, handleChange} = useContext(AuthContext);
+  const [error, setError] = useState()
 
-  const handleChange = (key, value) => {
-    setData(prevData => ({...prevData, [key]: value}));
-  };
-
-  const toggleAuth = () => {
-    setCurrState(prev => (prev === 'Login' ? 'Signup' : 'Login'));
-  };
-
-  const gestureSequence = useRef([]);
-  const correctPattern = ['UP', 'UP', 'DOWN', 'LEFT', 'RIGHT'];
-  const timeoutRef = useRef(null);
-
-  const resetGesture = () => {
-    gestureSequence.current = [];
-    console.log('Gesture sequence reset!');
-  };
 
   const handleGestureEnd = event => {
     const {translationX, translationY} = event;
@@ -95,7 +80,6 @@ const Login = () => {
       Alert.alert("Error", "Something went wrong. Try again!");
     }
   };
-
 
   const panGesture = Gesture.Pan().onEnd(event => {
     runOnJS(handleGestureEnd)(event);
