@@ -17,7 +17,6 @@ import {
 } from 'react-native-gesture-handler';
 import {runOnJS} from 'react-native-reanimated';
 import axios from 'axios';
-import {LAPTOP_IP_ADDRESS} from "@env"
 import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
@@ -58,7 +57,7 @@ const Login = () => {
 
   const handleAuth = async () => {
     try {
-      const url = currState === "Login" ? `${LAPTOP_IP_ADDRESS}:4000/api/user/login` : `${LAPTOP_IP_ADDRESS}:4000/api/user/register` ;
+      const url = currState === "Login" ? `https://foodserver-five.vercel.app/api/user/login` : `https://foodserver-five.vercel.app/api/user/register` ;
       console.log(url)
       const response = await axios.post(url, data);
       setToken(response.data.token)

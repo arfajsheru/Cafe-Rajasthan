@@ -1,7 +1,6 @@
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { OPENAI_API } from "@env";
 
 const AiScreen = () => {
   const [query, setQuery] = useState("");
@@ -21,7 +20,6 @@ const AiScreen = () => {
     const newMessages = [...messages, { role: "user", content: query }];
     setMessages(newMessages);
     setQuery("");
-    console.log(OPENAI_API)
 
 
     try {
@@ -33,7 +31,7 @@ const AiScreen = () => {
         },
         {
           headers: {
-            "Authorization": `Bearer ${OPENAI_API}`,
+            "Authorization": `Bearer ${process.env.OPENAI_API}`,
             "Content-Type": "application/json"
           }
         }

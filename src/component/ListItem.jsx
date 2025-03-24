@@ -7,7 +7,7 @@ const ListItem = () => {
   const fetchdata = async () => {
     try {
       const response = await axios.get(
-        `${process.env.LAPTOP_IP_ADDRESS}:4000/api/food/list`,
+        `https://foodserver-five.vercel.app/api/food/list`,
       );
       setListFood(response.data.prodcuts);
     } catch (error) {
@@ -22,7 +22,7 @@ const ListItem = () => {
   const removeFood = async id => {
     try {
       const response = await axios.post(
-        `${LAPTOP_IP_ADDRESS}:4000/api/food/remove`,
+        `https://foodserver-five.vercel.app/api/food/remove`,
         {id},
       );
       if (response.data.success) {
@@ -186,8 +186,8 @@ const styles = StyleSheet.create({
     color: '#EA580C',
   },
   closeIcon: {
-    width: 12,
-    height: 12,
+    width: 15,
+    height: 15,
   },
   closebtn: {
     position: 'absolute',

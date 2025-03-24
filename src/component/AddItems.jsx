@@ -6,7 +6,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Text, TextInput} from 'react-native-gesture-handler';
 import {Picker} from '@react-native-picker/picker';
@@ -64,7 +64,7 @@ const AddItems = () => {
       }
 
       const response = await axios.post(
-        `${process.env.LAPTOP_IP_ADDRESS}:4000/api/food/add`,
+        `https://foodserver-five.vercel.app/api/food/add`,
         formdata,
         {
           headers: {
@@ -76,6 +76,8 @@ const AddItems = () => {
       console.error('Error:', error.response?.data || error.message);
     }
   };
+
+
   return (
     <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
       <ScrollView
