@@ -13,9 +13,10 @@ dotenv.config()
 // middleware
 app.use(express.json());
 app.use(cors({
-  origin: ["*"],  // Laptop ka IP
+  origin: "https://cafe-rajasthan.vercel.app",
   credentials: true
 }));
+
 
 
 // MonogDB connect
@@ -30,7 +31,7 @@ app.get('/', (req, res) => {
   res.send('Welcom to new Cafe Rajathan?');
 });
 
-app.listen(4000, "0.0.0.0", () => {
-  console.log("Server running on port 4000");
+app.listen(process.env.PORT || 4000, () => {
+  console.log("http://localhost:4000");
 });
 
