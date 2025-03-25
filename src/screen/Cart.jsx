@@ -6,64 +6,15 @@ import {
   StyleSheet,
   FlatList,
 } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import {useNavigation} from '@react-navigation/native';
 import CartItem from '../component/CartItem';
 import {ScrollView} from 'react-native-gesture-handler';
-
+import { data } from '../data';
+import { FoodItemContext } from '../context/FoodItemContext';
 const Cart = () => {
   const navigation = useNavigation();
-  const data = [
-    {
-      id: '1',
-      name: 'Dahi Raita',
-      description: 'Fresh curd mixed with special spices.',
-      current_Price: 40,
-      original_Price: 60,
-      offer: 20,
-      category: 'Veg',
-      subCategory: 'Dahi Salad',
-      image: require('../assets/food1.jpg'),
-      rating: {stars: 4.5, view: 1400},
-    },
-    {
-      id: '2',
-      name: 'Paneer Butter Masala',
-      description: 'Rich creamy tomato-based curry with soft paneer cubes.',
-      current_Price: 180,
-      original_Price: 220,
-      offer: 18,
-      category: 'Veg',
-      subCategory: 'Main Course',
-      image: require('../assets/food2.jpg'),
-      rating: {stars: 4.7, view: 2500},
-    },
-    {
-      id: '3',
-      name: 'Chicken Biryani',
-      description: 'Spiced basmati rice cooked with marinated chicken.',
-      current_Price: 250,
-      original_Price: 300,
-      offer: 17,
-      category: 'Non-Veg',
-      subCategory: 'Rice & Biryani',
-      image: require('../assets/food3.jpg'),
-      rating: {stars: 4.8, view: 5000},
-    },
-    {
-      id: '4',
-      name: 'Aloo Paratha',
-      description: 'Stuffed wheat flatbread with spiced mashed potatoes.',
-      current_Price: 60,
-      original_Price: 80,
-      offer: 25,
-      category: 'Veg',
-      subCategory: 'Breakfast',
-      image: require('../assets/food4.jpg'),
-      rating: {stars: 4.6, view: 1200},
-    },
-  ];
-
+  const {cartItems} = useContext(FoodItemContext)
   return (
     <View style={{flex: 1}}>
       {/* Header */}
@@ -143,9 +94,13 @@ const Cart = () => {
                 </View>
               ) : (
                 <View>
-                  {data.map((item, index) => (
-                    <CartItem key={index} item={item} />
-                  ))}
+                  {data.map((item, index) => {
+                    if(cartItems[item.id] > 0){
+                      return (
+                        <CartItem item={item} />
+                      )
+                    }
+                  })}
                 </View>
               )}
             </View>

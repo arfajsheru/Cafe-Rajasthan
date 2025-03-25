@@ -1,8 +1,9 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
+import { FoodItemContext } from '../context/FoodItemContext';
 const CartItem = ({item}) => {
   const [itemQuantity, setItemQuantity] = useState(0);
-
+  const {cartItems, addToCart, updateCartItems,removeCartItems} = useContext(FoodItemContext);
   const updateQuantity = type => {
     setItemQuantity(prev => {
       let newQuantity = type === 'increment' ? prev + 1 : prev - 1;
@@ -28,7 +29,7 @@ const CartItem = ({item}) => {
           <Text style={styles.offerText}>{item.offer}% OFF</Text>
         </View>
 
-        <TouchableOpacity style={styles.closebtn}>
+        <TouchableOpacity onPress={() => removeCartItems(item.id)} style={styles.closebtn}>
           <Image
             style={styles.closeIcon}
             source={require('../assets/close.png')}
@@ -39,16 +40,16 @@ const CartItem = ({item}) => {
       <View style={styles.priceandbtn}>
         <View style={styles.addbtnquantity}>
           <TouchableOpacity
-            onPress={() => updateQuantity('decrement')}
+            onPress={() => updateCartItems(item.id)}
             activeOpacity={0.7}>
             <Image
               style={styles.minusandplusbtn}
               source={require('../assets/minus.png')}
             />
           </TouchableOpacity>
-          <Text style={styles.addbtnquantityText}>{itemQuantity}</Text>
+          <Text style={styles.addbtnquantityText}>{cartItems[item.id]}</Text>
           <TouchableOpacity
-            onPress={() => updateQuantity('increment')}
+            onPress={() => addToCart(item.id)}
             activeOpacity={0.7}>
             <Image
               style={styles.minusandplusbtn}
