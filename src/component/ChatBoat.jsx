@@ -19,22 +19,19 @@ export default ChatBoat;
 const styles = StyleSheet.create({
   container: {
     position:'absolute',
-    bottom:5,
+    bottom:35,
     right:6,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    padding: 10,
   },
   aiContainer: {
-    backgroundColor: "#ad954f",
-    padding: 10,
+    backgroundColor: "#b0ccf2",
+    padding: 5,
     borderRadius: 50, // Full round effect
-
   },
   aiicon: {
     width: 40,
     height: 40,
     resizeMode: 'contain',
-    tintColor:"#fff"
+    tintColor:"#ad954d"
   },
 });

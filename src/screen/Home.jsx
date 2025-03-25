@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   StyleSheet,
   View,
@@ -12,8 +12,11 @@ import Category from '../component/Category';
 import BestSeller from '../component/BestSeller';
 import SearchInput from '../component/SearchInput';
 import AddCarousel from '../component/AddCarousel';
+import MiniCart from '../component/MiniCart';
+import { FoodItemContext } from '../context/FoodItemContext';
 
 const Home = () => {
+  const {cartItems} = useContext(FoodItemContext)
   return (
     <SafeAreaView style={styles.homeContainer}>
       {/* ✅ Status Bar Customization */}
@@ -40,6 +43,7 @@ const Home = () => {
           </>
         )}
       />
+      { Object.keys(cartItems).length ? <MiniCart/> : null }
 
       {/* ✅ Floating ChatBot Icon */}
       <View style={styles.chatBoatWrapper}>

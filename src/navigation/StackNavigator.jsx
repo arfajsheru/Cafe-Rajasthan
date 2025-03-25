@@ -44,7 +44,7 @@ const StackNavigator = () => {
         options={{headerShown: false}}
       />
       */}
-      {/* <stack.Screen name="Login" component={Login}  options={{headerShown:false}}/>  */}
+      <stack.Screen name="Login" component={Login}  options={{headerShown:false}}/> 
       {/* <stack.Screen name="Signup" component={Signup} 
        options={{
         headerTitleStyle: {

@@ -14,7 +14,11 @@ import { data } from '../data';
 import { FoodItemContext } from '../context/FoodItemContext';
 const Cart = () => {
   const navigation = useNavigation();
-  const {cartItems} = useContext(FoodItemContext)
+  const {cartItems, getCartAmount,delevery_fees} = useContext(FoodItemContext);
+  const {totalAmount, totalOffer} = getCartAmount();
+  const itemTotal = totalAmount + totalOffer;
+  const totalItems = Object.keys(cartItems).length;
+  const finalAmount = totalItems > 0 ? totalAmount + delevery_fees : totalAmount;
   return (
     <View style={{flex: 1}}>
       {/* Header */}
@@ -80,11 +84,11 @@ const Cart = () => {
                 Dlievery in {'\n'}
                 <Text style={styles.timeText}>17 mins</Text>
               </Text>
-              <Text style={styles.headerText}>{data.length} items</Text>
+              <Text style={styles.headerText}>{totalItems} items</Text>
             </View>
 
             <View style={{marginTop: 10}}>
-              {data.length === 0 ? (
+              {!Object.keys(cartItems).length ? (
                 <View style={styles.emptyContainer}>
                   <Image
                     style={{width: 200, height: 200, tintColor: '#D1D5DB'}}
@@ -97,7 +101,7 @@ const Cart = () => {
                   {data.map((item, index) => {
                     if(cartItems[item.id] > 0){
                       return (
-                        <CartItem item={item} />
+                        <CartItem item={item} key={index}/>
                       )
                     }
                   })}
@@ -123,24 +127,24 @@ const Cart = () => {
 
             <View style={styles.secPrice}>
               <Text style={styles.text}>Item Total MRP</Text>
-              <Text style={styles.price}>₹900</Text>
+              <Text style={styles.price}>₹{itemTotal}</Text>
             </View>
 
             <View style={styles.secPrice}>
               <Text style={styles.text}>Discount</Text>
-              <Text style={styles.discount}>-₹900</Text>
+              <Text style={styles.discount}>-₹{totalOffer}</Text>
             </View>
 
             <View style={styles.secPrice}>
               <Text style={styles.text}>Delivery Fee</Text>
-              <Text style={styles.price}>₹10</Text>
+              <Text style={styles.price}>₹{delevery_fees}</Text>
             </View>
 
             <View style={styles.divider} />
 
             <View style={styles.secPrice}>
               <Text style={styles.totalText}>To Pay</Text>
-              <Text style={styles.totalPrice}>₹800</Text>
+              <Text style={styles.totalPrice}>₹{finalAmount}</Text>
             </View>
           </View>
 

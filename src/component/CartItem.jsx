@@ -4,6 +4,7 @@ import { FoodItemContext } from '../context/FoodItemContext';
 const CartItem = ({item}) => {
   const [itemQuantity, setItemQuantity] = useState(0);
   const {cartItems, addToCart, updateCartItems,removeCartItems} = useContext(FoodItemContext);
+
   const updateQuantity = type => {
     setItemQuantity(prev => {
       let newQuantity = type === 'increment' ? prev + 1 : prev - 1;
