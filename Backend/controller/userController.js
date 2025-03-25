@@ -92,7 +92,15 @@ const registerUser = async (req, res) => {
   }
 };
 
-const logout = async (req,res) => {
-  
+const listUser = async (req,res) => {
+  try {
+    const Users = await userModel.find();
+    res.json({success:true, message:"All user fetch successfully", Users})
+    
+  } catch (error) {
+    console.log(error);
+    res.json({success:false, message:error})
+  }
 }
-export {loginUser, registerUser};
+
+export {loginUser, registerUser, listUser};
