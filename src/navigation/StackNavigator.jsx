@@ -82,11 +82,12 @@ const StackNavigator = () => {
         name="FoodDetails"
         component={FoodDetails}
         options={{
+          headerShown:false,
           presentation: "transparentModal", // Piche ki screen dikhegi
           gestureEnabled: true, // Swipe down to close
           cardStyle: {
-            height: '50%',
-            marginTop: '50%', // Move it up
+            height: '80%',
+            marginTop: '45%', // Move it up
             borderTopLeftRadius: 20, // Optional: Rounded top corners
             borderTopRightRadius: 20, // Optional: Rounded top corners
             overflow: 'hidden',
