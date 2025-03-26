@@ -4,7 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Contact from '../screen/Contact';
 import About from '../screen/About';
 import Login from '../screen/Login';
-import Signup from '../screen/Signup';
+
 import Splash from '../screen/Splash';
 import BottomTabNavigator from './BottomTabNavigator';
 import Profile from '../screen/Profile';
@@ -14,14 +14,10 @@ import HelpSupport from '../screen/HelpSupport';
 import Wishlist from '../screen/Wishlist';
 import MyProfile from '../screen/MyProfile';
 import ReferAndEarn from '../screen/ReferAndEarn';
-import SuggestProducts from '../component/SuggestProducts';
 import Coupons from '../screen/Coupons';
 import Search from '../screen/Search';
 import CustomeScreenHeader from '../component/CustomeScreenHeader';
-import Admin from '../screen/Admin';
-import OrderList from '../component/OrderList';
-import AddItems from '../component/AddItems';
-import ListItem from '../component/ListItem';
+import FoodDetails from '../screen/FoodDetails';
 
 const stack = createStackNavigator();
 
@@ -78,7 +74,8 @@ const StackNavigator = () => {
       <stack.Screen name="MyProfile" component={MyProfile} />
       <stack.Screen name="ReferEarn" component={ReferAndEarn} />
       <stack.Screen name="Coupons" component={Coupons} />
-
+      <stack.Screen name="FoodDetails" component={FoodDetails} />
+    
     </stack.Navigator>
   );
 };
