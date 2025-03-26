@@ -40,7 +40,7 @@ const StackNavigator = () => {
         options={{headerShown: false}}
       />
       */}
-      <stack.Screen name="Login" component={Login}  options={{headerShown:false}}/> 
+      {/* <stack.Screen name="Login" component={Login}  options={{headerShown:false}}/>  */}
       {/* <stack.Screen name="Signup" component={Signup} 
        options={{
         headerTitleStyle: {
@@ -58,12 +58,16 @@ const StackNavigator = () => {
         component={BottomTabNavigator}
         options={{headerShown: false}}
       />
-      <stack.Screen name="AiScreen" component={AiScreen}  />
-      <stack.Screen name="Search" component={Search} options={{
-            headerTitle: () => <CustomeScreenHeader />,  // यहाँ Custom Header सेट किया
-            headerStyle: { backgroundColor: '#ad954f' }, // Header का Background Color
-            headerTitleContainerStyle:{width:'100%'},
-          }}  />
+      <stack.Screen name="AiScreen" component={AiScreen} />
+      <stack.Screen
+        name="Search"
+        component={Search}
+        options={{
+          headerTitle: () => <CustomeScreenHeader />, // यहाँ Custom Header सेट किया
+          headerStyle: {backgroundColor: '#ad954f'}, // Header का Background Color
+          headerTitleContainerStyle: {width: '100%'},
+        }}
+      />
 
       <stack.Screen name="Profile" component={Profile} />
       <stack.Screen name="About" component={About} />
@@ -74,8 +78,33 @@ const StackNavigator = () => {
       <stack.Screen name="MyProfile" component={MyProfile} />
       <stack.Screen name="ReferEarn" component={ReferAndEarn} />
       <stack.Screen name="Coupons" component={Coupons} />
-      <stack.Screen name="FoodDetails" component={FoodDetails} />
-    
+      <stack.Screen
+        name="FoodDetails"
+        component={FoodDetails}
+        options={{
+          presentation: "transparentModal", // Piche ki screen dikhegi
+          gestureEnabled: true, // Swipe down to close
+          cardStyle: {
+            height: '50%',
+            marginTop: '50%', // Move it up
+            borderTopLeftRadius: 20, // Optional: Rounded top corners
+            borderTopRightRadius: 20, // Optional: Rounded top corners
+            overflow: 'hidden',
+          },
+          cardStyleInterpolator: ({current}) => ({
+            cardStyle: {
+              transform: [
+                {
+                  translateY: current.progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [800, 0], // Slide from bottom
+                  }),
+                },
+              ],
+            },
+          }),
+        }}
+      />
     </stack.Navigator>
   );
 };

@@ -1,10 +1,12 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React, { useContext } from 'react';
 import { FoodItemContext } from '../context/FoodItemContext';
+import { useNavigation } from '@react-navigation/native';
 const ProductItem = ({item}) => {
-  const {cartItems, setCartItems,updateCartItems, addToCart} = useContext(FoodItemContext);
+  const {cartItems,updateCartItems, addToCart} = useContext(FoodItemContext);
+  const navigation = useNavigation();
   return (
-    <View style={styles.productContainer}>
+    <TouchableOpacity style={styles.productContainer} onPress={() => navigation.push('FoodDetails', {product: item})}>
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={item.image} />
         <View style={styles.ratingcontainer}>
@@ -60,7 +62,7 @@ const ProductItem = ({item}) => {
         )}
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
