@@ -18,6 +18,7 @@ import Coupons from '../screen/Coupons';
 import Search from '../screen/Search';
 import CustomeScreenHeader from '../component/CustomeScreenHeader';
 import FoodDetails from '../screen/FoodDetails';
+import FoodDetailsHeader from '../component/FoodDetailsHeader';
 
 const stack = createStackNavigator();
 
@@ -63,8 +64,8 @@ const StackNavigator = () => {
         name="Search"
         component={Search}
         options={{
-          headerTitle: () => <CustomeScreenHeader />, // यहाँ Custom Header सेट किया
-          headerStyle: {backgroundColor: '#ad954f'}, // Header का Background Color
+          headerTitle: () => <CustomeScreenHeader />, 
+          headerStyle: {backgroundColor: '#ad954f'}, 
           headerTitleContainerStyle: {width: '100%'},
         }}
       />
@@ -82,7 +83,8 @@ const StackNavigator = () => {
         name="FoodDetails"
         component={FoodDetails}
         options={{
-          headerShown:false,
+          headerTitle: () => <FoodDetailsHeader />,
+          headerTitleContainerStyle: {width: "100%"},
           presentation: "transparentModal", // Piche ki screen dikhegi
           gestureEnabled: true, // Swipe down to close
           cardStyle: {

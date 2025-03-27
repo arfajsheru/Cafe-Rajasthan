@@ -7,32 +7,25 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {FoodItemContext} from '../context/FoodItemContext';
 
 const FoodDetails = ({route}) => {
   const {product} = route.params;
   const navigation = useNavigation();
-
+  const {cartItems, updateCartItems, addToCart} = useContext(FoodItemContext);
   const formatViews = views => {
-    if (views >= 10000000) return (views / 10000000).toFixed(1) + 'Cr'; 
-    if (views >= 100000) return (views / 100000).toFixed(1) + 'L'; 
-    if (views >= 1000) return (views / 1000).toFixed(1) + 'K'; 
+    if (views >= 10000000) return (views / 10000000).toFixed(1) + 'Cr';
+    if (views >= 100000) return (views / 100000).toFixed(1) + 'L';
+    if (views >= 1000) return (views / 1000).toFixed(1) + 'K';
     return views;
   };
 
   return (
     <ScrollView style={styles.container}>
       <View style={{position: 'relative'}}>
-        <TouchableOpacity
-          style={styles.closeBtn}
-          onPress={() => navigation.popToTop()}>
-          <Image
-            style={styles.closeIcon}
-            source={require('../assets/close.png')}
-          />
-        </TouchableOpacity>
-
+        
         <Image style={styles.image} source={product.image} />
         <View style={styles.offerContainer}>
           <Text style={styles.offerText}>
@@ -72,13 +65,46 @@ const FoodDetails = ({route}) => {
 
         {/* Description */}
         <Text style={styles.desc}>
-          {product.description} At Cafe Rajasthan, we bring you flavors made with love and the finest ingredients. Whether you crave something crispy, juicy, spicy, or sweet, every bite is a delight. Taste the magic of Cafe Rajasthan!
+          {product.description} At Cafe Rajasthan, we bring you flavors made
+          with love and the finest ingredients. Whether you crave something
+          crispy, juicy, spicy, or sweet, every bite is a delight. Taste the
+          magic of Cafe Rajasthan!
         </Text>
 
         {/* Category & Subcategory */}
         <Text style={styles.categoryText}>
-          <Text style={styles.categoryLabel}>Category:</Text> {product.category} {product.subCategory}
+          <Text style={styles.categoryLabel}>Category:</Text> {product.category}{' '}
+          {product.subCategory}
         </Text>
+
+        <View style={styles.priceandbtn}>
+          {!cartItems[product.id] ? (
+            <TouchableOpacity
+              style={styles.addbtn}
+              activeOpacity={1}
+              onPress={() => addToCart(product.id)}>
+              <Text style={styles.addbtntext}>Add To Cart</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.addbtnquantity} activeOpacity={1}>
+              <TouchableOpacity onPress={() => updateCartItems(product.id)}>
+                <Image
+                  style={styles.minusandplusbtn}
+                  source={require('../assets/minus.png')}
+                />
+              </TouchableOpacity>
+              <Text style={styles.addbtnquantityText}>
+                {cartItems[product.id]}
+              </Text>
+              <TouchableOpacity onPress={() => addToCart(product.id)}>
+                <Image
+                  style={styles.minusandplusbtn}
+                  source={require('../assets/plus.png')}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
 
         {/* Information Details */}
         <View style={styles.infoContainer}>
@@ -146,8 +172,8 @@ const styles = StyleSheet.create({
   itemContainer: {
     paddingHorizontal: 10,
     paddingVertical: 10,
-    flexDirection:'column',
-    gap:5
+    flexDirection: 'column',
+    gap: 5,
   },
   starContainer: {
     flexDirection: 'row',
@@ -233,4 +259,51 @@ const styles = StyleSheet.create({
     color: '#444',
     fontWeight: 'bold',
   },
+  priceandbtn: {
+    marginTop: 10,
+  },
+  addbtn: {
+    paddingVertical: 3,
+    height:45,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor:'#ad954d'
+
+  },
+  addbtntext: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+  },
+  addbtnquantityText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#fff',
+    paddingVertical: 1,
+  },
+  addbtnquantity: {
+    borderWidth: 2,
+    borderColor: '#ad954f',
+    backgroundColor: '#ad954f',
+    flexDirection: 'row',
+    paddingVertical: 3,
+    height: 45,
+    borderRadius: 5,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  btnpriceContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  minusandplusbtn: {
+    width: 70,
+    height: 70,
+    resizeMode: 'contain',
+    tintColor: 'white',
+  },
+ 
 });
