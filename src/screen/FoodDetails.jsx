@@ -23,9 +23,10 @@ const FoodDetails = ({route}) => {
   };
 
   return (
+    
     <ScrollView style={styles.container}>
+      {/* Image and offer */}
       <View style={{position: 'relative'}}>
-        
         <Image style={styles.image} source={product.image} />
         <View style={styles.offerContainer}>
           <Text style={styles.offerText}>
@@ -77,6 +78,7 @@ const FoodDetails = ({route}) => {
           {product.subCategory}
         </Text>
 
+        {/* Button add to cart */}
         <View style={styles.priceandbtn}>
           {!cartItems[product.id] ? (
             <TouchableOpacity
@@ -86,21 +88,28 @@ const FoodDetails = ({route}) => {
               <Text style={styles.addbtntext}>Add To Cart</Text>
             </TouchableOpacity>
           ) : (
-            <View style={styles.addbtnquantity} activeOpacity={1}>
-              <TouchableOpacity onPress={() => updateCartItems(product.id)}>
-                <Image
-                  style={styles.minusandplusbtn}
-                  source={require('../assets/minus.png')}
-                />
-              </TouchableOpacity>
-              <Text style={styles.addbtnquantityText}>
-                {cartItems[product.id]}
-              </Text>
-              <TouchableOpacity onPress={() => addToCart(product.id)}>
-                <Image
-                  style={styles.minusandplusbtn}
-                  source={require('../assets/plus.png')}
-                />
+            <View style={styles.veiwCartContainer}>
+              <View style={styles.addbtnquantity} activeOpacity={1}>
+                <TouchableOpacity onPress={() => updateCartItems(product.id)}>
+                  <Image
+                    style={styles.minusandplusbtn}
+                    source={require('../assets/minus.png')}
+                  />
+                </TouchableOpacity>
+                <Text style={styles.addbtnquantityText}>
+                  {cartItems[product.id]}
+                </Text>
+                <TouchableOpacity onPress={() => addToCart(product.id)}>
+                  <Image
+                    style={styles.minusandplusbtn}
+                    source={require('../assets/plus.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity style={styles.viewcart} onPress={() => navigation.navigate("Main", { screen: "Cart" })}>
+                <Image style={{width:20, height:20, }} source={require('../assets/cart.png')} />
+                <Text style={styles.viewCartText}>View Cart</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -264,12 +273,11 @@ const styles = StyleSheet.create({
   },
   addbtn: {
     paddingVertical: 3,
-    height:45,
+    height: 45,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'#ad954d'
-
+    backgroundColor: '#ad954d',
   },
   addbtntext: {
     fontSize: 25,
@@ -289,6 +297,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ad954f',
     flexDirection: 'row',
     paddingVertical: 3,
+    width:'47%',
     height: 45,
     borderRadius: 5,
     justifyContent: 'space-between',
@@ -305,5 +314,23 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: 'white',
   },
- 
+  veiwCartContainer: {
+    flexDirection:'row-reverse',
+    justifyContent:'space-between',
+    paddingHorizontal:5,
+  },
+  viewcart: {
+    width:'47%',
+    flexDirection:'row',
+    gap:5,
+    borderWidth:2,
+    borderRadius:5,
+    borderColor:'#ad954d',
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  viewCartText: {
+    fontSize:18,
+    fontWeight:600,
+  }
 });

@@ -182,8 +182,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   minusandplusbtn: {
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 30,
     resizeMode: 'contain',
     tintColor: 'white',
   },

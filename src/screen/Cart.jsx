@@ -12,6 +12,7 @@ import CartItem from '../component/CartItem';
 import {ScrollView} from 'react-native-gesture-handler';
 import { data } from '../data';
 import { FoodItemContext } from '../context/FoodItemContext';
+import CartTotal from '../component/CartTotal';
 const Cart = () => {
   const navigation = useNavigation();
   const {cartItems, getCartAmount,delevery_fees} = useContext(FoodItemContext);
@@ -25,10 +26,10 @@ const Cart = () => {
       <View style={styles.headerContainer}>
         {/* Left Side - Back Arrow & My Cart */}
         <View style={styles.leftSection}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}} onPress={() => navigation.goBack()}>
             <Image
               style={styles.arrowicon}
-              source={require('../assets/rightarrow.png')}
+              source={require('../assets/arrow.png')}
             />
           </TouchableOpacity>
           <Text style={styles.cartText}>My Cart</Text>
@@ -122,33 +123,9 @@ const Cart = () => {
 
           <Text style={styles.sectionTitle}>Bill Details</Text>
 
-          <View style={styles.billContainer}>
-            <Text style={styles.billHeader}>Bill Details</Text>
+          <CartTotal totalItems={totalItems} />
 
-            <View style={styles.secPrice}>
-              <Text style={styles.text}>Item Total MRP</Text>
-              <Text style={styles.price}>₹{itemTotal}</Text>
-            </View>
-
-            <View style={styles.secPrice}>
-              <Text style={styles.text}>Discount</Text>
-              <Text style={styles.discount}>-₹{totalOffer}</Text>
-            </View>
-
-            <View style={styles.secPrice}>
-              <Text style={styles.text}>Delivery Fee</Text>
-              <Text style={styles.price}>₹{delevery_fees}</Text>
-            </View>
-
-            <View style={styles.divider} />
-
-            <View style={styles.secPrice}>
-              <Text style={styles.totalText}>To Pay</Text>
-              <Text style={styles.totalPrice}>₹{finalAmount}</Text>
-            </View>
-          </View>
-
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} activeOpacity={0.7} onPress={() => navigation.navigate('Checkout')}>
             <Text style={styles.btntext}>Process To Chekout</Text>
           </TouchableOpacity>
         </View>
@@ -164,13 +141,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     paddingVertical: 20,
     backgroundColor: '#ad954d',
   },
   leftSection: {
     flexDirection: 'row',
     alignItems: 'center',
+
   },
   scrollContent: {paddingBottom: 20},
   rightSection: {
@@ -184,7 +162,6 @@ const styles = StyleSheet.create({
   arrowicon: {
     width: 20,
     height: 20,
-    transform: [{rotate: '180deg'}],
   },
   rightIcon: {
     marginRight: 15,
@@ -230,6 +207,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 700,
     marginTop: 10,
+    marginBottom:10,
   },
   CartHeader: {
     flexDirection: 'row',

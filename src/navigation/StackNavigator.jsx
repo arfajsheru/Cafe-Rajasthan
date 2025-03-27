@@ -19,6 +19,7 @@ import Search from '../screen/Search';
 import CustomeScreenHeader from '../component/CustomeScreenHeader';
 import FoodDetails from '../screen/FoodDetails';
 import FoodDetailsHeader from '../component/FoodDetailsHeader';
+import ProcessToCheckOut from '../screen/ProcessToCheckOut';
 
 const stack = createStackNavigator();
 
@@ -79,6 +80,7 @@ const StackNavigator = () => {
       <stack.Screen name="MyProfile" component={MyProfile} />
       <stack.Screen name="ReferEarn" component={ReferAndEarn} />
       <stack.Screen name="Coupons" component={Coupons} />
+      <stack.Screen name="Checkout" component={ProcessToCheckOut} options={{headerTitle: () => <Text style={{fontSize:20, fontWeight:500,}}>Place Order</Text>}}/>
       <stack.Screen
         name="FoodDetails"
         component={FoodDetails}
