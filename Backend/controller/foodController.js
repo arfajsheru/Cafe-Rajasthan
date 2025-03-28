@@ -72,8 +72,8 @@ const addFood = async (req, res) => {
 // List food controller
 const listFood = async (req, res) => {
   try {
-    const prodcuts = await foodModel.find({});
-    res.json({success: true, prodcuts});
+    const products = await foodModel.find({});
+    res.json({success: true, products});
   } catch (error) {
     console.log(error);
     res.json({success: false, message: error.message});
