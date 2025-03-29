@@ -1,80 +1,110 @@
-// import { View, Text } from 'react-native'
-// import React from 'react'
-
-// const BottomTabNavigator = () => {
-//   return (
-//     <View>
-//       <Text>BottomTabNavigator</Text>
-//     </View>
-//   )
-// }
-
-// export default BottomTabNavigator
-
-
-import { Image, StyleSheet, Text, View } from 'react-native'
-import React, { useContext, useState } from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { Image, StyleSheet, Text, View } from 'react-native';
+import React, { useContext } from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Menu from '../screen/Menu';
-import Search from '../screen/Search';
 import Order from '../screen/Order';
 import Cart from '../screen/Cart';
-import Wishlist from '../screen/Wishlist';
 import Home from '../screen/Home';
 import Admin from '../screen/Admin';
-import { useRoute } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
+
 const Bottom = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
-    const route = useRoute();
-    const {data} = useContext(AuthContext);
-    const adminAllowed = ["arfatsheru74@gmail.com", "harisbhoraniya@gmail.com"]
-    
-  return (
-    <Bottom.Navigator 
-    screenOptions={({route}) => ({
-        tabBarStyle: route.name === "Admin" ? { display: 'none' } : {}
-    })}
-    >
-        <Bottom.Screen name='Home' component={Home} options={{
-            tabBarIcon: ({size,color}) => {
-                return (
-                    <Image style={{width:size, height:size, resizeMode:'contain'}} source={require("../assets/logo.png")} />
-                )
-            },
-            headerShown: false}}/>
-            <Bottom.Screen name='Order' component={Order}  options={{
-            
-                tabBarIcon: ({size,color}) => {
+    const { data } = useContext(AuthContext);
+    const adminAllowed = ["arfatsheru74@gmail.com", "harisbhoraniya@gmail.com"];
+
+    return (
+        <Bottom.Navigator
+            screenOptions={({ route }) => ({
+                tabBarStyle: styles.tabBar,
+                tabBarItemStyle: styles.tabBarItem,
+                tabBarLabel: ({ focused }) => (
+                    <Text style={[styles.tabLabel, focused && styles.focusedLabel]}>{route.name}</Text>
+                ),
+                tabBarIcon: ({ focused }) => {
+                    let iconSource;
+                    switch (route.name) {
+                        case 'Home':
+                            iconSource = require("../assets/home.png");
+                            break;
+                        case 'Order':
+                            iconSource = require("../assets/order.png");
+                            break;
+                        case 'Menu':
+                            iconSource = require("../assets/menu.png");
+                            break;
+                        case 'Cart':
+                            iconSource = require("../assets/cart.png");
+                            break;
+                        case 'Admin':
+                            iconSource = require("../assets/admin.png");
+                            break;
+                    }
                     return (
-                        <Image style={{width:size, height:size, tintColor:'black'}} source={require("../assets/order.png")} />
-                    )
+                        <View style={[styles.iconContainer, focused && styles.focusedIconContainer]}>
+                            <Image 
+                                source={iconSource} 
+                                style={[styles.icon, focused && styles.focusedIcon]} 
+                            />
+                        </View>
+                    );
                 },
-                headerShown: false}}/>
-        <Bottom.Screen name='Menu' component={Menu}  options={{
-            tabBarIcon: ({size,color}) => {
-                return (
-                    <Image style={{width:size, height:size, tintColor:'black'}} source={require("../assets/menu.png")} />
-                )
-            },
-            headerShown: false}}/>
-        <Bottom.Screen name='Cart' component={Cart}  options={{
-            tabBarIcon: ({size,color}) => {
-                return (
-                    <Image style={{width:size, height:size, tintColor:'black'}} source={require("../assets/cart.png")} />
-                )
-            },
-            headerShown: false}}/>
-                {adminAllowed.includes(data.email)  ? <Bottom.Screen name='Admin' component={Admin}  options={{
-                    tabBarIcon: ({size,color}) => {
-                        return (
-                            <Image style={{width:size, height:size, tintColor:'black'}} source={require("../assets/admin.png")} />
-                        )
-                    },
-                    headerShown: false}}/>: null}
-    </Bottom.Navigator>
-  )
-}
+            })}
+        >
+            <Bottom.Screen name='Home' component={Home} options={{ headerShown: false }} />
+            <Bottom.Screen name='Order' component={Order} options={{ headerShown: false }} />
+            <Bottom.Screen name='Menu' component={Menu} options={{ headerShown: false }} />
+            <Bottom.Screen name='Cart' component={Cart} options={{ headerShown: false }} />
+            {adminAllowed.includes(data.email) && (
+                <Bottom.Screen name='Admin' component={Admin} options={{ headerShown: false }} />
+            )}
+        </Bottom.Navigator>
+    );
+};
+
+const styles = StyleSheet.create({
+    tabBar: {
+        backgroundColor: '#ad954d',  // ✅ Pure background color set kar diya
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        height: 65, // ✅ Height reduce kar di (70 se 65 kar diya)
+        paddingTop: 10,
+        paddingBottom: 0,  // ✅ Extra padding hata di
+        borderTopWidth: 0,  // ✅ Koi extra border na aaye
+    },
+    tabBarItem: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    iconContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    focusedIconContainer: {
+        transform: [{ translateY: -5 }], // ✅ Focus hone pe upar move hoga
+    },
+    tabLabel: {
+        fontSize: 12,
+        color: 'white',
+        textAlign: 'center',
+        marginTop: 2,
+    },
+    focusedLabel: {
+        fontWeight: 'bold',
+        color: '#fff',
+        fontSize: 14, // ✅ Focus hone pe thoda bada label hoga
+    },
+    icon: {
+        width: 26,
+        height: 26,
+        tintColor: 'black',
+    },
+    focusedIcon: {
+        tintColor: 'white',
+        width: 30, // ✅ Focus hone pe icon bada hoga
+        height: 30,
+    },
+});
 
 export default BottomTabNavigator;
