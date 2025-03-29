@@ -40,7 +40,7 @@ const SidebarNav = () => {
         {/* Order */}
         <TouchableOpacity
           style={styles.option}
-          onPress={() => navigation.navigate('Order')}>
+          onPress={() => navigation.navigate("Main", { screen: "Order" })}>
           <Image source={require('../assets/order.png')} style={styles.icon} />
           <Text style={styles.text}>Order</Text>
         </TouchableOpacity>

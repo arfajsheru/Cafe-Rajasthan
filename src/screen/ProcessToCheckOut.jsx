@@ -105,11 +105,12 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#f8f8f8',
     flexDirection: 'column',
-    gap: 18,
+  
   },
   sectionContainer: {
     flexDirection: 'column',
     gap: 10,
+    marginBottom:15,
   },
   inputsContainer: {
     flexDirection: 'row',

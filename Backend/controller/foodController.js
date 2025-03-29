@@ -34,7 +34,7 @@ const addFood = async (req, res) => {
             .json({success: false, message: 'Cloudinary upload failed'});
         }
 
-        // ✅ New food item create karna
+        // ✅ New food item create
         const food = new foodModel({
           name,
           des,
@@ -43,7 +43,7 @@ const addFood = async (req, res) => {
           offer,
           category,
           subcategory,
-          image: result.secure_url, // ✅ Cloudinary Image URL
+          image: result.secure_url, 
           rating: ratingData,
           bestSeller,
           date: Date.now(),
@@ -62,12 +62,15 @@ const addFood = async (req, res) => {
       },
     );
 
-    uploadedResponse.end(req.file.buffer); // ✅ Memory buffer pass karna mat bhul
+    uploadedResponse.end(req.file.buffer);
   } catch (error) {
     console.error('AddFood Error:', error);
     res.status(500).json({success: false, message: 'Error in adding food'});
   }
 };
+
+
+
 
 // List food controller
 const listFood = async (req, res) => {
