@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     tintColor: '#fff',
   },
   image: {
-    height: 400,
+    height: 340,
     width: '100%',
     resizeMode: 'cover',
   },

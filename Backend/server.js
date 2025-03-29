@@ -11,8 +11,8 @@ const port = 4000;
 dotenv.config()
 
 // middleware
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true })); // 📌 Yeh Line Bhi Chahiye
+app.use(express.json());
+app.use(express.urlencoded({ extended: true })); 
 app.use(cors());
 
 
@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
   res.send('Welcom to new Cafe Rajathan?');
 });
 
-app.listen(process.env.PORT || 4000, () => {
-  console.log("http://localhost:4000");
+app.listen(process.env.PORT || 4000, '0.0.0.0', () => {
+  console.log("http://localhost:4000");           
 });
 

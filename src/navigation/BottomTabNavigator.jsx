@@ -45,6 +45,7 @@ const BottomTabNavigator = () => {
             },
             headerShown: false}}/>
             <Bottom.Screen name='Order' component={Order}  options={{
+            
                 tabBarIcon: ({size,color}) => {
                     return (
                         <Image style={{width:size, height:size, tintColor:'black'}} source={require("../assets/order.png")} />
