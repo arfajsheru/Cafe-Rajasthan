@@ -18,13 +18,14 @@ const SidebarNav = () => {
   const logout = async () => {
     try {
       await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem("email")
       setToken('');
       setData({
         name: '',
         email: '',
         password: '',
       });
-      navigation.navigate('Main');
+      navigation.navigate("Main")
     } catch (error) {
       console.error('Logout Error:', error);
     }

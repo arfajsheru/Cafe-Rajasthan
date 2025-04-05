@@ -6,6 +6,7 @@ const validateEmail = (email) => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
   return emailRegex.test(email);
 };
+
 const createToken = id => {
   return jwt.sign({id}, process.env.JWT_SECRET);
 };
@@ -35,7 +36,7 @@ const loginUser = async (req, res) => {
     // Generating JWT token
     const token = createToken(user._id);
 
-    return res.json({ success: true, message: "User login successful", token });
+    return res.json({ success: true, message: "User login successful", token, user });
   } catch (error) {
     console.log(error);
     return res.json({ success: false, message: "Login failed, please try again" });
@@ -85,7 +86,7 @@ const registerUser = async (req, res) => {
     // Creating JWT token
     const token = createToken(user._id);
 
-    return res.json({ success: true, token });
+    return res.json({ success: true, token, user });
   } catch (error) {
     console.log(error);
     return res.json({ success: false, message: "Registration failed, please try again" });

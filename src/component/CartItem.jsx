@@ -1,7 +1,9 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React, {useContext, useState} from 'react';
 import { FoodItemContext } from '../context/FoodItemContext';
+import { useNavigation } from '@react-navigation/native';
 const CartItem = ({item}) => {
+  const navigation = useNavigation()
   const [itemQuantity, setItemQuantity] = useState(0);
   const {cartItems, addToCart, updateCartItems,removeCartItems} = useContext(FoodItemContext);
 
@@ -15,7 +17,7 @@ const CartItem = ({item}) => {
 
 
   return (
-    <View style={styles.itemcontainer}>
+    <TouchableOpacity style={styles.itemcontainer} activeOpacity={0.8} onPress={() => navigation.push("FoodDetails", {product: item})}>
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={item.image} />
         <View style={styles.overlay} />
@@ -72,7 +74,7 @@ const CartItem = ({item}) => {
           ]}
         />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

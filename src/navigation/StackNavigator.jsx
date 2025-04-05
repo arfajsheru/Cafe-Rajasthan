@@ -9,7 +9,7 @@ import Splash from '../screen/Splash';
 import BottomTabNavigator from './BottomTabNavigator';
 import Profile from '../screen/Profile';
 import AiScreen from '../screen/AiScreen';
-import Order from '../screen/Order';
+import Order from '../screen/Order'; 
 import HelpSupport from '../screen/HelpSupport';
 import Wishlist from '../screen/Wishlist';
 import MyProfile from '../screen/MyProfile';
@@ -42,22 +42,15 @@ const StackNavigator = () => {
         options={{headerShown: false}}
       />
       */}
-      <stack.Screen name="Login" component={Login}  options={{headerShown:false}}/> 
-      {/* <stack.Screen name="Signup" component={Signup} 
-       options={{
-        headerTitleStyle: {
-          fontSize: 26,
-          fontFamily: 'NotoSerifKhojki-Bold', // ✅ Custom Font
-          color: 'black', // ✅ Title Color (Yellow)
-        },
-        headerStyle: {
-          backgroundColor: '#ad954f', // ✅ Background Color
-        },
-      }}
-      /> */}
+
       <stack.Screen
         name="Main"
         component={BottomTabNavigator}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="Login"
+        component={Login}
         options={{headerShown: false}}
       />
       <stack.Screen name="AiScreen" component={AiScreen} />
@@ -65,8 +58,8 @@ const StackNavigator = () => {
         name="Search"
         component={Search}
         options={{
-          headerTitle: () => <CustomeScreenHeader />, 
-          headerStyle: {backgroundColor: '#ad954f'}, 
+          headerTitle: () => <CustomeScreenHeader />,
+          headerStyle: {backgroundColor: '#ad954f'},
           headerTitleContainerStyle: {width: '100%'},
         }}
       />
@@ -79,14 +72,22 @@ const StackNavigator = () => {
       <stack.Screen name="MyProfile" component={MyProfile} />
       <stack.Screen name="ReferEarn" component={ReferAndEarn} />
       <stack.Screen name="Coupons" component={Coupons} />
-      <stack.Screen name="Checkout" component={ProcessToCheckOut} options={{headerTitle: () => <Text style={{fontSize:20, fontWeight:500,}}>Place Order</Text>}}/>
+      <stack.Screen
+        name="Checkout"
+        component={ProcessToCheckOut}
+        options={{
+          headerTitle: () => (
+            <Text style={{fontSize: 20, fontWeight: 500}}>Place Order</Text>
+          ),
+        }}
+      />
       <stack.Screen
         name="FoodDetails"
         component={FoodDetails}
         options={{
           headerTitle: () => <FoodDetailsHeader />,
-          headerTitleContainerStyle: {width: "100%"},
-          presentation: "transparentModal", // Piche ki screen dikhegi
+          headerTitleContainerStyle: {width: '100%'},
+          presentation: 'transparentModal', // Piche ki screen dikhegi
           gestureEnabled: true, // Swipe down to close
           cardStyle: {
             height: '80%',

@@ -32,6 +32,7 @@ const Login = () => {
     currState,
     toggleAuth,
     handleChange,
+    setData
   } = useContext(AuthContext);
 
   const handleGestureEnd = event => {
@@ -68,21 +69,19 @@ const Login = () => {
     try {
       const url =
         currState === 'Login'
-          ? `${process.env.LAPTOP_IP_ADDRESS}:4000/api/user/login`
-          : `${process.env.LAPTOP_IP_ADDRESS}:4000/api/user/register`;
+          ? `http://192.168.0.120:4000/api/user/login`
+          : `http://192.168.0.120:4000/api/user/register`;
       const response = await axios.post(url, data);
-      console.log(url)
-      const token = response.data.token;
       setToken(token);
+      const token = response.data.token;
+      const email = response.data.user.email;
+
       await AsyncStorage.setItem('token', token);
-
-      console.log(await AsyncStorage.getItem('token'));
-
+      await AsyncStorage.setItem('email', email);
+      
       if (response.data.success) {
         Alert.alert('Success', response.data.message);
         if (currState === 'Login') {
-          // Navigate to Main Screen
-
           navigation.replace('Main');
         } else {
           toggleAuth();
