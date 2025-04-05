@@ -1,20 +1,26 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { data } from '../data';
-import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import { AuthContext } from './AuthContext';
 export const FoodItemContext = createContext(); 
 
 const FoodItemProvider = ({ children }) => {
+  const {token} = useContext(AuthContext);
   const[modalVisible, setModalVisible] = useState(false);
   const[isfilterOpen, setisFilterOpen] = useState(false);
   const[cartItems, setCartItems] = useState({})
+  const[foodList, setFoodlist] = useState([])
   const delevery_fees = 10;
 
-  const addToCart = (itemId) => {
+  const addToCart = async(itemId) => {
     if(!cartItems[itemId]) {
       setCartItems((prev) => ({...prev, [itemId]:1}))
     }
     else {
       setCartItems((prev) => ({...prev,[itemId]: prev[itemId] + 1}))
+    }
+    if(token){
+      await axios.post("http://192.168.38.2:4000/api/cart/add", {itemId}, {headers:{token}})
     }
   }
 
@@ -38,24 +44,34 @@ const FoodItemProvider = ({ children }) => {
     let totalOffer = 0;
 
     for(const items in cartItems) {
-        const itemInfo = data.find((food) => food.id === items);
+        const itemInfo = foodList.find((food) => food._id === items);
         if(itemInfo && cartItems[items] > 0){
-            totalAmount += itemInfo.current_Price * cartItems[items];
+            totalAmount += itemInfo.current_price * cartItems[items];
 
-            if(itemInfo.original_Price > itemInfo.current_Price){
-                let offer = itemInfo.original_Price - itemInfo.current_Price;
+            if(itemInfo.original_price > itemInfo.current_price){
+                let offer = itemInfo.original_price - itemInfo.current_price;
                 totalOffer += offer * cartItems[items];
             }
         }
     }
     return { totalAmount, totalOffer };
 }
+
+
+  const fetchList = async () => {
+    const response = await axios.get("http://192.168.38.2:4000/api/food/list");
+    setFoodlist(response.data.products);
+  }
   
+
+  useEffect(() => {
+    fetchList()   
+  },[])
 
   const value = {
     modalVisible, setModalVisible,
     isfilterOpen, setisFilterOpen,
-    cartItems, setCartItems, addToCart, updateCartItems, removeCartItems, data, getCartAmount, delevery_fees
+    cartItems, setCartItems, addToCart, updateCartItems, removeCartItems, data, getCartAmount, delevery_fees, foodList
   }
 
   

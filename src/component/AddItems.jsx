@@ -64,7 +64,7 @@ const AddItems = () => {
       }
 
       const response = await axios.post(
-        `https://foodserver-five.vercel.app/api/food/add`,
+        `http://192.168.0.121:4000/api/food/add`,
         formdata,
         {
           headers: {
@@ -72,6 +72,7 @@ const AddItems = () => {
           },
         },
       );
+      console.log(response)
     } catch (error) {
       console.error('Error:', error.response?.data || error.message);
     }

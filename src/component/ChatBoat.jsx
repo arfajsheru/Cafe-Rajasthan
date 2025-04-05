@@ -7,7 +7,7 @@ const ChatBoat = () => {
   return (
     <View style={styles.container}>
       {/* AI Bubble */}
-      <TouchableOpacity style={styles.aiContainer} activeOpacity={false} onPress={() => navigation.navigate('AiScreen')}>
+      <TouchableOpacity style={styles.aiContainer} activeOpacity={0.9} onPress={() => navigation.navigate('AiScreen')}>
         <Image style={styles.aiicon} source={require("../assets/AiIcon.png")} />
       </TouchableOpacity>
     </View>
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   aiContainer: {
-    backgroundColor: "#b0ccf2",
+    backgroundColor: "#fff",
     padding: 5,
     borderRadius: 50, // Full round effect
   },

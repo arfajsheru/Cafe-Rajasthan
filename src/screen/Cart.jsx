@@ -10,16 +10,12 @@ import React, { useContext } from 'react';
 import {useNavigation} from '@react-navigation/native';
 import CartItem from '../component/CartItem';
 import {ScrollView} from 'react-native-gesture-handler';
-import { data } from '../data';
 import { FoodItemContext } from '../context/FoodItemContext';
 import CartTotal from '../component/CartTotal';
 const Cart = () => {
   const navigation = useNavigation();
-  const {cartItems, getCartAmount,delevery_fees} = useContext(FoodItemContext);
-  const {totalAmount, totalOffer} = getCartAmount();
-  const itemTotal = totalAmount + totalOffer;
+  const {cartItems, getCartAmount, foodList} = useContext(FoodItemContext);
   const totalItems = Object.keys(cartItems).length;
-  const finalAmount = totalItems > 0 ? totalAmount + delevery_fees : totalAmount;
   return (
     <View style={{flex: 1}}>
       {/* Header */}
@@ -99,8 +95,8 @@ const Cart = () => {
                 </View>
               ) : (
                 <View>
-                  {data.map((item, index) => {
-                    if(cartItems[item.id] > 0){
+                  {foodList.map((item, index) => {
+                    if(cartItems[item._id] > 0){
                       return (
                         <CartItem item={item} key={index}/>
                       )

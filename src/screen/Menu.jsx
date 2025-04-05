@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -10,12 +10,13 @@ import {
 } from 'react-native';
 import SearchInput from '../component/SearchInput';
 import Filter from '../component/Filter';
-import {data} from '../data';
 import {FlatList} from 'react-native-gesture-handler';
 import ProductItem from '../component/ProductItem';
+import { FoodItemContext } from '../context/FoodItemContext';
 const Menu = () => {
   const navigation = useNavigation();
   const [isfilterOpen, setisFilterOpen] = useState(false);
+  const {foodList} = useContext(FoodItemContext);
 
 
   return (
@@ -67,9 +68,9 @@ const Menu = () => {
 
         {/* Item list */}
         <FlatList
-          data={data}
+          data={foodList}
           renderItem={({item}) => <ProductItem item={item} />}
-          keyExtractor={item => item.id.toString()} // Unique key dena important hai
+          keyExtractor={item => item._id.toString()}
           numColumns={2}
         />
 

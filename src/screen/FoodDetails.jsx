@@ -27,7 +27,7 @@ const FoodDetails = ({route}) => {
     <ScrollView style={styles.container}>
       {/* Image and offer */}
       <View style={{position: 'relative'}}>
-        <Image style={styles.image} source={product.image} />
+        <Image style={styles.image} source={{uri: product.image}} />
         <View style={styles.offerContainer}>
           <Text style={styles.offerText}>
             {product.offer}%{'\n'}OFF
@@ -54,19 +54,19 @@ const FoodDetails = ({route}) => {
             )}
           </View>
           <Text style={styles.view}>
-            {formatViews(product.rating.view) || 0} Views
+            {formatViews(product.rating.views) || 0} Views
           </Text>
         </View>
 
         {/* Item Price */}
         <View style={styles.price}>
-          <Text style={styles.currentPrice}>₹{product.current_Price}</Text>
-          <Text style={styles.originalPrice}>₹{product.original_Price}</Text>
+          <Text style={styles.currentPrice}>₹{product.current_price}</Text>
+          <Text style={styles.originalPrice}>₹{product.original_price}</Text>
         </View>
 
         {/* Description */}
         <Text style={styles.desc}>
-          {product.description} At Cafe Rajasthan, we bring you flavors made
+          {product.des} At Cafe Rajasthan, we bring you flavors made
           with love and the finest ingredients. Whether you crave something
           crispy, juicy, spicy, or sweet, every bite is a delight. Taste the
           magic of Cafe Rajasthan!
@@ -75,7 +75,7 @@ const FoodDetails = ({route}) => {
         {/* Category & Subcategory */}
         <Text style={styles.categoryText}>
           <Text style={styles.categoryLabel}>Category:</Text> {product.category}{' '}
-          {product.subCategory}
+          {product.subcategory}
         </Text>
 
         {/* Button add to cart */}

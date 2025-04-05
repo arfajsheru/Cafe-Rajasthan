@@ -6,12 +6,12 @@ const ProductItem = ({item}) => {
   const {cartItems,updateCartItems, addToCart} = useContext(FoodItemContext);
   const navigation = useNavigation();
   return (
-    <TouchableOpacity style={styles.productContainer} onPress={() => navigation.push('FoodDetails', {product: item})}>
+    <TouchableOpacity style={styles.productContainer} onPress={() => navigation.push('FoodDetails', {product: item})} activeOpacity={0.9}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={item.image} />
+        <Image style={styles.image} source={{uri: item.image}}/>
         <View style={styles.ratingcontainer}>
           <Text style={styles.rating}>
-            {item.rating.stars}★ | {item.rating.view}
+            {item.rating.stars}★ | {item.rating.views}
           </Text>
         </View>
 
@@ -23,36 +23,36 @@ const ProductItem = ({item}) => {
       </View>
       <View>
         <Text style={styles.categoryText}>
-          {item.category} | {item.subCategory}
+          {item.category} | {item.subcategory}
         </Text>
       </View>
       <Text style={styles.name}>{item.name}</Text>
 
       <View style={styles.btnpriceContainer}>
         <Text style={styles.price}>
-          ₹{item.current_Price}{' '}
-          <Text style={styles.originalPrice}>₹{item.original_Price}</Text>
+          ₹{item.current_price}{' '}
+          <Text style={styles.originalPrice}>₹{item.original_price}</Text>
         </Text>
       
       <View style={styles.priceandbtn}>
-        {!cartItems[item.id] ? (
+        {!cartItems[item._id] ? (
           <TouchableOpacity
             style={styles.addbtn}
             activeOpacity={1}
-            onPress={() => addToCart(item.id)}
+            onPress={() => addToCart(item._id)}
             >
             <Text style={styles.addbtntext}>Add</Text>
           </TouchableOpacity>
         ) : (
           <View style={styles.addbtnquantity} activeOpacity={1}>
-            <TouchableOpacity onPress={() => updateCartItems(item.id)}>
+            <TouchableOpacity onPress={() => updateCartItems(item._id)}>
               <Image
                 style={styles.minusandplusbtn}
                 source={require('../assets/minus.png')}
               />
             </TouchableOpacity>
-            <Text style={styles.addbtnquantityText}>{cartItems[item.id]}</Text>
-            <TouchableOpacity onPress={() => addToCart(item.id)}>
+            <Text style={styles.addbtnquantityText}>{cartItems[item._id]}</Text>
+            <TouchableOpacity onPress={() => addToCart(item._id)}>
               <Image
                 style={styles.minusandplusbtn}
                 source={require('../assets/plus.png')}

@@ -31,7 +31,7 @@ const AiScreen = () => {
         },
         {
           headers: {
-            "Authorization": `Bearer ${process.env.OPENAI_API}`,
+            "Authorization": `Bearer ${process}}`,
             "Content-Type": "application/json"
           }
         }
