@@ -12,7 +12,7 @@ const Bottom = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   const {data} = useContext(AuthContext);
-  const adminAllowed = ['arfatsheru74@gmail.com', 'harisbhoraniya@gmail.com'];
+  const adminAllowed = ['arfajsheru@gmail.com', 'harisbhoraniya@gmail.com'];
 
   return (
     <Bottom.Navigator

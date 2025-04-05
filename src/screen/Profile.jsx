@@ -9,15 +9,27 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import ProfileNavigation from '../component/ProfileNavigation';
-import { AuthContext } from '../context/AuthContext';
+import {AuthContext} from '../context/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const SidebarNav = () => {
   const navigation = useNavigation();
-  const {setToken,} = useContext(AuthContext);
+  const {setToken, setData} = useContext(AuthContext);
 
-  const handleLogout = () => {
-    setToken("");
-    navigation.navigate('Login')
-  }
+  const logout = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+      setToken('');
+      setData({
+        name: '',
+        email: '',
+        password: '',
+      });
+      navigation.navigate('Main');
+    } catch (error) {
+      console.error('Logout Error:', error);
+    }
+  };
+
   return (
     <ScrollView style={styles.maincontainer}>
       <View style={styles.sidebar}>
@@ -40,7 +52,7 @@ const SidebarNav = () => {
         {/* Order */}
         <TouchableOpacity
           style={styles.option}
-          onPress={() => navigation.navigate("Main", { screen: "Order" })}>
+          onPress={() => navigation.navigate('Main', {screen: 'Order'})}>
           <Image source={require('../assets/order.png')} style={styles.icon} />
           <Text style={styles.text}>Order</Text>
         </TouchableOpacity>
@@ -100,7 +112,7 @@ const SidebarNav = () => {
 
       {/* Logout button */}
       <View style={styles.logoutcontainer}>
-        <TouchableOpacity style={styles.logoutbutton} onPress={handleLogout}>
+        <TouchableOpacity style={styles.logoutbutton} onPress={logout}>
           <Text style={styles.logoutText}>Log Out</Text>
         </TouchableOpacity>
 

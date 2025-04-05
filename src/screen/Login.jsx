@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
   StatusBar,
-  Alert
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -17,13 +17,22 @@ import {
 } from 'react-native-gesture-handler';
 import {runOnJS} from 'react-native-reanimated';
 import axios from 'axios';
-import { AuthContext } from '../context/AuthContext';
+import {AuthContext} from '../context/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const navigation = useNavigation();
-  const {setToken, data, gestureSequence, correctPattern, timeoutRef, resetGesture, currState, toggleAuth, handleChange} = useContext(AuthContext);
-  const [error, setError] = useState()
-
+  const {
+    setToken,
+    data,
+    gestureSequence,
+    correctPattern,
+    timeoutRef,
+    resetGesture,
+    currState,
+    toggleAuth,
+    handleChange,
+  } = useContext(AuthContext);
 
   const handleGestureEnd = event => {
     const {translationX, translationY} = event;
@@ -57,33 +66,40 @@ const Login = () => {
 
   const handleAuth = async () => {
     try {
-      const url = currState === "Login" ? `https://foodserver-five.vercel.app/api/user/login` : `https://foodserver-five.vercel.app/api/user/register` ;
-      console.log(url)
+      const url =
+        currState === 'Login'
+          ? `${process.env.LAPTOP_IP_ADDRESS}:4000/api/user/login`
+          : `${process.env.LAPTOP_IP_ADDRESS}:4000/api/user/register`;
       const response = await axios.post(url, data);
-      setToken(response.data.token)
+      console.log(url)
+      const token = response.data.token;
+      setToken(token);
+      await AsyncStorage.setItem('token', token);
+
+      console.log(await AsyncStorage.getItem('token'));
+
       if (response.data.success) {
-        Alert.alert("Success", response.data.message);
-        if (currState === "Login") {
+        Alert.alert('Success', response.data.message);
+        if (currState === 'Login') {
           // Navigate to Main Screen
-         
-          navigation.replace("Main");
+
+          navigation.replace('Main');
         } else {
-          // Signup successful, switch to login
           toggleAuth();
         }
       } else {
-        Alert.alert("Error", response.data.message);
+        Alert.alert('Error', response.data.message);
       }
     } catch (error) {
-      console.error("API Error:", error);
-      Alert.alert("Error", "Something went wrong. Try again!");
+      console.error('API Error:', error);
+      Alert.alert('Error', 'Something went wrong. Try again!');
     }
   };
 
   const panGesture = Gesture.Pan().onEnd(event => {
     runOnJS(handleGestureEnd)(event);
   });
-  
+
   return (
     <GestureHandlerRootView>
       <GestureDetector gesture={panGesture}>

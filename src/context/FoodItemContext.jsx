@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react'
-import Filter from '../component/Filter';
 import { data } from '../data';
+import { useNavigation } from '@react-navigation/native';
 export const FoodItemContext = createContext(); 
 
 const FoodItemProvider = ({ children }) => {
