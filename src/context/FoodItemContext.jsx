@@ -20,7 +20,7 @@ const FoodItemProvider = ({ children }) => {
       setCartItems((prev) => ({...prev,[itemId]: prev[itemId] + 1}))
     }
     if(token){
-      await axios.post("http://192.168.38.2:4000/api/cart/add", {itemId}, {headers:{token}})
+      await axios.post("http://192.168.0.127:4000/api/cart/add", {itemId}, {headers:{token}})
     }
   }
 
@@ -59,7 +59,7 @@ const FoodItemProvider = ({ children }) => {
 
 
   const fetchList = async () => {
-    const response = await axios.get("http://192.168.38.2:4000/api/food/list");
+    const response = await axios.get("http://192.168.0.127:4000/api/food/list");
     setFoodlist(response.data.products);
   }
   

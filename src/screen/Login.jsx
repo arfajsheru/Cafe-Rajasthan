@@ -69,8 +69,8 @@ const Login = () => {
     try {
       const url =
         currState === 'Login'
-          ? `http://192.168.38.2:4000/api/user/login`
-          : `http://192.168.38.2:4000/api/user/register`;
+          ? `http://192.168.0.127:4000/api/user/login`
+          : `http://192.168.0.127:4000/api/user/register`;
       const response = await axios.post(url, data);
       setToken(token);
       const token = response.data.token;

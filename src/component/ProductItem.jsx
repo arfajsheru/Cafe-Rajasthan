@@ -1,14 +1,17 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import React, { useContext } from 'react';
-import { FoodItemContext } from '../context/FoodItemContext';
-import { useNavigation } from '@react-navigation/native';
+import React, {useContext} from 'react';
+import {FoodItemContext} from '../context/FoodItemContext';
+import {useNavigation} from '@react-navigation/native';
 const ProductItem = ({item}) => {
-  const {cartItems,updateCartItems, addToCart} = useContext(FoodItemContext);
+  const {cartItems, updateCartItems, addToCart} = useContext(FoodItemContext);
   const navigation = useNavigation();
   return (
-    <TouchableOpacity style={styles.productContainer} onPress={() => navigation.push('FoodDetails', {product: item})} activeOpacity={0.9}>
+    <TouchableOpacity
+      style={styles.productContainer}
+      onPress={() => navigation.push('FoodDetails', {product: item})}
+      activeOpacity={0.9}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{uri: item.image}}/>
+        <Image style={styles.image} source={{uri: item.image}} />
         <View style={styles.ratingcontainer}>
           <Text style={styles.rating}>
             {item.rating.stars}★ | {item.rating.views}
@@ -33,33 +36,34 @@ const ProductItem = ({item}) => {
           ₹{item.current_price}{' '}
           <Text style={styles.originalPrice}>₹{item.original_price}</Text>
         </Text>
-      
-      <View style={styles.priceandbtn}>
-        {!cartItems[item._id] ? (
-          <TouchableOpacity
-            style={styles.addbtn}
-            activeOpacity={1}
-            onPress={() => addToCart(item._id)}
-            >
-            <Text style={styles.addbtntext}>Add</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.addbtnquantity} activeOpacity={1}>
-            <TouchableOpacity onPress={() => updateCartItems(item._id)}>
-              <Image
-                style={styles.minusandplusbtn}
-                source={require('../assets/minus.png')}
-              />
+
+        <View style={styles.priceandbtn}>
+          {!cartItems[item._id] ? (
+            <TouchableOpacity
+              style={styles.addbtn}
+              activeOpacity={1}
+              onPress={() => addToCart(item._id)}>
+              <Text style={styles.addbtntext}>Add</Text>
             </TouchableOpacity>
-            <Text style={styles.addbtnquantityText}>{cartItems[item._id]}</Text>
-            <TouchableOpacity onPress={() => addToCart(item._id)}>
-              <Image
-                style={styles.minusandplusbtn}
-                source={require('../assets/plus.png')}
-              />
-            </TouchableOpacity>
-          </View>
-        )}
+          ) : (
+            <View style={styles.addbtnquantity} activeOpacity={1}>
+              <TouchableOpacity onPress={() => updateCartItems(item._id)}>
+                <Image
+                  style={styles.minusandplusbtn}
+                  source={require('../assets/minus.png')}
+                />
+              </TouchableOpacity>
+              <Text style={styles.addbtnquantityText}>
+                {cartItems[item._id]}
+              </Text>
+              <TouchableOpacity onPress={() => addToCart(item._id)}>
+                <Image
+                  style={styles.minusandplusbtn}
+                  source={require('../assets/plus.png')}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </View>
     </TouchableOpacity>
@@ -147,7 +151,7 @@ const styles = StyleSheet.create({
     borderColor: '#ad954f',
     paddingVertical: 3,
     width: 65,
-    height:32,
+    height: 32,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -171,7 +175,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 3,
     width: '70',
-    height:32,
+    height: 32,
     borderRadius: 5,
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -188,6 +192,6 @@ const styles = StyleSheet.create({
     tintColor: 'white',
   },
   priceandbtn: {
-    marginTop:10,
-  }
+    marginTop: 10,
+  },
 });

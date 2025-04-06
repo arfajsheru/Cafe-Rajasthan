@@ -14,7 +14,7 @@ import { FoodItemContext } from '../context/FoodItemContext';
 import CartTotal from '../component/CartTotal';
 const Cart = () => {
   const navigation = useNavigation();
-  const {cartItems, getCartAmount, foodList} = useContext(FoodItemContext);
+  const {cartItems, foodList} = useContext(FoodItemContext);
   const totalItems = Object.keys(cartItems).length;
   return (
     <View style={{flex: 1}}>
