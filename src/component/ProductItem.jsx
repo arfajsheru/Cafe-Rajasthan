@@ -38,33 +38,33 @@ const ProductItem = ({item}) => {
         </Text>
 
         <View style={styles.priceandbtn}>
-          {!cartItems[item._id] ? (
-            <TouchableOpacity
-              style={styles.addbtn}
-              activeOpacity={1}
-              onPress={() => addToCart(item._id)}>
-              <Text style={styles.addbtntext}>Add</Text>
-            </TouchableOpacity>
-          ) : (
-            <View style={styles.addbtnquantity} activeOpacity={1}>
-              <TouchableOpacity onPress={() => updateCartItems(item._id)}>
-                <Image
-                  style={styles.minusandplusbtn}
-                  source={require('../assets/minus.png')}
-                />
-              </TouchableOpacity>
-              <Text style={styles.addbtnquantityText}>
-                {cartItems[item._id]}
-              </Text>
-              <TouchableOpacity onPress={() => addToCart(item._id)}>
-                <Image
-                  style={styles.minusandplusbtn}
-                  source={require('../assets/plus.png')}
-                />
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
+  {!(cartItems && cartItems[item._id]) ? (
+    <TouchableOpacity
+      style={styles.addbtn}
+      activeOpacity={1}
+      onPress={() => addToCart(item._id)}>
+      <Text style={styles.addbtntext}>Add</Text>
+    </TouchableOpacity>
+  ) : (
+    <View style={styles.addbtnquantity}>
+      <TouchableOpacity onPress={() => updateCartItems(item._id)}>
+        <Image
+          style={styles.minusandplusbtn}
+          source={require('../assets/minus.png')}
+        />
+      </TouchableOpacity>
+      <Text style={styles.addbtnquantityText}>
+        {cartItems[item._id]}
+      </Text>
+      <TouchableOpacity onPress={() => addToCart(item._id)}>
+        <Image
+          style={styles.minusandplusbtn}
+          source={require('../assets/plus.png')}
+        />
+      </TouchableOpacity>
+    </View>
+  )}
+</View>
       </View>
     </TouchableOpacity>
   );

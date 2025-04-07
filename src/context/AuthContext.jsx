@@ -1,7 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
 import React, {createContext, useEffect, useRef, useState} from 'react';
-import {navigate} from '../navigation/navigationRef';
 
 export const AuthContext = createContext();
 
@@ -43,14 +41,13 @@ const AuthProvider = ({children}) => {
             email: userEmail,
             password: '',
           });
-          navigate('Main');
         }
       } catch (error) {
         console.error('Error fetching token', error);
       }
     };
     getToken();
-  }, [token]);
+  }, []);
 
   value = {
     token,

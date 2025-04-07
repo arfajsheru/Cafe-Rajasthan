@@ -11,9 +11,11 @@ import {useNavigation} from '@react-navigation/native';
 import ProfileNavigation from '../component/ProfileNavigation';
 import {AuthContext} from '../context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FoodItemContext } from '../context/FoodItemContext';
 const SidebarNav = () => {
   const navigation = useNavigation();
-  const {setToken, setData} = useContext(AuthContext);
+  const {data, setToken, setData} = useContext(AuthContext);
+  const {setCartItems} = useContext(FoodItemContext);
 
   const logout = async () => {
     try {
@@ -25,6 +27,7 @@ const SidebarNav = () => {
         email: '',
         password: '',
       });
+      setCartItems({})
       navigation.navigate("Main")
     } catch (error) {
       console.error('Logout Error:', error);
@@ -42,7 +45,7 @@ const SidebarNav = () => {
           />
           <View>
             <Text style={styles.profileName}>Cafe Rajasthan</Text>
-            <Text style={styles.profileInfo}>Caferajsthan@gmail.com</Text>
+            <Text style={styles.profileInfo}>{data.email}</Text>
             <Text style={styles.profileInfo}>8828110344</Text>
           </View>
         </View>

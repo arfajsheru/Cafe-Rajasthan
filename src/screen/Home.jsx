@@ -43,7 +43,7 @@ const Home = () => {
           </>
         )}
       />
-      { Object.keys(cartItems).length ? <MiniCart/> : null }
+      { cartItems && Object.keys(cartItems).length ? <MiniCart/> : null }
 
       {/* ✅ Floating ChatBot Icon */}
       <View style={styles.chatBoatWrapper}>

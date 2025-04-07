@@ -67,22 +67,24 @@ const Login = () => {
 
   const handleAuth = async () => {
     try {
+      console.log(LAPTOP_IP)
       console.log(LAPTOP_IP);
       const url =
         currState === 'Login'
           ? `${LAPTOP_IP}:4000/api/user/login`
           : `${LAPTOP_IP}:4000/api/user/register`;
       const response = await axios.post(url, data);
-      setToken(token);
       const token = response.data.token;
       const email = response.data.user.email;
-
       await AsyncStorage.setItem('token', token);
+      setToken(token);
       await AsyncStorage.setItem('email', email);
 
       if (response.data.success) {
         Alert.alert('Success', response.data.message);
-        if (!currState === 'Login') {
+        if (currState === 'Login') {
+          navigation.navigate("Main");
+        }else{
           toggleAuth();
         }
       } else {
