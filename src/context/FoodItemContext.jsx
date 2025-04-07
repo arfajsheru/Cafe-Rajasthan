@@ -6,7 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const FoodItemContext = createContext();
 
 const FoodItemProvider = ({children}) => {
-  const {token, LAPTOP_IP} = useContext(AuthContext);
+  const {token} = useContext(AuthContext);
+  const LAPTOP_IP = process.env.LAPTOP_IP;
   const [modalVisible, setModalVisible] = useState(false);
   const [isfilterOpen, setisFilterOpen] = useState(false);
   const [cartItems, setCartItems] = useState({});
@@ -113,6 +114,8 @@ const FoodItemProvider = ({children}) => {
     getCartAmount,
     delevery_fees,
     foodList,
+    LAPTOP_IP,
+    fetchFoodList
   };
 
   return (

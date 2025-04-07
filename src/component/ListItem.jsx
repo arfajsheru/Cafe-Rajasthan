@@ -1,33 +1,25 @@
-import {View, Text, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
+import React, {useContext} from 'react';
 import axios from 'axios';
+import {FoodItemContext} from '../context/FoodItemContext';
 const ListItem = () => {
-  const [listFood, setListFood] = useState([]);
-
-  const fetchdata = async () => {
-    try {
-      const response = await axios.get(
-        `https://foodserver-five.vercel.app/api/food/list`,
-      );
-      setListFood(response.data.prodcuts);
-    } catch (error) {
-      console.log('Error fetching data:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchdata();
-  }, []);
+  const {foodList, LAPTOP_IP, fetchFoodList} = useContext(FoodItemContext);
 
   const removeFood = async id => {
     try {
-      const response = await axios.post(
-        `https://foodserver-five.vercel.app/api/food/remove`,
-        {id},
-      );
+      const response = await axios.post(`${LAPTOP_IP}:4000/api/food/remove`, {
+        id,
+      });
       if (response.data.success) {
         console.warn(response.data.message);
-        await fetchdata();
+        await fetchFoodList();
       } else {
         console.warn(response.data.message);
       }
@@ -39,7 +31,7 @@ const ListItem = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={listFood}
+        data={foodList}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
         renderItem={({item}) => (

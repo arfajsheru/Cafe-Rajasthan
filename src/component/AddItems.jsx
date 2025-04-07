@@ -6,11 +6,12 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
-import React, { useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState} from 'react';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Text, TextInput} from 'react-native-gesture-handler';
 import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
+import { FoodItemContext } from '../context/FoodItemContext';
 
 const AddItems = () => {
   const [imageUri, setImageUri] = useState(null);
@@ -26,6 +27,7 @@ const AddItems = () => {
   const [current_Price, setCurrent_Price] = useState(0);
   const [offer, setOffer] = useState(0);
   const [checkbox, setCheckBox] = useState(false);
+  const {LAPTOP_IP} = useContext(FoodItemContext);
 
   const categories = ['Dahi & Salad', 'Chinese Starter', 'Soup','Chiken Sauce', 'Others'];
 
@@ -64,7 +66,7 @@ const AddItems = () => {
       }
 
       const response = await axios.post(
-        `http://192.168.0.121:4000/api/food/add`,
+        `${LAPTOP_IP}:4000/api/food/add`,
         formdata,
         {
           headers: {

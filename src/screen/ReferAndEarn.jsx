@@ -1,4 +1,4 @@
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 
 const ReferAndEarn = () => {
@@ -76,9 +76,12 @@ const ReferAndEarn = () => {
               <Text style={styles.referStepText}>{step}</Text>
             </View>
           ))}
-          <View style={styles.dottedborder}></View>
         </View>
       </View>
+
+      <TouchableOpacity style={styles.inviteFriend} activeOpacity={0.8}>
+        <Text style={styles.btnText}>Invite your friends </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -208,10 +211,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   referSteps: {
-    position:'relative',
+   
     marginLeft: 10,
     gap: 20,
-    zIndex:1,
+    zIndex:100,
     
   },
   referStepText: {
@@ -238,12 +241,19 @@ const styles = StyleSheet.create({
     fontSize:15,
     fontWeight:'medium'
   },
-  dottedborder:{
-    position:'absolute',
-    borderWidth:1,
-    height:"100%",
-    left:9,
-    borderStyle:'dotted',
-    zIndex:-1,
+  inviteFriend: {
+    marginTop:30,
+    paddingVertical:10,
+    paddingHorizontal:30,
+    backgroundColor:"#ad954d",
+    alignSelf:'center',
+    borderRadius:5,
+  },
+  btnText: {
+    fontSize:17,
+    fontWeight:'bold',
+    textTransform:'capitalize',
+    color:"#fff",
+    
   }
 });
