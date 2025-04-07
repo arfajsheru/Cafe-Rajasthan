@@ -2,16 +2,17 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { data } from '../data';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export const FoodItemContext = createContext(); 
 
 const FoodItemProvider = ({ children }) => {
-  const {token} = useContext(AuthContext);
+  const {token, LAPTOP_IP} = useContext(AuthContext);
   const[modalVisible, setModalVisible] = useState(false);
   const[isfilterOpen, setisFilterOpen] = useState(false);
   const[cartItems, setCartItems] = useState({})
   const[foodList, setFoodlist] = useState([])
   const delevery_fees = 10;
-
+  
   const addToCart = async(itemId) => {
     if(!cartItems[itemId]) {
       setCartItems((prev) => ({...prev, [itemId]:1}))
@@ -20,23 +21,29 @@ const FoodItemProvider = ({ children }) => {
       setCartItems((prev) => ({...prev,[itemId]: prev[itemId] + 1}))
     }
     if(token){
-      await axios.post("http://192.168.0.127:4000/api/cart/add", {itemId}, {headers:{token}})
+      await axios.post(`${LAPTOP_IP}:4000/api/cart/add`, {itemId}, {headers:{token}})
     }
   }
 
-  const updateCartItems = (itemId) => {
+  const updateCartItems = async(itemId) => {
     setCartItems((prev) => {
       const { [itemId]: _, ...updatedCart } = prev;
       return prev[itemId] > 1 ? { ...prev, [itemId]: prev[itemId] - 1 } : updatedCart;
     });
+
+    if(token){
+      await axios.post(`${LAPTOP_IP}:4000/api/cart/remove`, {itemId}, {headers:{token}})
+    }
   };
 
-  const removeCartItems = (itemId) => {
+  const removeCartItems = async(itemId) => {
     setCartItems(preveCart => {
       const updateCart = {...preveCart}
       delete updateCart[itemId]
       return updateCart
     })
+     
+  
   }
 
   const  getCartAmount = () =>  {
@@ -57,15 +64,36 @@ const FoodItemProvider = ({ children }) => {
     return { totalAmount, totalOffer };
 }
 
-
-  const fetchList = async () => {
-    const response = await axios.get("http://192.168.0.127:4000/api/food/list");
+  const fetchFoodList = async () => {
+    const response = await axios.get(`${LAPTOP_IP}:4000/api/food/list`);
     setFoodlist(response.data.products);
+  }
+
+  const loadCartData = async (token) => {
+    const response = await axios.get(`${LAPTOP_IP}:4000/api/cart/get`, {
+      headers: { token }
+    });
+    setCartItems(response.data.cartData)
+    console.log(AsyncStorage.getItem('token'))
+    console.log(response.data.cartData)
   }
   
 
   useEffect(() => {
-    fetchList()   
+
+    
+    const loadData = async () => {
+      try {
+        const gettoken = await AsyncStorage.getItem("token")
+        await fetchFoodList()
+        if(getCartAmount){
+          await loadCartData(gettoken)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    loadData()
   },[])
 
   const value = {

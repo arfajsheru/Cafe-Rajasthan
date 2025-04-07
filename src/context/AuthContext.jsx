@@ -1,14 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React, {createContext, useEffect, useRef, useState} from 'react';
-import { navigate } from '../navigation/navigationRef';
+import {navigate} from '../navigation/navigationRef';
 
 export const AuthContext = createContext();
 
-
 const AuthProvider = ({children}) => {
   const [token, setToken] = useState('');
-  
+  const LAPTOP_IP = process.env.LAPTOP_IP;
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -18,7 +17,6 @@ const AuthProvider = ({children}) => {
   const correctPattern = ['UP', 'UP', 'DOWN', 'LEFT', 'RIGHT'];
   const timeoutRef = useRef(null);
   const [currState, setCurrState] = useState('Login');
-  
 
   const resetGesture = () => {
     gestureSequence.current = [];
@@ -33,28 +31,25 @@ const AuthProvider = ({children}) => {
     setData(prevData => ({...prevData, [key]: value}));
   };
 
-
   useEffect(() => {
-   const getToken = async() => {
-    try {
-      const storedToken = await AsyncStorage.getItem("token");
-      const userEmail = await AsyncStorage.getItem("email");
-      if(storedToken){
-        setToken(storedToken);
-        setData({
-          name: '', 
-          email: userEmail,
-          password: '', 
-        });
-        navigate("Main")
+    const getToken = async () => {
+      try {
+        const storedToken = await AsyncStorage.getItem('token');
+        const userEmail = await AsyncStorage.getItem('email');
+        if (storedToken) {
+          setToken(storedToken);
+          setData({
+            name: '',
+            email: userEmail,
+            password: '',
+          });
+          navigate('Main');
+        }
+      } catch (error) {
+        console.error('Error fetching token', error);
       }
-
-    } catch (error) {
-      console.error("Error fetching token", error)
-    }
-   }              
- 
-   getToken();            
+    };
+    getToken();
   }, [token]);
 
   value = {
@@ -70,6 +65,7 @@ const AuthProvider = ({children}) => {
     setCurrState,
     toggleAuth,
     handleChange,
+    LAPTOP_IP,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

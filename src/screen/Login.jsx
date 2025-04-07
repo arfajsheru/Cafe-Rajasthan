@@ -22,6 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const navigation = useNavigation();
+  const {LAPTOP_IP} = useContext(AuthContext);
   const {
     setToken,
     data,
@@ -32,7 +33,6 @@ const Login = () => {
     currState,
     toggleAuth,
     handleChange,
-    setData
   } = useContext(AuthContext);
 
   const handleGestureEnd = event => {
@@ -67,10 +67,11 @@ const Login = () => {
 
   const handleAuth = async () => {
     try {
+      console.log(LAPTOP_IP);
       const url =
         currState === 'Login'
-          ? `http://192.168.0.127:4000/api/user/login`
-          : `http://192.168.0.127:4000/api/user/register`;
+          ? `${LAPTOP_IP}:4000/api/user/login`
+          : `${LAPTOP_IP}:4000/api/user/register`;
       const response = await axios.post(url, data);
       setToken(token);
       const token = response.data.token;
@@ -78,12 +79,10 @@ const Login = () => {
 
       await AsyncStorage.setItem('token', token);
       await AsyncStorage.setItem('email', email);
-      
+
       if (response.data.success) {
         Alert.alert('Success', response.data.message);
-        if (currState === 'Login') {
-          navigation.replace('Main');
-        } else {
+        if (!currState === 'Login') {
           toggleAuth();
         }
       } else {
