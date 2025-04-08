@@ -9,7 +9,7 @@ const FoodItemProvider = ({children}) => {
   const {token} = useContext(AuthContext);
   const LAPTOP_IP = process.env.LAPTOP_IP;
   const [modalVisible, setModalVisible] = useState(false);
-  const [isfilterOpen, setisFilterOpen] = useState(false);
+  const [isfilterOpen, setisFilterOpen] = useState(false);      
   const [cartItems, setCartItems] = useState({});
   const [foodList, setFoodlist] = useState([]);
   const delevery_fees = 10;
@@ -52,6 +52,10 @@ const FoodItemProvider = ({children}) => {
       delete updateCart[itemId];
       return updateCart;
     });
+
+    if(token){
+      await axios.post(LAPTOP_IP+":4000/api/cart/delete",{itemId}, {headers:{token}})
+    }
   };
 
   const getCartAmount = () => {
@@ -76,14 +80,12 @@ const FoodItemProvider = ({children}) => {
     const response = await axios.get(`${LAPTOP_IP}:4000/api/food/list`);
     setFoodlist(response.data.products);
   };
-
+    
   const loadCartData = async token => {
     const response = await axios.get(`${LAPTOP_IP}:4000/api/cart/get`, {
       headers: {token},
     });
     setCartItems(response.data.cartData);
-    console.log(AsyncStorage.getItem('token'));
-    console.log(response.data.cartData);
   };
 
   useEffect(() => {

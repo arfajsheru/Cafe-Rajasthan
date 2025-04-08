@@ -68,7 +68,6 @@ const Login = () => {
   const handleAuth = async () => {
     try {
       console.log(LAPTOP_IP)
-      console.log(LAPTOP_IP);
       const url =
         currState === 'Login'
           ? `${LAPTOP_IP}:4000/api/user/login`

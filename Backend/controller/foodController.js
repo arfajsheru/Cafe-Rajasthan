@@ -69,9 +69,6 @@ const addFood = async (req, res) => {
   }
 };
 
-
-
-
 // List food controller
 const listFood = async (req, res) => {
   try {

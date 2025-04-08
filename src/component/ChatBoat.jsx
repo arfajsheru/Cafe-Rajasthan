@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   aiContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: "#ad954d",
     padding: 5,
     borderRadius: 50, // Full round effect
   },
@@ -32,6 +32,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     resizeMode: 'contain',
-    tintColor:"#ad954d"
+    tintColor:"#fff"
   },
 });
