@@ -6,13 +6,72 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  StatusBar
+  StatusBar,
+  Linking 
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import CartTotal from '../component/CartTotal';
+import { FoodItemContext } from '../context/FoodItemContext';
+import { AuthContext } from '../context/AuthContext';
+import axios from 'axios';
 
 const ProcessToCheckOut = () => {
   const [paymentMethode, setPaymentMethode] = useState('Cod');
+  const {foodList, cartItems,getCartAmount,LAPTOP_IP} = useContext(FoodItemContext)
+  const {token} = useContext(AuthContext);
+
+  const [data, setData] = useState({
+    firstname:"",
+    lastname:"",
+    email:"",
+    street:"",
+    city:"",
+    state:"",
+    zipcode:"",
+    country:"",
+    phone:"",
+  });
+
+  const onChangeHandle = (filedname, value) => {
+    setData(prevdata => ({...prevdata, [filedname]:value}))
+  }
+
+
+  const placeOrder = async(event) => {
+    event.preventDefault();
+  
+    let orderItems = [];
+    foodList.map((item) => {
+      if (cartItems[item._id] > 0) {
+        let itemInfo = { ...item };
+        itemInfo["quantity"] = cartItems[item._id];
+        orderItems.push(itemInfo);
+      }
+    });
+
+    const {totalAmount} = getCartAmount();
+    let orderData = {
+      address: data,
+      items: orderItems,
+      amount: totalAmount+ 10,
+    };
+  
+    try {
+      let response = await axios.post(LAPTOP_IP + ":4000/api/order/place", orderData, {
+        headers: { token }
+      });
+  
+      if (response.data.success) {
+        const { session_url } = response.data;
+  
+        // 👉 Open Stripe Checkout Page
+        Linking.openURL(session_url);
+        console.log(session_url)
+      }
+    } catch (err) {
+      console.log("Order error:", err);
+    }
+  };
   return (
     <ScrollView style={styles.container}   
     
@@ -24,20 +83,20 @@ const ProcessToCheckOut = () => {
         <Text style={styles.titleText}>Delivery Information</Text>
         <View>
           <View style={styles.inputsContainer}>
-            <TextInput placeholder="First name" style={styles.input} />
-            <TextInput placeholder="Last name" style={styles.input} />
+            <TextInput  onChangeText={(text) => onChangeHandle("firstname", text)} value={data.firstname} placeholder="First name" style={styles.input} />
+            <TextInput  onChangeText={(text) => onChangeHandle("lastname", text)} value={data.lastname} placeholder="Last name" style={styles.input} />
           </View>
-          <TextInput placeholder="Email address" style={styles.inputFull} />
-          <TextInput placeholder="Street" style={styles.inputFull} />
+          <TextInput  onChangeText={(text) => onChangeHandle("email", text)} value={data.email} placeholder="Email address" style={styles.inputFull} />
+          <TextInput  onChangeText={(text) => onChangeHandle("street", text)} value={data.street} placeholder="Street" style={styles.inputFull} />
           <View style={styles.inputsContainer}>
-            <TextInput placeholder="City" style={styles.input} />
-            <TextInput placeholder="State" style={styles.input} />
+            <TextInput  onChangeText={(text) => onChangeHandle("city", text)} value={data.city} placeholder="City" style={styles.input} />
+            <TextInput  onChangeText={(text) => onChangeHandle("state", text)} value={data.state} placeholder="State" style={styles.input} />
           </View>
           <View style={styles.inputsContainer}>
-            <TextInput placeholder="Zipcode" style={styles.input} />
-            <TextInput placeholder="Country" style={styles.input} />
+            <TextInput  onChangeText={(text) => onChangeHandle("zipcode", text)} value={data.zipcode} placeholder="Zipcode" style={styles.input} />
+            <TextInput onChangeText={(text) => onChangeHandle("country", text)} value={data.country} placeholder="Country" style={styles.input} />
           </View>
-          <TextInput placeholder="Phone" style={styles.inputFull} />
+          <TextInput  onChangeText={(text) => onChangeHandle("phone", text)} value={data.phone} placeholder="Phone" style={styles.inputFull} />
         </View>
       </View>
 
@@ -90,7 +149,7 @@ const ProcessToCheckOut = () => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.btn} activeOpacity={0.6}>
+      <TouchableOpacity onPress={placeOrder} style={styles.btn} activeOpacity={0.6}>
         <Text style={styles.btntext}>Place order</Text>
       </TouchableOpacity>
     </ScrollView>

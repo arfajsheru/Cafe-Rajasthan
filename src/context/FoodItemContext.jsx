@@ -1,8 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import {data} from '../data';
 import axios from 'axios';
 import {AuthContext} from './AuthContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 export const FoodItemContext = createContext();
 
 const FoodItemProvider = ({children}) => {
@@ -112,7 +110,7 @@ const FoodItemProvider = ({children}) => {
     addToCart,
     updateCartItems,
     removeCartItems,
-    data,
+
     getCartAmount,
     delevery_fees,
     foodList,
