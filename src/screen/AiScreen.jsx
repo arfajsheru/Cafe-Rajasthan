@@ -20,6 +20,7 @@ const AiScreen = () => {
     const newMessages = [...messages, { role: "user", content: query }];
     setMessages(newMessages);
     setQuery("");
+    console.log(process.env.OPENAI_API);
 
 
     try {
@@ -31,7 +32,7 @@ const AiScreen = () => {
         },
         {
           headers: {
-            "Authorization": `Bearer ${process}}`,
+            "Authorization": `Bearer ${process.env.OPENAI_API}`,
             "Content-Type": "application/json"
           }
         }

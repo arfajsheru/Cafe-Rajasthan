@@ -20,6 +20,8 @@ import CustomeScreenHeader from '../component/CustomeScreenHeader';
 import FoodDetails from '../screen/FoodDetails';
 import FoodDetailsHeader from '../component/FoodDetailsHeader';
 import ProcessToCheckOut from '../screen/ProcessToCheckOut';
+import PaymentWebView from '../screen/PaymentWebView';
+import Verify from '../screen/Verify';
 
 const stack = createStackNavigator();
 
@@ -72,6 +74,8 @@ const StackNavigator = () => {
       <stack.Screen name="MyProfile" component={MyProfile} />
       <stack.Screen name="ReferEarn" component={ReferAndEarn} />
       <stack.Screen name="Coupons" component={Coupons} />
+      <stack.Screen name="Payment"  component={PaymentWebView}/>
+      <stack.Screen name="verify" component={Verify} />
       <stack.Screen
         name="Checkout"
         component={ProcessToCheckOut}

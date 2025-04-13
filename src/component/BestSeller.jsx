@@ -9,7 +9,7 @@ const BestSeller = () => {
       <Text style={styles.title}>BestSeller Products</Text>
 
       <FlatList
-        data={foodList}
+        data={foodList.filter(item => item.bestSeller === true)}
         renderItem={({item}) => <ProductItem item={item} />}
         keyExtractor={item => item._id.toString()}
         numColumns={2}

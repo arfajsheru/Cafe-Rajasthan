@@ -14,10 +14,12 @@ import CartTotal from '../component/CartTotal';
 import { FoodItemContext } from '../context/FoodItemContext';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const ProcessToCheckOut = () => {
   const [paymentMethode, setPaymentMethode] = useState('Cod');
   const {foodList, cartItems,getCartAmount,LAPTOP_IP} = useContext(FoodItemContext)
+  const navigation = useNavigation();
   const {token} = useContext(AuthContext);
 
   const [data, setData] = useState({
@@ -60,12 +62,12 @@ const ProcessToCheckOut = () => {
       let response = await axios.post(LAPTOP_IP + ":4000/api/order/place", orderData, {
         headers: { token }
       });
-  
+
       if (response.data.success) {
         const { session_url } = response.data;
   
         // 👉 Open Stripe Checkout Page
-        Linking.openURL(session_url);
+        navigation.navigate("Payment", {session_url: session_url})
         console.log(session_url)
       }
     } catch (err) {

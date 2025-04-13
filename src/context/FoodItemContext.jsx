@@ -92,6 +92,7 @@ const FoodItemProvider = ({children}) => {
         await fetchFoodList();
         if (token) {
           await loadCartData(token);
+          console.log(LAPTOP_IP)
         }
       } catch (error) {
         console.log(error);

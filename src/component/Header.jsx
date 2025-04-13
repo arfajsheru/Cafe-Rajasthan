@@ -51,7 +51,7 @@ const Header = () => {
               style={styles.profileIcon}
               source={require('../assets/login.png')}
             />
-          </TouchableOpacity>: (
+          </TouchableOpacity> : (
             <TouchableOpacity style={styles.signIn} activeOpacity={0.5} onPress={() => navigation.navigate("Login")}>
                 <Text style={{fontSize:20, fontWeight:500,color:"#fff"}}>Sign in</Text>
             </TouchableOpacity>

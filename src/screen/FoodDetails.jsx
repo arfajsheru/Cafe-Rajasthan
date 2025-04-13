@@ -2,7 +2,6 @@ import {
   View,
   Text,
   Image,
-  FlatList,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
@@ -80,26 +79,26 @@ const FoodDetails = ({route}) => {
 
         {/* Button add to cart */}
         <View style={styles.priceandbtn}>
-          {!cartItems[product.id] ? (
+          {!cartItems[product._id] ? (
             <TouchableOpacity
               style={styles.addbtn}
               activeOpacity={1}
-              onPress={() => addToCart(product.id)}>
+              onPress={() => addToCart(product._id)}>
               <Text style={styles.addbtntext}>Add To Cart</Text>
             </TouchableOpacity>
           ) : (
             <View style={styles.veiwCartContainer}>
               <View style={styles.addbtnquantity} activeOpacity={1}>
-                <TouchableOpacity onPress={() => updateCartItems(product.id)}>
+                <TouchableOpacity onPress={() => updateCartItems(product._id)}>
                   <Image
                     style={styles.minusandplusbtn}
                     source={require('../assets/minus.png')}
                   />
                 </TouchableOpacity>
                 <Text style={styles.addbtnquantityText}>
-                  {cartItems[product.id]}
+                  {cartItems[product._id]}
                 </Text>
-                <TouchableOpacity onPress={() => addToCart(product.id)}>
+                <TouchableOpacity onPress={() => addToCart(product._id)}>
                   <Image
                     style={styles.minusandplusbtn}
                     source={require('../assets/plus.png')}

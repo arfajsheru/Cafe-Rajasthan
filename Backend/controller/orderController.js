@@ -6,7 +6,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRETE_KEY);
 
 // placing user order for frontend
 const placeOrder = async (req, res) => {
-  const frontend_url = 'http://localhost:8081';
+  const frontend_url = process.env.LAPTOP_IP;
   try {
     const newOrder = new orderModel({
       userId: req.body.userId,
@@ -56,8 +56,7 @@ const placeOrder = async (req, res) => {
 
 
 const verifyOrder = async (req,res) => {
-    const {orderId, success} = req.boyd;
-
+    const {orderId, success} = req.body;
     try {
         if(success==="true"){
             await orderModel.findByIdAndUpdate(orderId,{payment:true})
