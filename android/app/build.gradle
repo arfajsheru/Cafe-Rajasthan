@@ -53,3 +53,8 @@ dependencies {
         implementation jscFlavor
     }
 }
+
+project.ext.react = [
+    enableHermes: true,  // ya false based on your config
+    codegenEnabled: false // <<< Add this line
+]

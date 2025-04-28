@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -8,18 +8,41 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import {subCategories} from '../data';
+import {menu_list} from '../data';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
-const Filter = ({isfilterOpen, setisFilterOpen}) => {
-  const [category, setCategory] = useState('Veg');
-  const [checkbox, setCheckBox] = useState(false);
-  const [selectedSubCategory, setSelectedSubCategory] = useState([]);
+import {FoodItemContext} from '../context/FoodItemContext';
+const Filter = ({isfilterOpen, setisFilterOpen, filterProdcut, setFilterProduct}) => {
+  const {category, setCategory, selectedSubCategory, setSelectedSubCategory} = useContext(FoodItemContext);
+  const {foodList} = useContext(FoodItemContext);
+
 
   const handleSelected = item => {
     setSelectedSubCategory(prev =>
       prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item],
     );
   };
+
+  const applyFilter = () => {
+    let foodItemsCopy = foodList.slice();
+  
+    // category ke hisaab se filter karna
+    if (category === 'Veg' || category === 'Non-Veg') {
+      foodItemsCopy = foodItemsCopy.filter((item) => item.category === category);
+    }
+  
+    // subcategory ke hisaab se filter karna
+    if (selectedSubCategory.length > 0) {
+      foodItemsCopy = foodItemsCopy.filter((item) => {
+        return selectedSubCategory.includes(item.subcategory);
+      });
+    }
+  
+    setFilterProduct(foodItemsCopy);
+    setisFilterOpen(!isfilterOpen);
+  };
+  
+
+
 
   const slideAnim = useRef(new Animated.Value(2000)).current; // 🔥 Bottom se slide animation ke liye
   useEffect(() => {
@@ -66,11 +89,12 @@ const Filter = ({isfilterOpen, setisFilterOpen}) => {
             />
           </TouchableOpacity>
         </View>
-        {/* Category Box */}
         <ScrollView
           style={{flex: 1}}
           contentContainerStyle={{paddingBottom: 50}}
           keyboardShouldPersistTaps="handled">
+            
+            {/* Category Box */}
           <View style={styles.categoryContainer}>
             <Text style={styles.textTitle}>Category</Text>
             <View style={styles.radioContainer}>
@@ -100,10 +124,10 @@ const Filter = ({isfilterOpen, setisFilterOpen}) => {
           <View style={styles.categoryContainer}>
             <Text style={styles.textTitle}>Subcategory</Text>
             <FlatList
-              data={subCategories}
+              data={menu_list}
               scrollEnabled={false}
               renderItem={({item}) => {
-                const isChecked = selectedSubCategory.includes(item);
+                const isChecked = selectedSubCategory.includes(item.menu_name);
                 return (
                   <View style={styles.bestsellercontainer}>
                     <TouchableOpacity
@@ -111,7 +135,7 @@ const Filter = ({isfilterOpen, setisFilterOpen}) => {
                         styles.checkbox,
                         isChecked ? {backgroundColor: '#ad954d'} : {},
                       ]}
-                      onPress={() => handleSelected(item)}>
+                      onPress={() => handleSelected(item.menu_name)}>
                       {isChecked && (
                         <Image
                           source={require('../assets/check.png')}
@@ -119,15 +143,16 @@ const Filter = ({isfilterOpen, setisFilterOpen}) => {
                         />
                       )}
                     </TouchableOpacity>
-                    <Text style={styles.textTitle}>{item}</Text>
+                    <Text style={styles.textTitle}>{item.menu_name}</Text>
                   </View>
                 );
               }}
             />
           </View>
 
+          {/* Buttton Apply Filter */}
           <View style={styles.btnContainer}>
-            <TouchableOpacity style={styles.button} activeOpacity={0.7}>
+            <TouchableOpacity onPress={applyFilter} style={styles.button}  activeOpacity={0.7}>
               <Text>Apply</Text>
             </TouchableOpacity>
 
@@ -187,10 +212,10 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   textTitle: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: '400',
     marginBottom: 5,
-    textTransform: 'uppercase',
+    textTransform: 'capitalize',
   },
   radioContainer: {
     flexDirection: 'row',
@@ -246,7 +271,7 @@ const styles = StyleSheet.create({
   bestsellercontainer: {
     flexDirection: 'row',
     gap: 5,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginTop: 15,
   },
   checkbox: {
@@ -258,19 +283,19 @@ const styles = StyleSheet.create({
     borderColor: '#ad954d',
   },
   btnContainer: {
-    flex:1,
-    justifyContent:'space-between',
-    flexDirection:'row',
-    paddingHorizontal:20
+    flex: 1,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingHorizontal: 20,
   },
   button: {
-    height:35,
-    width:100,
-    justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:'#ad954d',
-    borderRadius:2,
-  }
+    height: 35,
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ad954d',
+    borderRadius: 2,
+  },
 });
 
 export default Filter;

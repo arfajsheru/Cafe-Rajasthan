@@ -17,7 +17,7 @@ const Menu = () => {
   const navigation = useNavigation();
   const [isfilterOpen, setisFilterOpen] = useState(false);
   const {foodList} = useContext(FoodItemContext);
-
+  const [filterProdcut, setFilterProduct] = useState(foodList);
 
   return (
     <View style={{flex: 1}}>
@@ -68,7 +68,7 @@ const Menu = () => {
 
         {/* Item list */}
         <FlatList
-          data={foodList}
+          data={filterProdcut}
           renderItem={({item}) => <ProductItem item={item} />}
           keyExtractor={item => item._id.toString()}
           numColumns={2}
@@ -78,6 +78,8 @@ const Menu = () => {
           <Filter
             isfilterOpen={isfilterOpen}
             setisFilterOpen={setisFilterOpen}
+            filterProdcut={filterProdcut}
+            setFilterProduct={setFilterProduct}
           />
         )}
       </View>

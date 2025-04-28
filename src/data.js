@@ -241,25 +241,77 @@ export const data = [
   },
 ];
 
-export const subCategories = [
-  'Dahi Salad',
-  'Main Course',
-  'Rice & Biryani',
-  'Breakfast',
-  'Drinks',
-  'Starters',
-  'Desserts',
-  'Fast Food',
-  'Soup',
-  'South Indian',
-  'North Indian',
-  'Chinese',
-  'Italian',
-  'Mexican',
-  'Snacks',
-  'Seafood',
-  'Barbecue',
-  'Sizzlers',
-  'Healthy Food',
-  'Street Food',
+export const menu_list = [
+  {
+    menu_name: "Dahi & Salad",
+   // menu_image: menu_1,
+  },
+  {
+    menu_name: "Chinese Starter",
+   // menu_image: menu_2,
+  },
+  {
+    menu_name: "Soup",
+   // menu_image: menu_3,
+  },
+  {
+    menu_name: "Chicken Sauce",
+   // menu_image: menu_4,
+  },
+  {
+    menu_name: "Noodles",
+   // menu_image: menu_5,
+  },
+  {
+    menu_name: "Fried Rice",
+   // menu_image: menu_6,
+  },
+  {
+    menu_name: "Veg Sauce",
+   // menu_image: menu_7,
+  },
+  {
+    menu_name: "Prawns",
+   // menu_image: menu_8,
+  },
+  {
+    menu_name: "Tandoori Dry",
+   // menu_image: menu_9,
+  },
+  {
+    menu_name: "Chicken Gravy",
+    //menu_image: menu_10,
+  },
+  {
+    menu_name: "Egg",
+    //menu_image: menu_11,
+  },
+  {
+    menu_name: "Mutton Gravy",
+    //menu_image: menu_12,
+  },
+  {
+    menu_name: "Paneer",
+    //menu_image: menu_13,
+  },
+  {
+    menu_name: "Vegetable",
+    //menu_image: menu_14,
+  },
+  {
+    menu_name: "Roti",
+    //menu_image: menu_15,
+  },
+  {
+    menu_name: "Biryani Pulao",
+    //menu_image: menu_16,
+  },
+  {
+    menu_name: "Thali",
+    //menu_image: menu_17,
+  },
+  {
+    menu_name: "Dessert",
+    //menu_image: menu_18,
+  },
 ];

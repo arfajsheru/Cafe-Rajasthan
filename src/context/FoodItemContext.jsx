@@ -12,6 +12,10 @@ const FoodItemProvider = ({children}) => {
   const [foodList, setFoodlist] = useState([]);
   const delevery_fees = 10;
 
+  // menu state 
+  const [category, setCategory] = useState('Veg');
+  const [selectedSubCategory, setSelectedSubCategory] = useState([]);
+
   const addToCart = async itemId => {
     if (!cartItems[itemId]) {
       setCartItems(prev => ({...prev, [itemId]: 1}));
@@ -90,9 +94,9 @@ const FoodItemProvider = ({children}) => {
     const loadData = async () => {
       try {
         await fetchFoodList();
+        console.log(LAPTOP_IP)
         if (token) {
           await loadCartData(token);
-          console.log(LAPTOP_IP)
         }
       } catch (error) {
         console.log(error);
@@ -116,7 +120,13 @@ const FoodItemProvider = ({children}) => {
     delevery_fees,
     foodList,
     LAPTOP_IP,
-    fetchFoodList
+    fetchFoodList,
+
+    category,
+    setCategory,
+    selectedSubCategory,
+    setSelectedSubCategory,
+    
   };
 
   return (
