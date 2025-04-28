@@ -72,6 +72,12 @@ const Menu = () => {
           renderItem={({item}) => <ProductItem item={item} />}
           keyExtractor={item => item._id.toString()}
           numColumns={2}
+          ListEmptyComponent={() => (
+            <View style={styles.emptyProductContainer}>
+              <Image style={styles.emptymenu} source={require("../assets/emptymenu.png")} />
+              <Text style={styles.emptyText}>No Products Found 😭</Text>
+            </View>
+          )}
         />
 
         {isfilterOpen && (
@@ -158,6 +164,22 @@ const styles = StyleSheet.create({
     height: 40,
     color: 'black',
   },
+  emptyProductContainer: {
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    padding:20,
+  },
+  emptymenu: {
+    width:400,
+    height:400,
+  },
+  emptyText: {
+    fontSize: 50,
+    fontWeight: 900,
+    color: '#D1D5DB',
+    textAlign:'center'
+  }
 });
 
 export default Menu;

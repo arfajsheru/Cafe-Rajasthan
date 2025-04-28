@@ -91,7 +91,7 @@ const Cart = () => {
                     style={{width: 200, height: 200, tintColor: '#D1D5DB'}}
                     source={require('../assets/emptycart.png')}
                   />
-                  <Text style={styles.emptyText}>Empty Cart</Text>
+                  <Text style={styles.emptyText}>Your Cart is Empty 😔</Text>
                 </View>
               ) : (
                 <View>
@@ -297,6 +297,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
     fontWeight: 900,
     color: '#D1D5DB',
+    textAlign:'center'
   },
   itemMissed: {
     backgroundColor: '#e5e7eb',
