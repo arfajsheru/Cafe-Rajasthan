@@ -6,13 +6,13 @@ import {
   TextInput,
   Image,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
 
 import {useNavigation} from '@react-navigation/native';
 import RollingBar from 'react-native-rolling-bar';
-
 const SearchInput = () => {
   const navigation = useNavigation();
+  
 
   return (
     <View style={styles.container}>

@@ -16,6 +16,11 @@ const FoodItemProvider = ({children}) => {
   const [category, setCategory] = useState('Veg');
   const [selectedSubCategory, setSelectedSubCategory] = useState([]);
 
+  // search state
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchFilter, setSearchFilter] = useState([]);
+
+
   const addToCart = async itemId => {
     if (!cartItems[itemId]) {
       setCartItems(prev => ({...prev, [itemId]: 1}));
@@ -90,6 +95,17 @@ const FoodItemProvider = ({children}) => {
     setCartItems(response.data.cartData);
   };
 
+  const handleSearchItems = () => {
+    if(!searchTerm ||searchTerm.trim() === ""){
+      setSearchFilter([]);
+    } 
+    else {
+      const filterData = foodList.filter((item) => 
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      setSearchFilter(filterData);
+    }
+  }
+
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -126,6 +142,12 @@ const FoodItemProvider = ({children}) => {
     setCategory,
     selectedSubCategory,
     setSelectedSubCategory,
+
+    searchTerm,
+    setSearchTerm,
+    setSearchFilter,
+    searchFilter,
+    handleSearchItems
     
   };
 

@@ -1,73 +1,44 @@
-import {View, Text, StyleSheet, Image, FlatList} from 'react-native';
-import React from 'react';
+import {View, Text, StyleSheet, Image, FlatList, TouchableOpacity} from 'react-native';
+import React, { useContext, useState } from 'react';
 import PopularSearch from '../component/PopularSearch';
+import { FoodItemContext } from '../context/FoodItemContext';
+import { useNavigation } from '@react-navigation/native';
 
 const Search = () => {
-  const foodItems = [
-    {
-      id: 1,
-      name: 'Tandoori Chicken',
-      price: 250,
-      image: require('../assets/food1.jpg'),
-    },
-    {
-      id: 2,
-      name: 'Mutton Biryani',
-      price: 320,
-      image: require('../assets/food2.jpg'),
-    },
-    {
-      id: 3,
-      name: 'Chicken Curry',
-      price: 200,
-      image: require('../assets/food3.jpg'),
-    },
-    {
-      id: 5,
-      name: 'Paneer Butter Masala',
-      price: 180,
-      image: require('../assets/food4.jpg'),
-    },
-    {
-      id: 6,
-      name: 'Mutton Gravy',
-      price: 280,
-      image: require('../assets/food5.jpg'),
-    },
-    {
-      id: 7,
-      name: 'Tandoori Roti',
-      price: 40,
-      image: require('../assets/category3.jpg'),
-    },
-    {
-      id: 8,
-      name: 'Dessert',
-      price: 150,
-      image: require('../assets/category1.jpg'),
-    },
-  ];
+  const {searchFilter} = useContext(FoodItemContext);
+  const navigation = useNavigation();
+
 
   return (
     <View style={styles.searchScreen}>
-      <PopularSearch />
 
+      <PopularSearch />
       <Text style={styles.title}>Search Items</Text>
 
+
       <FlatList
-        data={foodItems}
-        keyExtractor={item => item.id.toString()}
+        data={searchFilter}
+        keyExtractor={item => item._id.toString()}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyMessageContainer}>
+            <Image style={styles.emptySearchImage} source={require("../assets/emptySearch.png")} />
+            <Text style={styles.emptyMessageText}>No Products Found 😔</Text>
+          </View>
+        )}
         renderItem={({item}) => (
-          <View style={styles.searchitems}>
+          <TouchableOpacity style={styles.searchitems}
+          onPress={() => navigation.push('FoodDetails', {product: item})}
+          activeOpacity={0.8}
+          >
             <View style={styles.imagecontainer}>
-              <Image style={styles.image} source={item.image} />
+              <Image style={styles.image} source={{uri: item.image}} />
             </View>
             <Text style={styles.itemtext}>
               {item.name} 
-              - ₹{item.price}
+              - ₹{item.current_price}
             </Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -111,4 +82,23 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
   },
+  emptyMessageContainer: {
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    paddingVertical:100,
+    paddingHorizontal:10,
+    gap:20,
+  },
+  emptySearchImage: {
+    width:300,
+    height:300,
+    tintColor:'#D1D5DB'
+  },
+  emptyMessageText: {
+    fontSize: 50,
+    fontWeight: 900,
+    color: '#D1D5DB',
+    textAlign:'center'
+  }
 });

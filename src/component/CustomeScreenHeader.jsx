@@ -6,15 +6,23 @@ import {
   StatusBar,
   TouchableOpacity,
 } from 'react-native';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {TextInput} from 'react-native-gesture-handler';
+import { FoodItemContext } from '../context/FoodItemContext';
 
 const CustomeScreenHeader = () => {
+  const {searchTerm, setSearchTerm, handleSearchItems} = useContext(FoodItemContext);
+
+  useEffect(() => {
+    handleSearchItems()
+  },[searchTerm]) 
   return (
     <View style={styles.inputcontainer}>
       <Image style={styles.backicon} source={require('../assets/search.png')} />
       <TextInput style={styles.input}
+      value={searchTerm}
       placeholder="Search here..."
+      onChangeText={(text) => setSearchTerm(text)}
       autoFocus={true}
       
       />
