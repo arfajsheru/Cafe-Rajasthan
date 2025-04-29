@@ -18,7 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const ProcessToCheckOut = () => {
   const [paymentMethode, setPaymentMethode] = useState('Cod');
-  const {foodList, cartItems,getCartAmount,LAPTOP_IP} = useContext(FoodItemContext)
+  const {foodList, cartItems,setCartItems,getCartAmount,LAPTOP_IP} = useContext(FoodItemContext)
   const navigation = useNavigation();
   const {token} = useContext(AuthContext);
 
@@ -62,6 +62,7 @@ const ProcessToCheckOut = () => {
       let response = await axios.post(LAPTOP_IP + ":4000/api/order/place", orderData, {
         headers: { token }
       });
+      setCartItems({})
 
       if (response.data.success) {
         const { session_url } = response.data;
