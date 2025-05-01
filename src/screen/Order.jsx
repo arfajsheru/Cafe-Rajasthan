@@ -11,6 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import {FoodItemContext} from '../context/FoodItemContext';
 import axios from 'axios';
 import {AuthContext} from '../context/AuthContext';
+import OrderItem from '../component/OrderItem';
 
 const Order = () => {
   const navigation = useNavigation();
@@ -33,9 +34,13 @@ const Order = () => {
   };
 
   useEffect(() => {
-    loadOrderData(token);
-  }, [token]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadOrderData(token); // Token correct hai, just refetch karo
+    });
+    return unsubscribe
+  }, [navigation,token]);
   return (
+    
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerContainer}>
@@ -58,45 +63,11 @@ const Order = () => {
 
       <ScrollView style={styles.itemContainer}>
         <Text style={styles.title}>My Orders</Text>
-
         {/* ✅ Conditional Rendering Starts Here */}
         {token ? 
           (Array.isArray(orderData) && orderData.length > 0 ? (
-            orderData.map((order, index) => (
-              <View key={order._id || index} style={styles.order}>
-                <Text style={styles.orderName}>Order ID: {order._id}</Text>
-                <Text style={styles.username}>
-                  {new Date(order.date).toLocaleString()} | Status:{' '}
-                  {order.status}
-                </Text>
-                <Text style={styles.location}>
-                  {order.address.firstname} {order.address.lastname},{' '}
-                  {order.address.street}, {order.address.city},{' '}
-                  {order.address.state} - {order.address.zipcode}
-                </Text>
-                <View style={{marginTop: 10}}>
-                  {order.items.map((item, idx) => (
-                    <View key={idx} style={styles.row}>
-                      <Image source={{uri: item.image}} style={styles.image} />
-                      <View style={styles.orderInfo}>
-                        <Text style={styles.orderName}>{item.name}</Text>
-                        <Text style={styles.username}>
-                          Qty: {item.quantity} | Price: ₹{item.current_price} x{' '}
-                          {item.quantity}
-                        </Text>
-                      </View>
-                    </View>
-                  ))}
-                </View>
-                <View style={styles.details}>
-                  <Text style={styles.payment}>
-                    Total Amount: ₹{order.amount}
-                  </Text>
-                  <Text style={{color: order.payment ? 'green' : 'red'}}>
-                    Payment: {order.payment ? 'Paid' : 'Pending'}
-                  </Text>
-                </View>
-              </View>
+            orderData.map((order) => (
+              <OrderItem key={order._id} item={order} />
             ))
           ) : (
             <Text style={{textAlign: 'center', marginTop: 20, color: 'gray'}}>
@@ -146,6 +117,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flex: 1,
     padding: 15,
+    marginBottom:20,
   },
   title: {
     fontSize: 30,
@@ -153,61 +125,7 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     marginBottom: 10,
   },
-  order: {
-    backgroundColor: '#fff',
-    padding: 15,
-    marginBottom: 15,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  orderName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#222',
-  },
-  username: {
-    fontSize: 14,
-    color: '#555',
-    marginTop: 2,
-  },
-  location: {
-    fontSize: 13,
-    color: '#777',
-    marginTop: 4,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  image: {
-    width: 60,
-    height: 60,
-    borderRadius: 6,
-    resizeMode: 'cover',
-    marginRight: 10,
-    borderWidth: 1,
-    borderColor: '#eee',
-  },
-  orderInfo: {
-    flex: 1,
-  },
-  details: {
-    marginTop: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#eee',
-    paddingTop: 10,
-  },
-  payment: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginTop: 5,
-    color: '#444',
-  },
+  
   noLogin: {
     width: 400,
     height: 400,

@@ -89,14 +89,14 @@ const allOrderList = async (req, res) => {
     if (!orders || orders.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Koi order nahi mila bhai!',
+        message: 'Order not found',
       });
     }
 
     res.status(200).json({
       success: true,
       message: 'All orders fetched successfully!',
-      data: orders,
+      orders,
     });
   } catch (error) {
     console.log('❌ Error fetching all orders:', error.message);
