@@ -90,8 +90,7 @@ const FoodItemProvider = ({children}) => {
     
   const loadCartData = async token => {
     const response = await axios.get(`${LAPTOP_IP}:4000/api/cart/get`, {
-      headers: {token},
-      
+      headers: {token}, 
     });
     setCartItems(response.data.cartData);
   };
@@ -110,7 +109,8 @@ const FoodItemProvider = ({children}) => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        await fetchFoodList();  
+        await fetchFoodList();
+        console.log(LAPTOP_IP)
         if (token) {
           await loadCartData(token);
         }

@@ -1,7 +1,21 @@
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import axios from 'axios';
 
 const OrderList = () => {
+  const [orderList, setOrderList] = useState([]);
+  const {LAPTOP_IP} = useContext(AuthContext);
+  const fetchOrderList = async () => {
+    const response = axios.get(LAPTOP_IP+":4000/api/order/allorders")
+    // setOrderList(response.data)
+    setOrderList(response.data.orders)
+  }
+
+  useEffect (() => {
+fetchOrderList()
+  },[orderList])
+
   const orderdata = [
     {
       id: '1',
@@ -14,51 +28,7 @@ const OrderList = () => {
       date: '2024-03-06',
       price: 550,
     },
-    {
-      id: '2',
-      name: 'Veg Biryani, Raita',
-      username: 'priya_v',
-      location: 'Delhi, India',
-      items: 2,
-      methode: 'COD',
-      payment: 'Pending',
-      date: '2024-03-06',
-      price: 450,
-    },
-    {
-      id: '3',
-      name: 'Chicken Curry, Jeera Rice, Butter Roti',
-      username: 'amit_k',
-      location: 'Bangalore, India',
-      items: 3,
-      methode: 'Online Payment',
-      payment: 'Completed',
-      date: '2024-03-05',
-      price: 900,
-    },
-    {
-      id: '4',
-      name: 'Masala Dosa, Coconut Chutney',
-      username: 'sanya_g',
-      location: 'Pune, India',
-      items: 2,
-      methode: 'COD',
-      payment: 'Pending',
-      date: '2024-03-05',
-      price: 350,
-    },
-    {
-      id: '5',
-      name: 'Momos, Chilli Paneer, Fried Rice',
-      username: 'vikas_s',
-      location: 'Kolkata, India',
-      items: 3,
-      methode: 'Online Payment',
-      payment: 'Completed',
-      date: '2024-03-04',
-      price: 750,
-    },
-  ];
+ ];
 
   return (
     <View style={styles.container}>

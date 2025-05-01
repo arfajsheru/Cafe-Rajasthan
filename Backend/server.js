@@ -7,6 +7,7 @@ import userRouter from './routes/userRoute.js';
 import dotenv from 'dotenv';
 import cartRouter from './routes/CartRoute.js';
 import orderRouter from './routes/OrderRoute.js';
+import chatRouter from './routes/ChatRoutes.js';
 // app config
 const app = express();
 
@@ -31,6 +32,7 @@ app.use('/images', express.static('uploads'));
 app.use('/api/user', userRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/order', orderRouter);
+app.use('/api/chat', chatRouter);
 
 app.get('/', (req, res) => {
   res.send('Welcom to new Cafe Rajathan?');

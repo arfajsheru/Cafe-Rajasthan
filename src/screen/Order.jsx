@@ -18,12 +18,8 @@ const Order = () => {
   const {LAPTOP_IP} = useContext(FoodItemContext);
   const {token} = useContext(AuthContext);
 
-  const loaderOrderData = async () => {
+  const loadOrderData = async token => {
     try {
-      if (!token) {
-        setOrderData([]);
-      }
-
       const response = await axios.post(
         `${LAPTOP_IP}:4000/api/order/orderlist`,
         {},
@@ -31,12 +27,13 @@ const Order = () => {
       );
       setOrderData(response.data.orders);
     } catch (error) {
-      console.log('Error ' + error);
+      console.log('Error fetching order data:', error);
+      setOrderData([]); // fallback, if needed
     }
   };
 
   useEffect(() => {
-    loaderOrderData();
+    loadOrderData(token);
   }, [token]);
   return (
     <View style={styles.container}>
@@ -59,52 +56,64 @@ const Order = () => {
         </View>
       </View>
 
-      {/* Order items */}
       <ScrollView style={styles.itemContainer}>
         <Text style={styles.title}>My Orders</Text>
 
-
-        {/* Orders data */}
-        {orderData.map((order, index) => (
-          <View key={order._id || index} style={styles.order}>
-            {/* Order Meta Info */}
-            <Text style={styles.orderName}>Order ID: {order._id}</Text>
-            <Text style={styles.username}>
-              {new Date(order.date).toLocaleString()} | Status: {order.status}
-            </Text>
-
-            {/* Address */}
-            <Text style={styles.location}>
-              {order.address.firstname} {order.address.lastname},{' '}
-              {order.address.street}, {order.address.city},{' '}
-              {order.address.state} - {order.address.zipcode}
-            </Text>
-
-            {/* Ordered Items */}
-            <View style={{marginTop: 10}}>
-              {order.items.map((item, idx) => (
-                <View key={idx} style={styles.row}>
-                  <Image source={{uri: item.image}} style={styles.image} />
-                  <View style={styles.orderInfo}>
-                    <Text style={styles.orderName}>{item.name}</Text>
-                    <Text style={styles.username}>
-                      Qty: {item.quantity} | Price: ₹{item.current_price} x{' '}
-                      {item.quantity}
-                    </Text>
-                  </View>
+        {/* ✅ Conditional Rendering Starts Here */}
+        {token ? 
+          (Array.isArray(orderData) && orderData.length > 0 ? (
+            orderData.map((order, index) => (
+              <View key={order._id || index} style={styles.order}>
+                <Text style={styles.orderName}>Order ID: {order._id}</Text>
+                <Text style={styles.username}>
+                  {new Date(order.date).toLocaleString()} | Status:{' '}
+                  {order.status}
+                </Text>
+                <Text style={styles.location}>
+                  {order.address.firstname} {order.address.lastname},{' '}
+                  {order.address.street}, {order.address.city},{' '}
+                  {order.address.state} - {order.address.zipcode}
+                </Text>
+                <View style={{marginTop: 10}}>
+                  {order.items.map((item, idx) => (
+                    <View key={idx} style={styles.row}>
+                      <Image source={{uri: item.image}} style={styles.image} />
+                      <View style={styles.orderInfo}>
+                        <Text style={styles.orderName}>{item.name}</Text>
+                        <Text style={styles.username}>
+                          Qty: {item.quantity} | Price: ₹{item.current_price} x{' '}
+                          {item.quantity}
+                        </Text>
+                      </View>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
-
-            {/* Amount and Payment */}
-            <View style={styles.details}>
-              <Text style={styles.payment}>Total Amount: ₹{order.amount}</Text>
-              <Text style={{color: order.payment ? 'green' : 'red'}}>
-                Payment: {order.payment ? 'Paid' : 'Pending'}
-              </Text>
-            </View>
+                <View style={styles.details}>
+                  <Text style={styles.payment}>
+                    Total Amount: ₹{order.amount}
+                  </Text>
+                  <Text style={{color: order.payment ? 'green' : 'red'}}>
+                    Payment: {order.payment ? 'Paid' : 'Pending'}
+                  </Text>
+                </View>
+              </View>
+            ))
+          ) : (
+            <Text style={{textAlign: 'center', marginTop: 20, color: 'gray'}}>
+              Order not found ☺️
+            </Text>
+          )
+         ) : (
+          <View style={styles.noLoginContainer}>
+            <Image
+              style={styles.noLogin}
+              source={require('../assets/admin.png')}
+            />
+            <Text style={styles.textNoLogin}>
+              Please login to view your orders.
+            </Text>
           </View>
-        ))}
+        )}
       </ScrollView>
     </View>
   );
@@ -198,5 +207,25 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 5,
     color: '#444',
+  },
+  noLogin: {
+    width: 400,
+    height: 400,
+    tintColor: '#D1D5DB',
+    resizeMode: 'contain',
+  },
+  noLoginContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    marginTop: 20,
+  },
+  textNoLogin: {
+    fontSize: 45,
+    color: '#D1D5DB',
+    textTransform: 'uppercase',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });

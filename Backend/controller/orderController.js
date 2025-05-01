@@ -82,4 +82,29 @@ const fetchOrder = async (req, res) => {
   }
 };
 
-export {placeOrder, verifyOrder, fetchOrder};
+const allOrderList = async (req, res) => {
+  try {
+    const orders = await orderModel.find({}).sort({ createdAt: -1 });
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Koi order nahi mila bhai!',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'All orders fetched successfully!',
+      data: orders,
+    });
+  } catch (error) {
+    console.log('❌ Error fetching all orders:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Server error while fetching orders',
+    });
+  }
+};
+
+export {placeOrder, verifyOrder, fetchOrder, allOrderList};
