@@ -1,25 +1,20 @@
 import mongoose from "mongoose";
 
-const messageSchema = new mongoose.Schema({
+const chatSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ["user", "assistant"],
-    required: true
+    required: true,
   },
   content: {
     type: String,
-    required: true
-  }
-}, { timestamps: true });
-
-const chatSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true
+    required: true,
   },
-  messages: [messageSchema]
-}, { timestamps: true });
+  timestamp: {
+    type: Date,
+    default: Date.now
+  }
+});
 
 const chatModel = mongoose.models.Chat || mongoose.model("Chat", chatSchema);
 

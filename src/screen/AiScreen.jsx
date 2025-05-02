@@ -1,8 +1,10 @@
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 
 const AiScreen = () => {
+  const {LAPTOP_IP} = useContext(AuthContext);
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState([
     { role: "assistant", content: "Hello! Hii, how can I help you?" }
@@ -15,44 +17,77 @@ const AiScreen = () => {
       .replace(/[*#-]/g, '') // Remove *, #, -
   };
 
+  // const sendMessage = async () => {
+  //   if (!query) return;
+  //   const newMessages = [...messages, { role: "user", content: query }];
+  //   setMessages(newMessages);
+  //   setQuery("");
+  //   console.log(process.env.OPENAI_API);
+
+
+  //   try {
+  //     const response = await axios.post(
+  //       "https://api.openai.com/v1/chat/completions",
+  //       {
+  //         model: "gpt-4o-mini",
+  //         messages: newMessages,
+  //       },
+  //       {
+  //         headers: {
+  //           "Authorization": `Bearer ${process.env.OPENAI_API}`,
+  //           "Content-Type": "application/json"
+  //         }
+  //       }
+  //     );
+
+  //     const botReply = response.data.choices[0].message.content;
+  //     const formattedReply = formatResponse(botReply);
+
+  //     setMessages([...newMessages, { role: "assistant", content: formattedReply }]);
+  //   } catch (error) {
+  //     console.error("Error fetching AI response:", error);
+  //   }
+  // };
+
+  // Function to render AI response in a formatted way
+ 
   const sendMessage = async () => {
-    if (!query) return;
+    if (!query.trim()) return;
+  
     const newMessages = [...messages, { role: "user", content: query }];
     setMessages(newMessages);
     setQuery("");
-    console.log(process.env.OPENAI_API);
-
-
+  
     try {
       const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          model: "gpt-4o-mini",
-          messages: newMessages,
-        },
+        `${OPENAI_API}:4000/api/ai/chat `,
+        { messages: newMessages },
         {
           headers: {
-            "Authorization": `Bearer ${process.env.OPENAI_API}`,
-            "Content-Type": "application/json"
+            Authorization: `Bearer ${process.env.OPENAI_API}` // <- replace with actual token
           }
         }
       );
+  
+      const botReply = response.data;
+      const updatedMessages = [...newMessages, { role: botReply.role, content: botReply.content }];
+      setMessages(updatedMessages);
 
-      const botReply = response.data.choices[0].message.content;
-      const formattedReply = formatResponse(botReply);
-
-      setMessages([...newMessages, { role: "assistant", content: formattedReply }]);
     } catch (error) {
-      console.error("Error fetching AI response:", error);
+      console.error("Chat error:", error);
+      setMessages([...newMessages, {
+        role: "assistant",
+        content: "⚠️ Kuch to garbar hai, baad me try karna."
+      }]);
     }
   };
+  
 
-  // Function to render AI response in a formatted way
   const renderMessageContent = (content) => {
     if (Array.isArray(content)) {
       return content.map((line, index) => (
         <Text key={index} style={line.startsWith("🔥") ? styles.boldText : styles.text}>
-          {line.replace(/🔥/g, '')} 
+          {line.replace(/ /g, '')} 
         </Text>
       ));
     } else {

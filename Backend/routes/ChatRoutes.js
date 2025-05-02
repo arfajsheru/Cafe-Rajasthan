@@ -1,10 +1,9 @@
 import express from "express";
-import { getUserChat, saveUserMessage } from "../controller/ChatConroller.js";
+import { chatWithAI } from "../controller/ChatConroller.js";
 import authMiddleware from "../middleware/auth.js";
 
 const chatRouter = express.Router();
 
-chatRouter.get("/getchat", authMiddleware, getUserChat);
-chatRouter.post("/send", authMiddleware, saveUserMessage);
+chatRouter.post("/chat", authMiddleware, chatWithAI);
 
 export default chatRouter;

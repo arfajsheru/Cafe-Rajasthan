@@ -35,7 +35,7 @@ const Order = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      loadOrderData(token); // Token correct hai, just refetch karo
+      loadOrderData(token);
     });
     return unsubscribe
   }, [navigation,token]);
@@ -65,19 +65,22 @@ const Order = () => {
         <Text style={styles.title}>My Orders</Text>
         {/* ✅ Conditional Rendering Starts Here */}
         {token ? 
-          (Array.isArray(orderData) && orderData.length > 0 ? (
+          (Array.isArray(orderData) && orderData.length < 0 ? (
             orderData.map((order) => (
               <OrderItem key={order._id} item={order} />
             ))
           ) : (
-            <Text style={{textAlign: 'center', marginTop: 20, color: 'gray'}}>
-              Order not found ☺️
-            </Text>
+            <View style={styles.noOrderContainer}>
+              <Image style={styles.noOrderImage} source={require("../assets/noOrder.png")} />
+              <Text style={styles.textNoOrder}>
+                Order Not Found 😊
+              </Text>
+            </View>
           )
          ) : (
           <View style={styles.noLoginContainer}>
             <Image
-              style={styles.noLogin}
+              style={styles.noLoginImage}
               source={require('../assets/admin.png')}
             />
             <Text style={styles.textNoLogin}>
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   
-  noLogin: {
+  noLoginImage: {
     width: 400,
     height: 400,
     tintColor: '#D1D5DB',
@@ -146,4 +149,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
+  noOrderContainer:{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    marginTop: 20,
+  },
+  noOrderImage: {
+    width: 400,
+    height: 400,
+    tintColor: '#D1D5DB',
+    resizeMode: 'contain',
+  },
+  textNoOrder: {
+    fontSize: 50,
+    color: '#D1D5DB',
+    textTransform: 'uppercase',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  }
 });

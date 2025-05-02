@@ -3,17 +3,19 @@ import React, {useContext, useEffect, useState} from 'react';
 import {AuthContext} from '../context/AuthContext';
 import axios from 'axios';
 import OrderItem from './OrderItem';
+import { useNavigation } from '@react-navigation/native';
 
 const OrderList = () => {
   const [orderList, setOrderList] = useState([]);
-  const {LAPTOP_IP} = useContext(AuthContext);
+  const navigation = useNavigation();
+  const {LAPTOP_IP, selectedScreen} = useContext(AuthContext);
   const fetchOrderList = async () => {
     const response = await axios.get(LAPTOP_IP + ':4000/api/order/allorders');
     setOrderList(response.data.orders)
   };
 
   useEffect(() => {
-    fetchOrderList();
+      fetchOrderList();
   }, []);
 
 
@@ -23,7 +25,7 @@ const OrderList = () => {
 
       <FlatList
         data={orderList}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false}
         renderItem={({item}) => (
           <OrderItem key={item._id} item={item} />
