@@ -18,14 +18,14 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(
   cors({
-    origin: "http://192.168.0.122",
-    credentials: true,
+    origin: '*',
   })
 );
+// mongodb+srv://arfajsheru:arfajsheru98@cluster0.8c6er99.mongodb.net/?
 
 // MonogDB connect
 connectDB();
-
+ 
 // api end point
 app.use('/api/food', foodRouter);
 app.use('/images', express.static('uploads'));
