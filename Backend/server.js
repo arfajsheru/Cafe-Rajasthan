@@ -38,6 +38,8 @@ app.get('/', (req, res) => {
   res.send('Welcom to new Cafe Rajathan?');
 });
 
-app.listen(process.env.PORT || 4000, '0.0.0.0', () => {
-  console.log('http://localhost:4000');
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
