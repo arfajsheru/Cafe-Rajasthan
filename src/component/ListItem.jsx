@@ -10,11 +10,11 @@ import React, {useContext} from 'react';
 import axios from 'axios';
 import {FoodItemContext} from '../context/FoodItemContext';
 const ListItem = () => {
-  const {foodList, LAPTOP_IP, fetchFoodList} = useContext(FoodItemContext);
+  const {foodList, BACKEND_URL, fetchFoodList} = useContext(FoodItemContext);
 
   const removeFood = async id => {
     try {
-      const response = await axios.post(`${LAPTOP_IP}:4000/api/food/remove`, {
+      const response = await axios.post(`${BACKEND_URL}api/food/remove`, {
         id,
       });
       if (response.data.success) {
@@ -41,8 +41,8 @@ const ListItem = () => {
               <View style={styles.overlay} />
             </View>
             <View style={styles.priceContainer}>
-              <Text style={styles.itemTitle}>{item.name}</Text>
-              <Text style={styles.itemDesc}>{item.des}</Text>
+              <Text  style={styles.itemTitle}>{item.name}</Text>
+              <Text numberOfLines={2} ellipsizeMode='tail' style={styles.itemDesc}>{item.des}</Text>
               <View style={styles.prices}>
                 <Text style={styles.itemDupPrice}>Rs.{item.current_price}</Text>
                 <Text style={styles.itemOriPrice}>
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 11,
     color: '#64748B',
+    textAlign:'justify',
   },
   offerContainer: {
     borderWidth: 1.5,

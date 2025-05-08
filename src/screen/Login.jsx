@@ -22,7 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const navigation = useNavigation();
-  const {LAPTOP_IP} = useContext(AuthContext);
+  const {BACKEND_URL} = useContext(AuthContext);
   const {
     setToken,
     data,
@@ -67,11 +67,10 @@ const Login = () => {
 
   const handleAuth = async () => {
     try {
-      console.log(LAPTOP_IP)
       const url =
         currState === 'Login'
-          ? `${LAPTOP_IP}:4000/api/user/login`
-          : `${LAPTOP_IP}:4000/api/user/register`;
+          ? `${BACKEND_URL}api/user/login`
+          : `${BACKEND_URL}api/user/register`;
       const response = await axios.post(url, data);
       const token = response.data.token;
       const email = response.data.user.email;

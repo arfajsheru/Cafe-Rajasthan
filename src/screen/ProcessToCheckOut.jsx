@@ -59,11 +59,11 @@ const ProcessToCheckOut = () => {
     };
   
     try {
-      let response = await axios.post(LAPTOP_IP + ":4000/api/order/place", orderData, {
+      let response = await axios.post( LAPTOP_IP+":4000/api/order/place", orderData, {
         headers: { token }
       });
       setCartItems({})
-
+      console.log(response.data.success)
       if (response.data.success) {
         const { session_url } = response.data;
   

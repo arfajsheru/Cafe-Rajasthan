@@ -11,7 +11,8 @@ const PaymentWebView = ({route}) => {
     startInLoadingState
     renderLoading={() => (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" color="#ad954d" />
+        <ActivityIndicator
+        dicator size="large" color="#ad954d" />
       </View>
     )}
   />

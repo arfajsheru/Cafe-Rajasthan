@@ -6,6 +6,7 @@ export const FoodItemContext = createContext();
 const FoodItemProvider = ({children}) => {
   const {token} = useContext(AuthContext);
   const LAPTOP_IP = process.env.LAPTOP_IP;
+  const BACKEND_URL = process.env.BACKEND_URL;
   const [modalVisible, setModalVisible] = useState(false);
   const [isfilterOpen, setisFilterOpen] = useState(false);      
   const [cartItems, setCartItems] = useState({});
@@ -29,7 +30,7 @@ const FoodItemProvider = ({children}) => {
     }
     if (token) {
       await axios.post(
-        `${LAPTOP_IP}:4000/api/cart/add`,
+        `${BACKEND_URL}api/cart/add`,
         {itemId},
         {headers: {token}},
       );
@@ -46,7 +47,7 @@ const FoodItemProvider = ({children}) => {
 
     if (token) {
       await axios.post(
-        `${LAPTOP_IP}:4000/api/cart/remove`,
+        `${BACKEND_URL}api/cart/remove`,
         {itemId},
         {headers: {token}},
       );
@@ -61,7 +62,7 @@ const FoodItemProvider = ({children}) => {
     });
 
     if(token){
-      await axios.post(LAPTOP_IP+":4000/api/cart/delete",{itemId}, {headers:{token}})
+      await axios.post(BACKEND_URL +"api/cart/delete",{itemId}, {headers:{token}})
     }
   };
 
@@ -84,12 +85,12 @@ const FoodItemProvider = ({children}) => {
   };
 
   const fetchFoodList = async () => {
-    const response = await axios.get(`${LAPTOP_IP}:4000/api/food/list`);
+    const response = await axios.get(`${BACKEND_URL}api/food/list`);
     setFoodlist(response.data.products);
   };
     
   const loadCartData = async token => {
-    const response = await axios.get(`${LAPTOP_IP}:4000/api/cart/get`, {
+    const response = await axios.get(`${BACKEND_URL}api/cart/get`, {
       headers: {token}, 
     });
     setCartItems(response.data.cartData);
@@ -136,6 +137,7 @@ const FoodItemProvider = ({children}) => {
     delevery_fees,
     foodList,
     LAPTOP_IP,
+    BACKEND_URL,
     fetchFoodList,
 
     category,

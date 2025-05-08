@@ -30,7 +30,7 @@ const StackNavigator = () => {
     <stack.Navigator
       screenOptions={{
         headerShown: true,
-        headerTitleAlign: 'center',
+        headerTitleAlign: 'left',
         animation: 'slide_from_right', // 🔥 Right side se slide karega
         headerStyle: {
           backgroundColor: '#ad954f', // 🔥 Header ka background color

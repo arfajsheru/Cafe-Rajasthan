@@ -16,17 +16,18 @@ import OrderItem from '../component/OrderItem';
 const Order = () => {
   const navigation = useNavigation();
   const [orderData, setOrderData] = useState([]);
-  const {LAPTOP_IP} = useContext(FoodItemContext);
+  const {BACKEND_URL} = useContext(FoodItemContext);
   const {token} = useContext(AuthContext);
 
   const loadOrderData = async token => {
     try {
       const response = await axios.post(
-        `${LAPTOP_IP}:4000/api/order/orderlist`,
+        `${BACKEND_URL}api/order/orderlist`,
         {},
         {headers: {token}},
       );
       setOrderData(response.data.orders);
+      console.log(response)
     } catch (error) {
       console.log('Error fetching order data:', error);
       setOrderData([]); // fallback, if needed
@@ -65,7 +66,7 @@ const Order = () => {
         <Text style={styles.title}>My Orders</Text>
         {/* ✅ Conditional Rendering Starts Here */}
         {token ? 
-          (Array.isArray(orderData) && orderData.length < 0 ? (
+          (Array.isArray(orderData) && orderData.length > 0 ? (
             orderData.map((order) => (
               <OrderItem key={order._id} item={order} />
             ))

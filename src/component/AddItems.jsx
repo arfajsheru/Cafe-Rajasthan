@@ -27,7 +27,7 @@ const AddItems = () => {
   const [current_Price, setCurrent_Price] = useState(0);
   const [offer, setOffer] = useState(0);
   const [checkbox, setCheckBox] = useState(false);
-  const {LAPTOP_IP} = useContext(FoodItemContext);
+  const {BACKEND_URL} = useContext(FoodItemContext);
 
   const categories = ['Dahi & Salad', 'Chinese Starter', 'Soup','Chiken Sauce', 'Others'];
 
@@ -66,7 +66,7 @@ const AddItems = () => {
       }
 
       const response = await axios.post(
-        `${LAPTOP_IP}:4000/api/food/add`,
+        `${BACKEND_URL}api/food/add`,
         formdata,
         {
           headers: {
@@ -78,6 +78,7 @@ const AddItems = () => {
     } catch (error) {
       console.error('Error:', error.response?.data || error.message);
     }
+
   };
 
 

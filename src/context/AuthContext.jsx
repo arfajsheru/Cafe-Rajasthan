@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 const AuthProvider = ({children}) => {
   const [token, setToken] = useState('');
   const LAPTOP_IP = process.env.LAPTOP_IP;
+  const BACKEND_URL = process.env.BACKEND_URL;
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -63,6 +64,8 @@ const AuthProvider = ({children}) => {
     toggleAuth,
     handleChange,
     LAPTOP_IP,
+    BACKEND_URL
+
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

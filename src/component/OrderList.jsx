@@ -8,9 +8,9 @@ import { useNavigation } from '@react-navigation/native';
 const OrderList = () => {
   const [orderList, setOrderList] = useState([]);
   const navigation = useNavigation();
-  const {LAPTOP_IP, selectedScreen} = useContext(AuthContext);
+  const {BACKEND_URL, selectedScreen} = useContext(AuthContext);
   const fetchOrderList = async () => {
-    const response = await axios.get(LAPTOP_IP + ':4000/api/order/allorders');
+    const response = await axios.get(BACKEND_URL + 'api/order/allorders');
     setOrderList(response.data.orders)
   };
 

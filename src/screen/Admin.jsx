@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     position: 'absolute',
-    left: '50%',
+    left: '25%',
     transform: [{ translateX: "-50%"}], // Exact Center Fix
   },
   headerText: {
