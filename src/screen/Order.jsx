@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -17,20 +18,24 @@ const Order = () => {
   const navigation = useNavigation();
   const [orderData, setOrderData] = useState([]);
   const {BACKEND_URL} = useContext(FoodItemContext);
+  const [isLoading, setIsLoading] = useState(false);
   const {token} = useContext(AuthContext);
 
   const loadOrderData = async token => {
     try {
+      setIsLoading(true);
       const response = await axios.post(
         `${BACKEND_URL}api/order/orderlist`,
         {},
         {headers: {token}},
       );
       setOrderData(response.data.orders);
-      console.log(response)
+      console.log(response);
     } catch (error) {
       console.log('Error fetching order data:', error);
       setOrderData([]); // fallback, if needed
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -38,10 +43,9 @@ const Order = () => {
     const unsubscribe = navigation.addListener('focus', () => {
       loadOrderData(token);
     });
-    return unsubscribe
-  }, [navigation,token]);
+    return unsubscribe;
+  }, [navigation, token]);
   return (
-    
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerContainer}>
@@ -65,20 +69,7 @@ const Order = () => {
       <ScrollView style={styles.itemContainer}>
         <Text style={styles.title}>My Orders</Text>
         {/* ✅ Conditional Rendering Starts Here */}
-        {token ? 
-          (Array.isArray(orderData) && orderData.length > 0 ? (
-            orderData.map((order) => (
-              <OrderItem key={order._id} item={order} />
-            ))
-          ) : (
-            <View style={styles.noOrderContainer}>
-              <Image style={styles.noOrderImage} source={require("../assets/noOrder.png")} />
-              <Text style={styles.textNoOrder}>
-                Order Not Found 😊
-              </Text>
-            </View>
-          )
-         ) : (
+        {!token ? (
           <View style={styles.noLoginContainer}>
             <Image
               style={styles.noLoginImage}
@@ -87,6 +78,20 @@ const Order = () => {
             <Text style={styles.textNoLogin}>
               Please login to view your orders.
             </Text>
+          </View>
+        ) : isLoading ? (
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator size={70} color="#ad954d" />
+          </View>
+        ) : Array.isArray(orderData) && orderData.length > 0 ? (
+          orderData.map(order => <OrderItem key={order._id} item={order} />)
+        ) : (
+          <View style={styles.noOrderContainer}>
+            <Image
+              style={styles.noOrderImage}
+              source={require('../assets/noOrder.png')}
+            />
+            <Text style={styles.textNoOrder}>Order Not Found 😊</Text>
           </View>
         )}
       </ScrollView>
@@ -98,7 +103,7 @@ export default Order;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   headerContainer: {
     backgroundColor: '#ad954d',
@@ -121,7 +126,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flex: 1,
     padding: 15,
-    marginBottom:20,
+    marginBottom: 20,
   },
   title: {
     fontSize: 30,
@@ -129,7 +134,7 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     marginBottom: 10,
   },
-  
+
   noLoginImage: {
     width: 400,
     height: 400,
@@ -150,7 +155,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
-  noOrderContainer:{
+  noOrderContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -169,5 +174,11 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     textAlign: 'center',
     fontWeight: 'bold',
-  }
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop:200
+  },
 });

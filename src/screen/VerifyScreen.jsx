@@ -1,22 +1,21 @@
-import React, { useContext, useEffect } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
+import React from 'react';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import axios from 'axios';
-import { FoodItemContext } from '../context/FoodItemContext';
+import { WebView } from 'react-native-webview';
 
 const VerifyScreen = () => {
-  const { session_url } = route.params;
+  const route = useRoute();
   const navigation = useNavigation();
+  const { session_url } = route.params;
 
   const handleNavigationChange = (navState) => {
     const { url } = navState;
 
-    // ✅ Customize this part with your actual frontend success/cancel URLs
     if (url.includes('/verify')) {
       const success = url.includes('success=true');
       const orderId = new URL(url).searchParams.get('orderId');
 
-      navigation.replace('verify', { success, orderId });
+      navigation.replace('OrderSummary', { success, orderId }); // 👈 not 'verify'
     }
   };
 

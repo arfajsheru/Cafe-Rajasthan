@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {View, Text, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
 import React, {useContext} from 'react';
 import ProductItem from './ProductItem';
 import {FoodItemContext} from '../context/FoodItemContext';
@@ -11,10 +11,17 @@ const BestSeller = () => {
       <FlatList
         data={foodList.filter(item => item.bestSeller === true)}
         renderItem={({item}) => <ProductItem item={item} />}
-        keyExtractor={item => item._id.toString()}
+        keyExtractor={item => item._id}
         numColumns={2}
         columnWrapperStyle={styles.row}
+        ListEmptyComponent={
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator size={80} color="#ad954d"/>
+          </View>
+        }
       />
+
+
     </View>
   );
 };
@@ -33,4 +40,10 @@ const styles = StyleSheet.create({
   row: {
     justifyContent: 'space-between',
   },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 50,
+  }
 });

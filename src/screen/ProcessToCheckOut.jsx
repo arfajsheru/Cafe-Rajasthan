@@ -59,7 +59,7 @@ const ProcessToCheckOut = () => {
     };
   
     try {
-      let response = await axios.post( LAPTOP_IP+":4000/api/order/place", orderData, {
+      let response = await axios.post( LAPTOP_IP +":4000/api/order/place", orderData, {
         headers: { token }
       });
       setCartItems({})
@@ -69,7 +69,6 @@ const ProcessToCheckOut = () => {
   
         // 👉 Open Stripe Checkout Page
         navigation.navigate("Payment", {session_url: session_url})
-        console.log(session_url)
       }
     } catch (err) {
       console.log("Order error:", err);
@@ -86,20 +85,20 @@ const ProcessToCheckOut = () => {
         <Text style={styles.titleText}>Delivery Information</Text>
         <View>
           <View style={styles.inputsContainer}>
-            <TextInput  onChangeText={(text) => onChangeHandle("firstname", text)} value={data.firstname} placeholder="First name" style={styles.input} />
-            <TextInput  onChangeText={(text) => onChangeHandle("lastname", text)} value={data.lastname} placeholder="Last name" style={styles.input} />
+            <TextInput  require onChangeText={(text) => onChangeHandle("firstname", text)} value={data.firstname} placeholder="First name" style={styles.input} />
+            <TextInput require onChangeText={(text) => onChangeHandle("lastname", text)} value={data.lastname} placeholder="Last name" style={styles.input} />
           </View>
-          <TextInput  onChangeText={(text) => onChangeHandle("email", text)} value={data.email} placeholder="Email address" style={styles.inputFull} />
-          <TextInput  onChangeText={(text) => onChangeHandle("street", text)} value={data.street} placeholder="Street" style={styles.inputFull} />
+          <TextInput require onChangeText={(text) => onChangeHandle("email", text)} value={data.email} placeholder="Email address" style={styles.inputFull} />
+          <TextInput require onChangeText={(text) => onChangeHandle("street", text)} value={data.street} placeholder="Street" style={styles.inputFull} />
           <View style={styles.inputsContainer}>
-            <TextInput  onChangeText={(text) => onChangeHandle("city", text)} value={data.city} placeholder="City" style={styles.input} />
-            <TextInput  onChangeText={(text) => onChangeHandle("state", text)} value={data.state} placeholder="State" style={styles.input} />
+            <TextInput require onChangeText={(text) => onChangeHandle("city", text)} value={data.city} placeholder="City" style={styles.input} />
+            <TextInput require onChangeText={(text) => onChangeHandle("state", text)} value={data.state} placeholder="State" style={styles.input} />
           </View>
           <View style={styles.inputsContainer}>
-            <TextInput  onChangeText={(text) => onChangeHandle("zipcode", text)} value={data.zipcode} placeholder="Zipcode" style={styles.input} />
-            <TextInput onChangeText={(text) => onChangeHandle("country", text)} value={data.country} placeholder="Country" style={styles.input} />
+            <TextInput require onChangeText={(text) => onChangeHandle("zipcode", text)} value={data.zipcode} placeholder="Zipcode" style={styles.input} />
+            <TextInput require onChangeText={(text) => onChangeHandle("country", text)} value={data.country} placeholder="Country" style={styles.input} />
           </View>
-          <TextInput  onChangeText={(text) => onChangeHandle("phone", text)} value={data.phone} placeholder="Phone" style={styles.inputFull} />
+          <TextInput require onChangeText={(text) => onChangeHandle("phone", text)} value={data.phone} placeholder="Phone" style={styles.inputFull} />
         </View>
       </View>
 

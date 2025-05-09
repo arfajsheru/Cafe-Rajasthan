@@ -35,6 +35,12 @@ const Login = () => {
     handleChange,
   } = useContext(AuthContext);
 
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
   const handleGestureEnd = event => {
     const {translationX, translationY} = event;
     let direction = null;
@@ -66,27 +72,46 @@ const Login = () => {
   };
 
   const handleAuth = async () => {
+    setErrors({name: '', email: '', password: ''}); // reset errors
     try {
       const url =
         currState === 'Login'
           ? `${BACKEND_URL}api/user/login`
           : `${BACKEND_URL}api/user/register`;
       const response = await axios.post(url, data);
+
+      if (!response.data.success) {
+        const msg = response.data.message;
+
+        // Set field-level errors based on backend message
+        if (msg.includes('name')) setErrors(prev => ({...prev, name: msg}));
+        else if (msg.includes('email'))
+          setErrors(prev => ({...prev, email: msg}));
+        else if (msg.includes('Password'))
+          setErrors(prev => ({...prev, password: msg}));
+        else if (msg.includes('credentials') || msg.includes("doesn't exist")) {
+          setErrors(prev => ({...prev, email: msg}));
+          setErrors(prev => ({...prev, password: msg}));
+        } else {
+          Alert.alert('Error', msg); // fallback for unknown errors
+        }
+
+        return;
+      }
+
       const token = response.data.token;
       const email = response.data.user.email;
-      await AsyncStorage.setItem('token', token);
-      setToken(token);
-      await AsyncStorage.setItem('email', email);
 
-      if (response.data.success) {
-        Alert.alert('Success', response.data.message);
-        if (currState === 'Login') {
-          navigation.navigate("Main");
-        }else{
-          toggleAuth();
-        }
+      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('email', email);
+      setToken(token);
+
+      Alert.alert('Success', response.data.message);
+
+      if (currState === 'Login') {
+        navigation.navigate('Main');
       } else {
-        Alert.alert('Error', response.data.message);
+        toggleAuth();
       }
     } catch (error) {
       console.error('API Error:', error);
@@ -127,10 +152,12 @@ const Login = () => {
                   value={data.name}
                   onChangeText={text => handleChange('name', text)}
                 />
+                {errors.name !== '' && (
+                  <Text style={styles.error}>{errors.name}</Text>
+                )}
               </>
             )}
 
-            {/* Email Field */}
             <Text style={styles.label}>Email</Text>
             <TextInput
               style={styles.input}
@@ -139,8 +166,10 @@ const Login = () => {
               value={data.email}
               onChangeText={text => handleChange('email', text)}
             />
+            {errors.email !== '' && (
+              <Text style={styles.error}>{errors.email}</Text>
+            )}
 
-            {/* Password Field */}
             <Text style={styles.label}>Password</Text>
             <TextInput
               style={styles.input}
@@ -149,6 +178,9 @@ const Login = () => {
               value={data.password}
               onChangeText={text => handleChange('password', text)}
             />
+            {errors.password !== '' && (
+              <Text style={styles.error}>{errors.password}</Text>
+            )}
 
             {/* Login/Signup Button */}
             <TouchableOpacity style={styles.authBtn} onPress={handleAuth}>
@@ -222,7 +254,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.3,
     borderRadius: 3,
     paddingHorizontal: 10,
-    marginBottom: 20,
+    marginBottom: 5,
   },
   authBtn: {
     backgroundColor: '#ad954f',
@@ -259,5 +291,11 @@ const styles = StyleSheet.create({
     color: '#ad954f',
     fontWeight: 'bold',
     marginLeft: 5,
+  },
+  error: {
+    color: 'red',
+    alignSelf: 'flex-start',
+    marginBottom: 8,
+    fontSize: 15,
   },
 });

@@ -21,29 +21,30 @@ import FoodDetails from '../screen/FoodDetails';
 import FoodDetailsHeader from '../component/FoodDetailsHeader';
 import ProcessToCheckOut from '../screen/ProcessToCheckOut';
 import PaymentWebView from '../screen/PaymentWebView';
-import Verify from '../screen/Verify';
+
+import VerifyScreen from '../screen/VerifyScreen';
 
 const stack = createStackNavigator();
 
 const StackNavigator = () => {
   return (
     <stack.Navigator
-      screenOptions={{
-        headerShown: true,
-        headerTitleAlign: 'left',
-        animation: 'slide_from_right', // 🔥 Right side se slide karega
-        headerStyle: {
-          backgroundColor: '#ad954f', // 🔥 Header ka background color
-          elevation: 0, // 🔥 Android ke liye shadow remove
-          shadowOpacity: 0, // 🔥 iOS ke liye shadow remove
-        },
-      }}>
+    screenOptions={{
+      headerShown: true,
+      headerTitleAlign: 'left',
+      animation: 'slide_from_right', // 🔥 Right side se slide karega
+      headerStyle: {
+        backgroundColor: '#ad954f', // 🔥 Header ka background color
+        elevation: 0, // 🔥 Android ke liye shadow remove
+        shadowOpacity: 0, // 🔥 iOS ke liye shadow remove
+      },
+    }}>
       {/* <stack.Screen
         name="Splash"
         component={Splash}
         options={{headerShown: false}}
-      />
-      */}
+        />
+        */}
 
       <stack.Screen
         name="Main"
@@ -75,7 +76,6 @@ const StackNavigator = () => {
       <stack.Screen name="ReferEarn" component={ReferAndEarn} />
       <stack.Screen name="Coupons" component={Coupons} />
       <stack.Screen name="Payment"  component={PaymentWebView}/>
-      <stack.Screen name="verify" component={Verify} />
       <stack.Screen
         name="Checkout"
         component={ProcessToCheckOut}
@@ -114,6 +114,7 @@ const StackNavigator = () => {
           }),
         }}
       />
+        <stack.Screen name='verify' component={VerifyScreen} />
     </stack.Navigator>
   );
 };
