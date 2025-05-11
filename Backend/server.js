@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import cartRouter from './routes/CartRoute.js';
 import orderRouter from './routes/OrderRoute.js';
 import chatRouter from './routes/ChatRoutes.js';
+import feebackRouter from './routes/feedbackRoute.js';
 // app config
 const app = express();
 
@@ -33,7 +34,7 @@ app.use('/api/user', userRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/order', orderRouter);
 app.use('/api', chatRouter);
- 
+app.use('/api/feedback', feebackRouter);
 app.get('/', (req, res) => {
   res.send('Welcom to new Cafe Rajathan?');
 });
