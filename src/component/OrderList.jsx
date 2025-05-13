@@ -1,36 +1,49 @@
-import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
+import {View, Text, StyleSheet, FlatList, Image, ActivityIndicator} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {AuthContext} from '../context/AuthContext';
 import axios from 'axios';
 import OrderItem from './OrderItem';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const OrderList = () => {
   const [orderList, setOrderList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
   const {BACKEND_URL, selectedScreen} = useContext(AuthContext);
+
   const fetchOrderList = async () => {
-    const response = await axios.get(BACKEND_URL + 'api/order/allorders');
-    setOrderList(response.data.orders)
+    try {
+      const response = await axios.get(BACKEND_URL + 'api/order/allorders');
+      setOrderList(response.data.orders);
+    } catch (error) {
+      console.log('❌ Error fetching orders:', error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-      fetchOrderList();
+    fetchOrderList();
   }, []);
 
+    if (loading) {
+      return (
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" color="#ad954d" />
+          <Text style={{marginTop: 10, fontWeight: '600'}}>Loading Ordet Items...</Text>
+        </View>
+      );
+    }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.textTitle}>🛒 Order List</Text>
-
-      <FlatList
-        data={orderList}
-        keyExtractor={item => item._id}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item}) => (
-          <OrderItem key={item._id} item={item} />
-        )}
-      />
+       <Text style={styles.title}>Order List</Text>
+        <FlatList
+          data={orderList}
+          keyExtractor={item => item._id}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item}) => <OrderItem key={item._id} item={item} />}
+        />
     </View>
   );
 };
@@ -44,51 +57,19 @@ const styles = StyleSheet.create({
     paddingVertical: 25,
     backgroundColor: '#f7e6b9',
   },
-  textTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  loaderContainer: {
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
     marginBottom: 10,
+    color: '#2c3e50',
     textAlign: 'center',
   },
-  order: {
-    padding: 15,
-    borderWidth: 1,
-    borderColor: '#b5caf2',
-    marginBottom: 15,
-    borderRadius: 3,
-    backgroundColor: '#fff',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  image: {
-    width: 50,
-    height: 50,
-    resizeMode: 'contain',
-    marginRight: 10,
-  },
-  orderInfo: {
-    flex: 1,
-  },
-  orderName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  username: {
-    fontSize: 14,
-    color: '#555',
-  },
-  location: {
-    fontSize: 13,
-    color: '#777',
-  },
-  details: {
-    marginTop: 10,
-  },
-  payment: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginTop: 5,
+  loader: {
+    marginTop: 50,
   },
 });

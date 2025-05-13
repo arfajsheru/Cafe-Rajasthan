@@ -6,6 +6,7 @@ import AdminSidebar from '../component/AdminSidebar';
 import AddItems from '../component/AddItems';
 import { AdminContext } from '../context/AdminContext';
 import ListItem from '../component/ListItem';
+import FeedbackList from '../component/FeedbackList';
 
 const Admin = () => {
   const { selectedScreen } = useContext(AdminContext);
@@ -35,6 +36,7 @@ const Admin = () => {
         {selectedScreen === 'AddItem' && <AddItems />}
         {selectedScreen === 'ItemList' && <ListItem />}
         {selectedScreen === 'OrderList' && <OrderList />}
+        {selectedScreen === 'FeedbackList' && <FeedbackList />}
       </View>
     </View>
   );

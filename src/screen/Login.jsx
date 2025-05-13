@@ -1,4 +1,4 @@
-import React, {useState, useRef, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -83,21 +83,41 @@ const Login = () => {
       if (!response.data.success) {
         const msg = response.data.message;
 
-        // Set field-level errors based on backend message
-        if (msg.includes('name')) setErrors(prev => ({...prev, name: msg}));
-        else if (msg.includes('email'))
-          setErrors(prev => ({...prev, email: msg}));
-        else if (msg.includes('Password'))
-          setErrors(prev => ({...prev, password: msg}));
-        else if (msg.includes('credentials') || msg.includes("doesn't exist")) {
-          setErrors(prev => ({...prev, email: msg}));
-          setErrors(prev => ({...prev, password: msg}));
-        } else {
-          Alert.alert('Error', msg); // fallback for unknown errors
+        // Reset previous errors
+        const newErrors = {name: '', email: '', password: ''};
+
+        // Handle "All fields are required"
+        if (msg === 'All fields are required') {
+          if (currState === 'Signup') newErrors.name = msg;
+          newErrors.email = msg;
+          newErrors.password = msg;
         }
 
-        return;
+        // Specific errors
+        if (msg === "User doesn't exist") {
+          newErrors.email = msg;
+        }
+
+        if (msg === 'Password is incorrect') {
+          newErrors.password = msg;
+        }
+
+        if (msg === 'User already exists') {
+          newErrors.email = msg;
+        }
+
+        if (msg === 'Password must be at least 8 characters long') {
+          newErrors.password = msg;
+        }
+
+        if (msg === 'Please enter a valid Email') {
+          newErrors.email = msg;
+        }
+
+        setErrors(newErrors);
+        return; // Stop here if there's an error
       }
+      
 
       const token = response.data.token;
       const email = response.data.user.email;
@@ -293,7 +313,8 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   error: {
-    color: 'red',
+    color: '#d0312d',
+    fontWeight:'700',
     alignSelf: 'flex-start',
     marginBottom: 8,
     fontSize: 15,

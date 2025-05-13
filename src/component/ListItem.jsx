@@ -5,21 +5,32 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import axios from 'axios';
 import {FoodItemContext} from '../context/FoodItemContext';
+
 const ListItem = () => {
   const {foodList, BACKEND_URL, fetchFoodList} = useContext(FoodItemContext);
+  const [loading, setLoading] = useState(false);
+
+  const loadFoodList = async () => {
+    setLoading(true);
+    await fetchFoodList();
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadFoodList();
+  }, []);
 
   const removeFood = async id => {
     try {
-      const response = await axios.post(`${BACKEND_URL}api/food/remove`, {
-        id,
-      });
+      const response = await axios.post(`${BACKEND_URL}api/food/remove`, {id});
       if (response.data.success) {
         console.warn(response.data.message);
-        await fetchFoodList();
+        await loadFoodList(); // refetch with loader
       } else {
         console.warn(response.data.message);
       }
@@ -27,6 +38,15 @@ const ListItem = () => {
       console.log('Error deleting food: ', error);
     }
   };
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#ad954d" />
+        <Text style={{marginTop: 10, fontWeight: '600'}}>Loading Food Items...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -41,18 +61,17 @@ const ListItem = () => {
               <View style={styles.overlay} />
             </View>
             <View style={styles.priceContainer}>
-              <Text  style={styles.itemTitle}>{item.name}</Text>
-              <Text numberOfLines={2} ellipsizeMode='tail' style={styles.itemDesc}>{item.des}</Text>
+              <Text style={styles.itemTitle}>{item.name}</Text>
+              <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemDesc}>
+                {item.des}
+              </Text>
               <View style={styles.prices}>
                 <Text style={styles.itemDupPrice}>Rs.{item.current_price}</Text>
-                <Text style={styles.itemOriPrice}>
-                  Rs.{item.original_price}
-                </Text>
+                <Text style={styles.itemOriPrice}>Rs.{item.original_price}</Text>
               </View>
               <View style={styles.offerContainer}>
                 <Text style={styles.offerText}>{item.offer}% OFF</Text>
               </View>
-
               <TouchableOpacity
                 style={styles.closebtn}
                 onPress={() => removeFood(item._id)}>
@@ -62,7 +81,6 @@ const ListItem = () => {
                 />
               </TouchableOpacity>
             </View>
-
             <View
               style={[
                 styles.categoryContainer,
@@ -90,6 +108,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 5,
   },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  // 👇 Your existing styles stay unchanged
   foodCountContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -117,13 +141,11 @@ const styles = StyleSheet.create({
     width: 80,
     height: 90,
   },
-
   image: {
     width: '100%',
     height: '100%',
     borderRadius: 2,
   },
-
   overlay: {
     position: 'absolute',
     top: 0,
@@ -131,29 +153,28 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'black',
-    opacity: 0.2, // Black effect with opacity
+    opacity: 0.2,
     borderRadius: 2,
   },
   priceContainer: {
     position: 'relative',
     flex: 1,
-    flexDirection: 'col',
     justifyContent: 'space-between',
   },
   itemTitle: {
     fontSize: 15,
-    fontWeight: 700,
+    fontWeight: '700',
     textTransform: 'capitalize',
   },
   itemDupPrice: {
     fontSize: 18,
-    fontWeight: 500,
+    fontWeight: '500',
   },
   itemOriPrice: {
-    color: '#808080', // ✅ Gray color
-    fontSize: 15, // ✅ Font size 15
-    textDecorationLine: 'line-through', // ✅ Line-through effect
-    fontWeight: '400', // ✅ Font weight 400
+    color: '#808080',
+    fontSize: 15,
+    textDecorationLine: 'line-through',
+    fontWeight: '400',
   },
   prices: {
     flexDirection: 'row',
@@ -164,7 +185,7 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 11,
     color: '#64748B',
-    textAlign:'justify',
+    textAlign: 'justify',
   },
   offerContainer: {
     borderWidth: 1.5,
@@ -175,7 +196,7 @@ const styles = StyleSheet.create({
   },
   offerText: {
     fontSize: 12,
-    fontWeight: 900,
+    fontWeight: '900',
     color: '#EA580C',
   },
   closeIcon: {

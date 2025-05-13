@@ -51,6 +51,21 @@ const AdminSidebar = () => {
           <Text style={styles.btnText}>Order List</Text>
         </View>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => setSelectedScreen('FeedbackList')}
+        activeOpacity={1}>
+        <View
+          style={[
+            styles.btncontainer,
+            selectedScreen === 'FeedbackList' ? {backgroundColor: '#fff'} : {},
+          ]}>
+          <Image
+            style={styles.imageicon}
+            source={require('../assets/feedback.png')}
+          />
+          <Text style={styles.btnText}>FeedbackList</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -69,7 +84,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   list: {
-    width: '20%',
+    width: '22%',
     flexDirection: 'col',
     gap: 20,
     paddingTop: 20,

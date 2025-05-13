@@ -1,98 +1,124 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
-import React from 'react'
+import {View, Text, Image, StyleSheet} from 'react-native';
+import React from 'react';
 
 const OrderItem = ({item}) => {
   return (
-     <View key={item._id || index} style={styles.order}>
-                    <Text style={styles.orderName}>Order ID: {item._id}</Text>
-                    <Text style={styles.username}>
-                      {new Date(item.date).toLocaleString()} | Status:{' '}
-                      {item.status}
-                    </Text>
-                    <Text style={styles.location}>
-                      {item.address.firstname} {item.address.lastname},{' '}
-                      {item.address.street}, {item.address.city},{' '}
-                      {item.address.state} - {item.address.zipcode}
-                    </Text>
-                    <View style={{marginTop: 10}}>
-                      {item.items.map((item, idx) => (
-                        <View key={idx} style={styles.row}>
-                          <Image source={{uri: item.image}} style={styles.image} />
-                          <View style={styles.orderInfo}>
-                            <Text style={styles.orderName}>{item.name}</Text>
-                            <Text style={styles.username}>
-                              Qty: {item.quantity} | Price: ₹{item.current_price} x{' '}
-                              {item.quantity}
-                            </Text>
-                          </View>
-                        </View>
-                      ))}
-                    </View>
-                    <View style={styles.details}>
-                      <Text style={styles.payment}>
-                        Total Amount: ₹{item.amount}
-                      </Text>
-                      <Text style={{color: item.payment ? 'green' : 'red'}}>
-                        Payment: {item.payment ? 'Paid' : 'Pending'}
-                      </Text>
-                    </View>
-                  </View>
-  )
-}
+    <View style={styles.order}>
+      <Text style={styles.orderId}>🧾 Order ID: <Text style={styles.bold}>{item._id}</Text></Text>
+      <Text style={styles.statusDate}>
+        🕒 {new Date(item.date).toLocaleString()} | 🔄 Status: <Text style={styles.bold}>{item.status}</Text>
+      </Text>
+
+      <Text style={styles.address}>
+        📍 {item.address.firstname} {item.address.lastname}, {item.address.street},{' '}
+        {item.address.city}, {item.address.state} - {item.address.zipcode}
+      </Text>
+
+      <View style={styles.itemList}>
+        {item.items.map((product, idx) => (
+          <View key={idx} style={styles.row}>
+            <Image source={{uri: product.image}} style={styles.image} />
+            <View style={styles.orderInfo}>
+              <Text style={styles.productName}>{product.name}</Text>
+              <Text style={styles.productDetails}>
+                Qty: {product.quantity} | ₹{product.current_price} x {product.quantity}
+              </Text>
+            </View>
+          </View>
+        ))}
+      </View>
+
+      <View style={styles.details}>
+        <Text style={styles.totalAmount}>💰 Total: ₹{item.amount}</Text>
+        <Text style={[styles.paymentStatus, {color: item.payment ? '#27ae60' : '#c0392b'}]}>
+          💳 Payment: {item.payment ? 'Paid' : 'Pending'}
+        </Text>
+      </View>
+    </View>
+  );
+};
 
 export default OrderItem;
 
 const styles = StyleSheet.create({
-    order: {
-        backgroundColor: '#fff',
-        padding: 15,
-        marginBottom: 15,
-        borderRadius: 10,
-        borderWidth:1,
-        borderColor:'#ad954d'
-      },
-      orderName: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#222',
-      },
-      username: {
-        fontSize: 14,
-        color: '#555',
-        marginTop: 2,
-      },
-      location: {
-        fontSize: 13,
-        color: '#777',
-        marginTop: 4,
-      },
-      row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 10,
-      },
-      image: {
-        width: 60,
-        height: 60,
-        borderRadius: 6,
-        resizeMode: 'cover',
-        marginRight: 10,
-        borderWidth: 1,
-        borderColor: '#eee',
-      },
-      orderInfo: {
-        flex: 1,
-      },
-      details: {
-        marginTop: 10,
-        borderTopWidth: 1,
-        borderTopColor: '#eee',
-        paddingTop: 10,
-      },
-      payment: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        marginTop: 5,
-        color: '#444',
-      },
-})
+  order: {
+    backgroundColor: '#fffefa',
+    padding: 16,
+    marginBottom: 18,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#d9b44a',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  orderId: {
+    fontSize: 14,
+    color: '#444',
+    marginBottom: 4,
+  },
+  statusDate: {
+    fontSize: 13,
+    color: '#555',
+    marginBottom: 8,
+  },
+  address: {
+    fontSize: 13,
+    color: '#666',
+    marginBottom: 12,
+  },
+  itemList: {
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+    paddingTop: 10,
+    marginTop: 5,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  image: {
+    width: 55,
+    height: 55,
+    borderRadius: 10,
+    resizeMode: 'cover',
+    marginRight: 12,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  orderInfo: {
+    flex: 1,
+  },
+  productName: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#222',
+  },
+  productDetails: {
+    fontSize: 13,
+    color: '#555',
+    marginTop: 2,
+  },
+  details: {
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+    paddingTop: 10,
+    marginTop: 10,
+  },
+  totalAmount: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#000',
+    marginBottom: 4,
+  },
+  paymentStatus: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  bold: {
+    fontWeight: 'bold',
+    color: '#000',
+  },
+});

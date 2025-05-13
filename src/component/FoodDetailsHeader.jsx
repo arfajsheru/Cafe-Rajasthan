@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   closeIcon: {
     width: 16,
     height: 16,
-    marginRight: -10,
+    marginRight: 0,
     tintColor: 'black',
   },
 });

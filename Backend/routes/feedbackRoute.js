@@ -1,12 +1,12 @@
 import express from "express"
 import authMiddleware from "../middleware/auth.js";
-import { submitFeedback } from "../controller/feedbackController.js";
+import { feedbackList, submitFeedback } from "../controller/feedbackController.js";
 
-const feebackRouter = express.Router();
+const feedbackRouter = express.Router();
 
-feebackRouter.post('/submit', authMiddleware, submitFeedback);
-
-export default feebackRouter;
+feedbackRouter.post('/submit', authMiddleware, submitFeedback);
+feedbackRouter.get('/all', authMiddleware, feedbackList);
+export default feedbackRouter;
 
 
 

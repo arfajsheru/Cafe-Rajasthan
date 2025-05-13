@@ -30,12 +30,14 @@ export default BestSeller;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    marginTop:18,
+    paddingHorizontal:10,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '700',
     marginBottom: 10,
+    textTransform:'capitalize'
   },
   row: {
     justifyContent: 'space-between',

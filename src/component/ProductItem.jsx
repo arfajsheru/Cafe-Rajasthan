@@ -24,47 +24,50 @@ const ProductItem = ({item}) => {
           </Text>
         </View>
       </View>
+
+      {/* Category & Subcategory */}
       <View>
         <Text style={styles.categoryText}>
           {item.category} | {item.subcategory}
         </Text>
       </View>
+
+      {/* Item name  */}
       <Text style={styles.name}>{item.name}</Text>
 
+      {/* Item price  */}
       <View style={styles.btnpriceContainer}>
         <Text style={styles.price}>
           ₹{item.current_price}{' '}
           <Text style={styles.originalPrice}>₹{item.original_price}</Text>
         </Text>
-
-        <View style={styles.priceandbtn}>
-  {!(cartItems && cartItems[item._id]) ? (
-    <TouchableOpacity
-      style={styles.addbtn}
-      activeOpacity={1}
-      onPress={() => addToCart(item._id)}>
-      <Text style={styles.addbtntext}>Add</Text>
-    </TouchableOpacity>
-  ) : (
-    <View style={styles.addbtnquantity}>
-      <TouchableOpacity onPress={() => updateCartItems(item._id)}>
-        <Image
-          style={styles.minusandplusbtn}
-          source={require('../assets/minus.png')}
-        />
-      </TouchableOpacity>
-      <Text style={styles.addbtnquantityText}>
-        {cartItems[item._id]}
-      </Text>
-      <TouchableOpacity onPress={() => addToCart(item._id)}>
-        <Image
-          style={styles.minusandplusbtn}
-          source={require('../assets/plus.png')}
-        />
-      </TouchableOpacity>
-    </View>
-  )}
-</View>
+      </View>
+      
+      <View style={styles.priceandbtn}>
+        {!(cartItems && cartItems[item._id]) ? (
+          <TouchableOpacity
+            style={styles.addbtn}
+            activeOpacity={1}
+            onPress={() => addToCart(item._id)}>
+            <Text style={styles.addbtntext}>Add To Cart</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.addbtnquantity}>
+            <TouchableOpacity onPress={() => updateCartItems(item._id)}>
+              <Image
+                style={styles.minusbtn}
+                source={require('../assets/minus.png')}
+              />
+            </TouchableOpacity>
+            <Text style={styles.addbtnquantityText}>{cartItems[item._id]}</Text>
+            <TouchableOpacity onPress={() => addToCart(item._id)}>
+              <Image
+                style={styles.plusbtn}
+                source={require('../assets/plus.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -74,9 +77,9 @@ export default ProductItem;
 
 const styles = StyleSheet.create({
   productContainer: {
-    margin: 10,
-    width: '45%',
+    width: '48%',
     marginBottom: 10,
+    marginHorizontal: 3,
     overflow: 'hidden',
   },
   imageContainer: {
@@ -150,20 +153,19 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#ad954f',
     paddingVertical: 3,
-    width: 65,
-    height: 32,
+    height: 38,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
   addbtntext: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#ad954f',
     textAlign: 'center',
   },
   addbtnquantityText: {
-    fontSize: 16,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#fff',
     paddingVertical: 1,
@@ -174,8 +176,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ad954f',
     flexDirection: 'row',
     paddingVertical: 3,
-    width: '70',
-    height: 32,
+    height: 38,
     borderRadius: 5,
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -185,10 +186,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  minusandplusbtn: {
-    width: 30,
-    height: 30,
-    resizeMode: 'contain',
+  minusbtn: {
+    width: 70,
+    height: 70,
+    tintColor: 'white',
+  },
+  plusbtn: {
+     width: 60,
+    height: 60,
     tintColor: 'white',
   },
   priceandbtn: {

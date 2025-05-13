@@ -14,6 +14,7 @@ import SearchInput from '../component/SearchInput';
 import AddCarousel from '../component/AddCarousel';
 import MiniCart from '../component/MiniCart';
 import { FoodItemContext } from '../context/FoodItemContext';
+import Feedback from '../component/Feedback';
 
 const Home = () => {
   const {cartItems} = useContext(FoodItemContext)
@@ -42,6 +43,9 @@ const Home = () => {
             <Category />
           </>
         )}
+        ListFooterComponent={() => (
+          <Feedback />
+        )}
       />
       { cartItems && Object.keys(cartItems).length ? <MiniCart/> : null }
 
@@ -49,6 +53,8 @@ const Home = () => {
       <View style={styles.chatBoatWrapper}>
         <ChatBoat />
       </View>
+
+      
     </SafeAreaView>
   );
 };

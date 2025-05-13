@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
-
 const feedbackSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
+  },
+  name: { // 🆕 new field
+    type: String,
     required: true,
   },
   rating: {
@@ -25,6 +28,6 @@ const feedbackSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-const Feedback = mongoose.models.feedback || mongoose.model("feedback",feedbackSchema);
 
+const Feedback = mongoose.models.feedback || mongoose.model("feedback", feedbackSchema);
 export default Feedback;

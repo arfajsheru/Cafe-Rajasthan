@@ -33,14 +33,14 @@ const Category = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 20,
+    marginTop:18,
   },
   title: {
     fontSize: 20,
     fontWeight: '700',
     marginBottom: 10,
     marginLeft:10,
-    textTransform:'uppercase'
+    textTransform:'capitalize'
   },
   listContainer: {
     paddingHorizontal: 10,
