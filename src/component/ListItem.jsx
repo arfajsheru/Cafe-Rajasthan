@@ -12,17 +12,18 @@ import axios from 'axios';
 import {FoodItemContext} from '../context/FoodItemContext';
 
 const ListItem = () => {
-  const {foodList, BACKEND_URL, fetchFoodList} = useContext(FoodItemContext);
-  const [loading, setLoading] = useState(false);
-
-  const loadFoodList = async () => {
-    setLoading(true);
-    await fetchFoodList();
-    setLoading(false);
-  };
+  const {foodList, setFoodList, BACKEND_URL, fetchFoodList} = useContext(FoodItemContext);
+  const [loading, setLoading] = useState(true); // Start with loading true
 
   useEffect(() => {
-    loadFoodList();
+    const init = async () => {
+      try {
+        await fetchFoodList();
+      } finally {
+        setLoading(false);
+      }
+    };
+    init();
   }, []);
 
   const removeFood = async id => {
@@ -30,7 +31,9 @@ const ListItem = () => {
       const response = await axios.post(`${BACKEND_URL}api/food/remove`, {id});
       if (response.data.success) {
         console.warn(response.data.message);
-        await loadFoodList(); // refetch with loader
+
+        // 🔥 Remove from list locally
+        setFoodList(prevList => prevList.filter(item => item._id !== id));
       } else {
         console.warn(response.data.message);
       }
@@ -113,7 +116,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // 👇 Your existing styles stay unchanged
   foodCountContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -129,7 +131,6 @@ const styles = StyleSheet.create({
   itemcontainer: {
     position: 'relative',
     width: '100%',
-    height: 'auto',
     backgroundColor: 'white',
     padding: 2,
     flexDirection: 'row',

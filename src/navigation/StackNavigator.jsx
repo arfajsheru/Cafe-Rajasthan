@@ -23,6 +23,7 @@ import ProcessToCheckOut from '../screen/ProcessToCheckOut';
 import PaymentWebView from '../screen/PaymentWebView';
 
 import VerifyScreen from '../screen/VerifyScreen';
+import Amazon from '../screen/Amazon';
 
 const stack = createStackNavigator();
 
@@ -46,10 +47,13 @@ const StackNavigator = () => {
         />
         */}
 
+        {/* <stack.Screen name="Amazon" component={Amazon} options={{headerShown: false}}/> */}
+
       <stack.Screen
         name="Main"
         component={BottomTabNavigator}
         options={{headerShown: false}}
+        
       />
       <stack.Screen
         name="Login"

@@ -6,21 +6,13 @@ import {
   FlatList,
   ActivityIndicator,
   LayoutAnimation,
-  UIManager,
-  Platform,
   Image,
 } from 'react-native';
 import axios from 'axios';
 import {FoodItemContext} from '../context/FoodItemContext';
 import {AuthContext} from '../context/AuthContext';
 
-// Enable LayoutAnimation on Android
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+
 
 const FeedbackList = () => {
   const {LAPTOP_IP} = useContext(FoodItemContext);
@@ -81,7 +73,7 @@ const FeedbackList = () => {
         />
         <View>
           <Text style={styles.name}>{item.name || 'Unknown User'}</Text>
-          <Text style={styles.email}>{item.userId || 'No Email Provided'}</Text>
+          <Text style={styles.email}><Text style={styles.userIdText}>UserId:</Text> {item.userId}</Text>
         </View>
       </View>
 
@@ -117,6 +109,7 @@ const FeedbackList = () => {
           data={feedbacks}
           keyExtractor={(item, index) => index.toString()}
           renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </View>
@@ -150,6 +143,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderLeftWidth: 4,
     borderLeftColor: '#ad954d',
+     borderRightWidth: 4,
+    borderRightColor: '#ad954d',
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
@@ -173,6 +168,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#7f8c8d',
     marginTop: 2,
+  },
+  userIdText: {
+    fontSize:15,
+    fontWeight:'bold',
+    color:'black'
   },
   rating: {
     fontSize: 17,
