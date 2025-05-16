@@ -5,7 +5,7 @@ import { feedbackList, submitFeedback } from "../controller/feedbackController.j
 const feedbackRouter = express.Router();
 
 feedbackRouter.post('/submit', authMiddleware, submitFeedback);
-feedbackRouter.get('/all', feedbackList);
+feedbackRouter.get('/all', authMiddleware, feedbackList);
 export default feedbackRouter;
 
 
