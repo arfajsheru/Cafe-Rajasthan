@@ -53,14 +53,14 @@ export default OrderList;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 25,
+    padding: 15,
     backgroundColor: '#f7e6b9',
   },
   loaderContainer: {
-    flex:1,
+   flex:1,
     justifyContent:'center',
-    alignItems:'center'
+    alignItems:'center',
+    backgroundColor:"#f7e6b9"
   },
   title: {
     fontSize: 24,

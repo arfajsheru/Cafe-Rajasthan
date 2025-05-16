@@ -42,7 +42,7 @@ export default OrderItem;
 
 const styles = StyleSheet.create({
   order: {
-    backgroundColor: '#fffefa',
+    backgroundColor: '#f4e7c1',
     padding: 16,
     marginBottom: 18,
     borderRadius: 14,
@@ -70,9 +70,8 @@ const styles = StyleSheet.create({
   },
   itemList: {
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: 'black',
     paddingTop: 10,
-    marginTop: 5,
   },
   row: {
     flexDirection: 'row',
@@ -82,11 +81,9 @@ const styles = StyleSheet.create({
   image: {
     width: 55,
     height: 55,
-    borderRadius: 10,
+    borderRadius: 4,
     resizeMode: 'cover',
     marginRight: 12,
-    borderWidth: 1,
-    borderColor: '#ddd',
   },
   orderInfo: {
     flex: 1,
@@ -103,9 +100,8 @@ const styles = StyleSheet.create({
   },
   details: {
     borderTopWidth: 1,
-    borderTopColor: '#eee',
-    paddingTop: 10,
-    marginTop: 10,
+    borderTopColor: 'black',
+    paddingTop: 5,
   },
   totalAmount: {
     fontSize: 15,

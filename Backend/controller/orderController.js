@@ -107,4 +107,22 @@ const allOrderList = async (req, res) => {
   }
 };
 
-export {placeOrder, verifyOrder, fetchOrder, allOrderList};
+
+const orderdelete = async (req, res) => {
+  try {
+    const result = await orderModel.deleteMany({}); // sabhi documents delete
+    res.json({
+      success: true,
+      message: `All ${result.deletedCount} orders deleted successfully`,
+    });
+  } catch (error) {
+    console.error('Error deleting all orders:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete all orders',
+      error: error.message,
+    });
+  }
+};
+
+export {placeOrder, verifyOrder, fetchOrder, allOrderList, orderdelete};

@@ -53,6 +53,7 @@ const ListItem = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Food Item List</Text>
       <FlatList
         data={foodList}
         keyExtractor={(item, index) => index.toString()}
@@ -108,13 +109,21 @@ export default ListItem;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
+    padding: 10,
+    backgroundColor: '#f7e6b9',
+  },
+    title: {
+    fontSize: 24,
+    fontWeight: '800',
+    marginBottom: 10,
+    color: '#2c3e50',
+    textAlign: 'center',
   },
   loaderContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:"#f7e6b9"
   },
   foodCountContainer: {
     flexDirection: 'row',
@@ -124,18 +133,23 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
   },
-  foodCountText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
   itemcontainer: {
     position: 'relative',
     width: '100%',
     backgroundColor: 'white',
-    padding: 2,
+    padding: 5,
     flexDirection: 'row',
-    gap: 10,
-    marginBottom: 5,
+    borderRadius:5,
+    gap: 5,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 4,
+    borderWidth:1.5,
+    borderColor:"#ad954d",
+    backgroundColor:'#f4e7c1'
   },
   imageContainer: {
     position: 'relative',
@@ -154,7 +168,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'black',
-    opacity: 0.2,
+    opacity: 0.4,
     borderRadius: 2,
   },
   priceContainer: {
@@ -212,16 +226,17 @@ const styles = StyleSheet.create({
   categoryContainer: {
     position: 'absolute',
     borderWidth: 2,
-    height: 20,
-    width: 20,
-    left: 5,
-    top: 5,
+    height: 15,
+    width: 15,
+    left: 8,
+    top: 8,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius:25,
   },
   categoryInner: {
-    width: 12,
-    height: 12,
+    width: 8,
+    height: 8,
     borderRadius: 25,
   },
 });

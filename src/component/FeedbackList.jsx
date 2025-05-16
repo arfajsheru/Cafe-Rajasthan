@@ -15,14 +15,14 @@ import {AuthContext} from '../context/AuthContext';
 
 
 const FeedbackList = () => {
-  const {LAPTOP_IP} = useContext(FoodItemContext);
+  const {BACKEND_URL} = useContext(FoodItemContext)
   const {token} = useContext(AuthContext);
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchFeedbacks = async () => {
     try {
-      const response = await axios.get(`${LAPTOP_IP}:4000/api/feedback/all`, {
+      const response = await axios.get(`${BACKEND_URL}api/feedback/all`, {
         headers: {token},
       });
       setFeedbacks(response.data.feedbacklist);
@@ -36,6 +36,7 @@ const FeedbackList = () => {
 
   useEffect(() => {
     fetchFeedbacks();
+    console.log(BACKEND_URL)
   }, []);
 
   const getRatingColor = rating => {
@@ -122,12 +123,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#f7e6b9',
   },
   loaderContainer:{
     flex:1,
     justifyContent:'center',
-    alignItems:'center'
+    alignItems:'center',
+    backgroundColor:"#f7e6b9"
   },
   title: {
     fontSize: 24,
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: '#f4e7c1',
     borderRadius: 12,
     padding: 15,
     marginBottom: 12,
