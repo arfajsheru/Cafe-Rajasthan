@@ -1,9 +1,10 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {FoodItemContext} from '../context/FoodItemContext';
 import {useNavigation} from '@react-navigation/native';
 const ProductItem = ({item}) => {
   const {cartItems, updateCartItems, addToCart} = useContext(FoodItemContext);
+  const[wishlist, setWhishlist] = useState(false);
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -23,6 +24,10 @@ const ProductItem = ({item}) => {
             {item.offer}%{'\n'}OFF
           </Text>
         </View>
+
+        <TouchableOpacity style={styles.favoriteContainer} activeOpacity={0.7}>
+          <Image style={styles.favoriteImage} source={require("../assets/favorite.png")} />
+        </TouchableOpacity>
       </View>
 
       {/* Category & Subcategory */}
@@ -93,6 +98,17 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 7,
+  },
+  favoriteContainer: {
+    position:'absolute',
+    top:3,
+    right:3,
+  },
+  favoriteImage:{
+    width:30,
+    height:30,
+    resizeMode:'contain',
+    tintColor:'red',
   },
   categoryText: {
     fontSize: 12,

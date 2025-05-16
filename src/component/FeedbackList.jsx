@@ -15,16 +15,14 @@ import {AuthContext} from '../context/AuthContext';
 
 
 const FeedbackList = () => {
-  const {BACKEND_URL} = useContext(FoodItemContext)
+  const {LAPTOP_IP} = useContext(FoodItemContext);
   const {token} = useContext(AuthContext);
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchFeedbacks = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}api/feedback/all`, {
-        headers: {token},
-      });
+      const response = await axios.get(`${LAPTOP_IP}:4000/api/feedback/all`);
       setFeedbacks(response.data.feedbacklist);
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     } catch (error) {
@@ -36,7 +34,6 @@ const FeedbackList = () => {
 
   useEffect(() => {
     fetchFeedbacks();
-    console.log(BACKEND_URL)
   }, []);
 
   const getRatingColor = rating => {
@@ -158,7 +155,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e5e5',
+    borderBottomColor: 'black',
     paddingBottom: 6,
   },
   name: {
