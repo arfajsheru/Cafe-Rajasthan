@@ -3,9 +3,13 @@ import React, {useContext, useState} from 'react';
 import {FoodItemContext} from '../context/FoodItemContext';
 import {useNavigation} from '@react-navigation/native';
 const ProductItem = ({item}) => {
-  const {cartItems, updateCartItems, addToCart} = useContext(FoodItemContext);
-  const[wishlist, setWhishlist] = useState(false);
+  const {cartItems, updateCartItems, addToCart, addToWishlist, WishlistItems, wishlistLoaded} =
+    useContext(FoodItemContext);
+
   const navigation = useNavigation();
+
+  const isInWishlist = itemId => WishlistItems?.includes(itemId);
+
   return (
     <TouchableOpacity
       style={styles.productContainer}
@@ -25,8 +29,30 @@ const ProductItem = ({item}) => {
           </Text>
         </View>
 
-        <TouchableOpacity style={styles.favoriteContainer} activeOpacity={0.7}>
-          <Image style={styles.favoriteImage} source={require("../assets/favorite.png")} />
+        <TouchableOpacity
+          onPress={() => addToWishlist(item._id)}
+          style={styles.favoriteContainer}
+          activeOpacity={0.7}>
+          {wishlistLoaded ? (
+    <Image
+      style={[
+        styles.favoriteImage,
+        {
+          tintColor: isInWishlist(item._id) ? 'red' : 'white',
+        },
+      ]}
+      source={
+        isInWishlist(item._id)
+          ? require('../assets/favorite_full.png')
+          : require('../assets/favorite.png')
+      }
+    />
+  ) : (
+    <Image
+      style={[styles.favoriteImage, {tintColor: 'gray'}]}
+      source={require('../assets/favorite.png')}
+    />
+  )}
         </TouchableOpacity>
       </View>
 
@@ -47,7 +73,7 @@ const ProductItem = ({item}) => {
           <Text style={styles.originalPrice}>₹{item.original_price}</Text>
         </Text>
       </View>
-      
+
       <View style={styles.priceandbtn}>
         {!(cartItems && cartItems[item._id]) ? (
           <TouchableOpacity
@@ -100,15 +126,15 @@ const styles = StyleSheet.create({
     borderRadius: 7,
   },
   favoriteContainer: {
-    position:'absolute',
-    top:3,
-    right:3,
+    position: 'absolute',
+    top: 3,
+    right: 3,
   },
-  favoriteImage:{
-    width:30,
-    height:30,
-    resizeMode:'contain',
-    tintColor:'red',
+  favoriteImage: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
+    tintColor: 'red',
   },
   categoryText: {
     fontSize: 12,
@@ -208,7 +234,7 @@ const styles = StyleSheet.create({
     tintColor: 'white',
   },
   plusbtn: {
-     width: 60,
+    width: 60,
     height: 60,
     tintColor: 'white',
   },
